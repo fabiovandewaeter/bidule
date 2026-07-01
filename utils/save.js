@@ -6,11 +6,20 @@ import './types.js'
 import * as Opt from './option.js'
 
 /**
- * @param {Model} model 
+ * @typedef {Object} SaveStruct
+ * @property {boolean} is_initialized
+ * @property {World} world
+ * @property {UIState} ui
  */
-export function save(model) {
+
+/**
+ * @param {World} world
+ * @param {UIState} ui
+ */
+export function save(world, ui) {
+    const save_struct = { ui, world };
     try {
-        const json = JSON.stringify(model);
+        const json = JSON.stringify(save_struct);
         localStorage.setItem(STORAGE_KEY, json);
     } catch (e) {
         console.error('Could not save:', e);
@@ -18,12 +27,17 @@ export function save(model) {
 }
 
 /**
- * @returns {Opt<Model>}
+ * @returns {Opt<SaveStruct>}
  */
 export function load() {
     try {
         const json = localStorage.getItem(STORAGE_KEY);
-        return json ? Opt.some(JSON.parse(json)) : Opt.none;
+        if (json) {
+            const res = JSON.parse(json);
+            res.is_initialized = true;
+            return Opt.some(res);
+        }
+        return Opt.none;
     } catch (e) {
         console.error('Could not load save:', e);
         localStorage.removeItem(STORAGE_KEY);
@@ -38,10 +52,12 @@ export function clear() {
 }
 
 /**
- * @param {Model} model 
+ * @param {World} world
+ * @param {UIState} ui
  */
-export function download(model) {
-    const json = JSON.stringify(model, null, 2);
+export function download(world, ui) {
+    const save_struct = { world, ui };
+    const json = JSON.stringify(save_struct, null, 2);
     const blob = new Blob([json], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

@@ -20,28 +20,24 @@ export function create(saved_timestamp) {
 
 /**
  * @param {Clock} clock
- * @returns {[Clock,number]}
+ * @returns {number}
  */
 export function tick(clock) {
     const now = Date.now();
     const delta_ms = now - clock.last_tick_timestamp;
-    /** @type {Clock} */
-    let new_clock = { ...clock, last_tick_timestamp: now, accumulated_time: clock.accumulated_time + delta_ms };
+    clock.last_tick_timestamp = now;
+    clock.accumulated_time += delta_ms;
 
     EB.emit('tick');
-    return [new_clock, delta_ms];
+    return delta_ms;
 }
 
 /**
  * @param {Clock} clock
  * @param {number} ms
- * @returns {Clock}
  */
 export function advance_clock_by(clock, ms) {
+    clock.last_tick_timestamp = Date.now();
+    clock.accumulated_time += ms;
     EB.emit('tick');
-    return {
-        ...clock,
-        last_tick_timestamp: Date.now(),
-        accumulated_time: clock.accumulated_time + ms
-    };
 }

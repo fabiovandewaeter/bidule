@@ -2,7 +2,11 @@
 // @ts-check
 
 // ==========  ui ==========
-/** @typedef {import('../ui/core/model.js').Model} Model*/
+/** @typedef {import('../ui/core/ui_state.js').UIState} UIState*/
+
+/** @typedef {import('../ui/core/action.js').ActionName} ActionName*/
+/** @typedef {import('../ui/core/action.js').ActionHandler} ActionHandler*/
+/** @typedef {import('../ui/core/action.js').Action} Action*/
 
 /** @typedef {import('../ui/scenes/scene.js').Scene} Scene*/
 
@@ -23,6 +27,8 @@
 /** @typedef {import('../engine/core/world.js').World} World*/
 
 // ========== utils ==========
+/** @typedef {import('./save.js').SaveStruct} SaveStruct */
+
 // -- deep readonly --
 /**
  * Pareil que Readonly quand on modifie (car obligé de faire un cast inline) mais bloque

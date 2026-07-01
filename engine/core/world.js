@@ -34,9 +34,7 @@ export function init(world) {
 /**
  * @param {World} world
  * @param {number} delta_ms
- * @returns {World}
  */
 export function update(world, delta_ms) {
     // TODO: update la clock aussi ? ou faire dehors je sais pas
-    return { ...world };
 }

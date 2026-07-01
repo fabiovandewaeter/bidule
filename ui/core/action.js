@@ -4,13 +4,18 @@
 import '../../utils/types.js'
 import * as Opt from '../../utils/option.js'
 
-/** @typedef {'tick'} ActionName */
+/** @typedef {'toggle_tick'} ActionName */
 
 /**
  * @typedef {Object} ActionContext
  * @property {HTMLElement} element - l'élément cliqué
  * @property {Event} event - l'événement natif
- * @property {World} world - l'instance du monde du jeu
+ */
+
+/**
+ * @typedef {Object} Action
+ * @property {ActionName} name
+ * @property {ActionHandler} handler
  */
 
 /**
@@ -31,6 +36,19 @@ export function register(name, handler) {
         console.warn(`Action "${name}" déjà enregistrée, elle sera remplacée.`);
     }
     registry[name] = handler;
+}
+
+/**
+ * @param {ActionName} name
+ * @param {ActionHandler} handler
+ */
+export function unregister(name, handler) {
+    const action = registry[name];
+    if (!action) return;
+    // si vrai ça veut dire que l'action actuelle vient d'autre part que là où on a appelé unregister
+    if (action !== handler) throw new Error(`Action ${name} n'avait déjà plus le même handler`);
+
+    delete registry[name];
 }
 
 /**
