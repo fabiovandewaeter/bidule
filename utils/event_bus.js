@@ -13,6 +13,8 @@
  * @property {Object.<EventName, Function[]>} listeners
  */
 
+export const EB = create();
+
 /**
  * @returns {EventBus}
  */
@@ -20,7 +22,7 @@ export function create() {
     /** @type {Object.<EventName, Function[]>} */
     const listeners = {};
 
-    const api = {
+    return {
         /**
          * @param {EventName} event 
          * @param {Function} callback 
@@ -29,7 +31,7 @@ export function create() {
         on(event, callback) {
             if (!listeners[event]) listeners[event] = [];
             listeners[event].push(callback);
-            return () => api.off(event, callback);
+            return () => this.off(event, callback);
         },
         /**
          * @param {EventName} event 
@@ -54,8 +56,6 @@ export function create() {
         },
         listeners
     };
-
-    return api;
 }
 
 /**

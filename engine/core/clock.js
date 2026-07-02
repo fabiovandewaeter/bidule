@@ -2,7 +2,7 @@
 // @ts-check
 
 import '../../utils/types.js'
-import { EB } from '../../ui/core/runtime.js';
+import { EB } from '../../utils/event_bus.js';
 
 /**
  * @typedef {Object} Clock

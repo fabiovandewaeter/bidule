@@ -4,6 +4,8 @@
 import * as Action from '../core/action.js'
 import * as MainScene from './main_scene.js'
 import * as MenuScene from './menu_scene.js'
+import * as Store from '../core/store.js'
+import { EB } from '../../utils/event_bus.js';
 
 export const SCENES = Object.freeze({
     MAIN: 'main',
@@ -29,14 +31,18 @@ export function register_actions(actions) { actions.forEach(a => Action.register
 export function unregister_actions(actions) { actions.forEach(a => Action.unregister(a.name, a.handler)) };
 
 /**
- * @param {HTMLElement} app 
- * @param {World} world 
- * @param {UIState} ui_state 
+ * @param {HTMLElement} app
  */
-export function render_current_scene(app, world, ui_state) {
+export function render_current_scene(app) {
     app.innerHTML = '';
-    switch (ui_state.scene) {
-        case 'main': MainScene.render(app, world, ui_state); break;
-        case 'menu': MenuScene.render(app, world, ui_state); break;
+    const store = Store.get_store();
+    switch (store.ui_state.scene) {
+        case 'main': MainScene.render(app); break;
+        case 'menu': MenuScene.render(app); break;
     }
 }
+
+EB.on('scene_switched', () => {
+    const app = document.getElementById('app');
+    if (app) render_current_scene(app);
+});

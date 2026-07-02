@@ -14,7 +14,7 @@ import * as Action from '../ui/core/action.js'
  * @typedef {Object} SaveStruct
  * @property {boolean} is_initialized
  * @property {World} world
- * @property {UIState} ui
+ * @property {UIState} ui_state
  */
 
 /**

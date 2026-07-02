@@ -11,72 +11,82 @@ import * as EventBus from '../../utils/event_bus.js'
 import * as MenuScene from '../scenes/menu_scene.js'
 import * as MainScene from '../scenes/main_scene.js'
 import * as Scene from '../scenes/scene.js'
+import * as Store from './store.js'
 
-export const EB = EventBus.create();
-export let [WORLD, UI_STATE] = init();
-export let should_save = false;
+// export const EB = EventBus.create();
+// export let [WORLD, UI_STATE] = init();
+// export let should_save = false;
 
-/**
- * @param {World} new_world 
- */
-export function set_world(new_world) { WORLD = { ...WORLD, ...new_world }; }
-/**
- * @param {UIState} new_ui_state 
- */
-export function set_ui_state(new_ui_state) { UI_STATE = new_ui_state; }
-/**
- * @param {boolean} new_should_save 
- */
-export function set_should_save(new_should_save) { should_save = new_should_save; }
+// /**
+//  * @param {World} new_world 
+//  */
+// export function set_world(new_world) { WORLD = { ...WORLD, ...new_world }; }
+// /**
+//  * @param {UIState} new_ui_state 
+//  */
+// export function set_ui_state(new_ui_state) { UI_STATE = new_ui_state; }
+// /**
+//  * @param {boolean} new_should_save 
+//  */
+// export function set_should_save(new_should_save) { should_save = new_should_save; }
 
-/**
- * @returns {[World, UIState]}}
- */
+init();
+
 function init() {
     const app = /**@type {HTMLElement}*/(document.getElementById('app'));
     app.tabIndex = -1
     app.focus();
 
+
+    // let world, ui_state;
+    const saved_opt = Save.load();
+    if (Opt.is_some(saved_opt)) {
+        let { world, ui_state } = saved_opt.value;
+        if (world) {
+            const now = Date.now();
+            const delta = now - world.clock.last_tick_timestamp;
+            if (delta > 0) {
+                Clock.advance_clock_by(world.clock, delta);
+                World.update(world, delta);
+            }
+            world.clock.last_tick_timestamp = now;
+            Store.set_world(world);
+        } else {
+            const new_world = World.create();
+            World.init(new_world);
+            Store.set_world(new_world);
+        }
+        Store.set_ui_state(ui_state || UIState.create());
+    } else {
+        const new_world = World.create();
+        World.init(new_world);
+        Store.set_world(new_world);
+        Store.set_ui_state(UIState.create());
+    }
+
     // attache les events listeners au app pour qu'ils ne soient jamais détruit par un innerHTML
     add_event_listener_click(app);
     add_event_listener_keydown(app);
 
-    // let model = Model.create();
-    // // déjà initialisé si load depuis save, sinon on initialise ici
-    // if (!model.is_initialized) model = Model.init(model);
-    // view(null, model);
-
-    let world, ui_state;
-    const saved_opt = Save.load();
-    if (Opt.is_some(saved_opt)) {
-        world = load_world(saved_opt.value);
-        console.log(saved_opt.value)
-        // ICI ça load pas quand save
-        // ui = saved_opt.value.ui;
-        ui_state = UIState.create();
-    }
-    else {
-        world = World.create();
-        World.init(world);
-        ui_state = UIState.create();
-    }
-
     // init_actions();
-    Scene.render_current_scene(app, world, ui_state);
+    Scene.render_current_scene(app);
 
-    EB.on('scene_switched', () => Scene.render_current_scene(app, world, ui_state));
-    window.addEventListener('beforeunload', () => { if (should_save) Save.save(world, ui_state); })
-    window.addEventListener('pagehide', () => { if (should_save) Save.save(world, ui_state); })
-
-    return [world, ui_state];
+    // EB.on('scene_switched', () => Scene.render_current_scene(app, world, ui_state));
+    window.addEventListener('beforeunload', () => {
+        const store = Store.get_store();
+        if (store.should_save) Save.save(store.world, store.ui_state);
+    })
+    window.addEventListener('pagehide', () => {
+        const store = Store.get_store();
+        if (store.should_save) Save.save(store.world, store.ui_state);
+    })
 }
 
 /**
- * @param {SaveStruct} save_struct
+ * @param {World} world
  * @returns {World}
  */
-function load_world(save_struct) {
-    const world = save_struct.world;
+function load_world(world) {
     const now = Date.now();
     const delta = now - world.clock.last_tick_timestamp;
     if (delta > 0) {

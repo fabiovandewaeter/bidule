@@ -12,21 +12,21 @@ import * as UIState from '../core/ui_state.js'
 import * as Save from '../../utils/save.js'
 import * as Runtime from '../core/runtime.js'
 import * as Scene from './scene.js'
-import { EB } from '../core/runtime.js'
+import * as Store from '../core/store.js'
 
 const TICK_DELAY_MS = 1000;
 
 /**
  * @param {HTMLElement} container
- * @param {World} world 
- * @param {UIState} ui_state 
  */
-export function render(container, world, ui_state) {
+export function render(container) {
+    const store = Store.get_store();
+
     container.innerHTML += `
     <h1>Scene: Main</h1>
-    ${Time.render(world, ui_state)}
-    ${Control.render(world, ui_state)}
-    ${Log.render(world, ui_state)}
+    ${Time.render(store.world, store.ui_state)}
+    ${Control.render(store.world, store.ui_state)}
+    ${Log.render(store.world, store.ui_state)}
     `;
 
     // TODO: pour l'instant on laisse en update_all et dans la scene car si les components sont détruits
