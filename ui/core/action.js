@@ -4,7 +4,7 @@
 import '../../utils/types.js'
 import * as Opt from '../../utils/option.js'
 
-/** @typedef {'toggle_tick'} ActionName */
+/** @typedef {'toggle_tick'|'download_save'|'upload_save'|'clear_save'} ActionName */
 
 /**
  * @typedef {Object} ActionContext
@@ -60,3 +60,5 @@ export function get(name) {
     const res = registry[name];
     return res !== undefined ? Opt.some(res) : Opt.none;
 }
+
+export function clear() { Object.keys(registry).forEach(key => delete registry[key]); }

@@ -2,19 +2,15 @@
 // @ts-check
 
 // TODO: retirer et faire injection de dépendance si besoin de plusieurs event bus
-export const EB = create();
 
-// export const Events = Object.freeze({
-//     TICK: 'tick',
-// });
-// /** @typedef {typeof Events[keyof Events]} EventName */
-/** @typedef {'tick'} EventName */
+/** @typedef {'tick'|'logs'|'scene_switched'|'toggle_tick'} EventName */
 
 /**
  * @typedef {Object} EventBus
  * @property {(event: EventName, callback: Function) => () => void} on
  * @property {(event: EventName, callback: Function) => void} off
  * @property {(event: EventName, ...args: any[]) => void} emit
+ * @property {Object.<EventName, Function[]>} listeners
  */
 
 /**
@@ -55,8 +51,14 @@ export function create() {
                     cb(...args);
                 }
             }
-        }
+        },
+        listeners
     };
 
     return api;
 }
+
+/**
+ * @param {EventBus} event_bus 
+ */
+export function clear(event_bus) { Object.keys(event_bus.listeners).forEach(key => delete event_bus.listeners[key]); }

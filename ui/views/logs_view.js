@@ -2,31 +2,36 @@
 // @ts-check
 
 import '../../utils/types.js'
+import { EB } from '../core/runtime.js';
 
 const MAX_RENDERED_LOGS = 10;
 
 /**
+ * @param {World} world 
+ * @param {UIState} ui_state 
  * @returns {string}
  */
-export function render() {
-    return `
+export function render(world, ui_state) {
+    const res = `
     <div class="logs-view">
         <h1>Logs</h1>
         <ul class="logs-list"></ul>
     </div>
     `;
+
+    EB.on('logs', () => update_all(world, ui_state));
+
+    return res;
 }
 
 /**
- * @param {Model|null} prev
- * @param {Model} next
+ * @param {World} world 
+ * @param {UIState} ui_state 
  */
-export function update_all(prev, next) {
-    if (prev?.logs === next.logs) return;
-
+export function update_all(world, ui_state) {
     document.querySelectorAll('ul.logs-list').forEach(
         log_list => {
-            const logs_to_add = next.logs.slice(prev?.logs.length);
+            const logs_to_add = ui_state.logs.slice(ui_state.logs.length);
             logs_to_add.forEach(log => {
                 const li = document.createElement('li');
                 li.textContent = log;

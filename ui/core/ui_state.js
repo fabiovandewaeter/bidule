@@ -1,8 +1,8 @@
-// ui/core/ui.js
+// ui/core/ui_state.js
 // @ts-check
 
-import { EB } from '../../utils/event_bus.js';
 import '../../utils/types.js'
+import { EB } from './runtime.js';
 
 // TODO: séparer les objets visibles des non visibles pour pas avoir besoin de tout parcourir à chaque fois pour vérifier si on doit update
 // TODO: séparer repositories UI et engine

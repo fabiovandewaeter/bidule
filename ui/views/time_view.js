@@ -3,12 +3,15 @@
 
 import '../../utils/types.js'
 import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from '../../utils/const.js'
+import { EB } from '../core/runtime.js';
 
 /**
+ * @param {World} world 
+ * @param {UIState} ui_state 
  * @returns {string}
  */
-export function render() {
-    return `
+export function render(world, ui_state) {
+    const res = `
     <div class="time-view">
         <h1>Temps passé: </h1>
         <span class="time-seconds">0</span> secondes
@@ -19,16 +22,18 @@ export function render() {
         <span class="time-years">0</span> années
     </div>
     `;
+
+    update_all(world, ui_state);
+    EB.on('tick', update_all);
+    return res;
 }
 
 /**
- * @param {Model|null} prev
- * @param {Model} next
+ * @param {World} world 
+ * @param {UIState} ui_state 
  */
-export function update_all(prev, next) {
-    if (prev?.world.clock.accumulated_time === next.world.clock.accumulated_time) return;
-
-    const accumulated_seconds = next.world.clock.accumulated_time / 1000;
+export function update_all(world, ui_state) {
+    const accumulated_seconds = world.clock.accumulated_time / 1000;
     document.querySelectorAll('.time-view').forEach(
         time => {
             const s_counter = time.querySelector('.time-seconds');

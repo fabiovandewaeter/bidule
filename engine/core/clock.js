@@ -1,8 +1,8 @@
 // engine/core/clock.js
 // @ts-check
 
-import { EB } from '../../utils/event_bus.js';
 import '../../utils/types.js'
+import { EB } from '../../ui/core/runtime.js';
 
 /**
  * @typedef {Object} Clock

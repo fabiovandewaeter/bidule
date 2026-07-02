@@ -7,17 +7,27 @@ import * as Action from './action.js'
 import * as UIState from './ui_state.js'
 import * as Opt from '../../utils/option.js'
 import * as Clock from '../../engine/core/clock.js'
+import * as EventBus from '../../utils/event_bus.js'
+import * as MenuScene from '../scenes/menu_scene.js'
+import * as MainScene from '../scenes/main_scene.js'
+import * as Scene from '../scenes/scene.js'
 
+export const EB = EventBus.create();
 export let [WORLD, UI_STATE] = init();
+export let should_save = false;
 
 /**
  * @param {World} new_world 
  */
-export function set_world(new_world) { WORLD = new_world; }
+export function set_world(new_world) { WORLD = { ...WORLD, ...new_world }; }
 /**
  * @param {UIState} new_ui_state 
  */
 export function set_ui_state(new_ui_state) { UI_STATE = new_ui_state; }
+/**
+ * @param {boolean} new_should_save 
+ */
+export function set_should_save(new_should_save) { should_save = new_should_save; }
 
 /**
  * @returns {[World, UIState]}}
@@ -36,21 +46,29 @@ function init() {
     // if (!model.is_initialized) model = Model.init(model);
     // view(null, model);
 
-    let world, ui;
+    let world, ui_state;
     const saved_opt = Save.load();
     if (Opt.is_some(saved_opt)) {
         world = load_world(saved_opt.value);
-        ui = saved_opt.value.ui;
+        console.log(saved_opt.value)
+        // ICI ça load pas quand save
+        // ui = saved_opt.value.ui;
+        ui_state = UIState.create();
     }
     else {
         world = World.create();
         World.init(world);
-        ui = UIState.create();
+        ui_state = UIState.create();
     }
 
     // init_actions();
+    Scene.render_current_scene(app, world, ui_state);
 
-    return [world, ui];
+    EB.on('scene_switched', () => Scene.render_current_scene(app, world, ui_state));
+    window.addEventListener('beforeunload', () => { if (should_save) Save.save(world, ui_state); })
+    window.addEventListener('pagehide', () => { if (should_save) Save.save(world, ui_state); })
+
+    return [world, ui_state];
 }
 
 /**
@@ -64,54 +82,11 @@ function load_world(save_struct) {
     if (delta > 0) {
         Clock.advance_clock_by(world.clock, delta);
         World.update(world, delta);
-        // world = /**@type {World}*/(World.update({ ...world, clock: world.clock }, delta));
     }
     world.clock.last_tick_timestamp = now;
     return world;
 }
 
-// function init_actions() {
-//     Action.register('tick', () => {
-//         const delta_ms = Clock.tick(WORLD.clock);
-//         World.update(WORLD, delta_ms);
-//         // save_timestamp(clock.timestamp);
-//         UIState.add_log(UI_STATE, `tick: ${delta_ms} ms`);
-//     });
-// }
-
-// /**
-//  * @param {Msg} msg
-//  */
-// export function dispatch(msg) {
-//     const prev = model;
-//     model = update(model, msg);
-//     view(prev, model);
-//     Save.save(model);
-// }
-
-// /**
-//  * @param {HTMLElement} app 
-//  */
-// function add_event_listener_click(app) {
-//     app.addEventListener('click', (event) => {
-//         const el = /** @type {HTMLElement | null} */ (event.target);
-//         const target = /** @type {HTMLElement | null} */ (el?.closest('[data-msg-type]'));
-//         if (!target) return;
-
-//         const msg_type = target.dataset.msgType;
-//         switch (msg_type) {
-//             case 'start_stop_tick_interval':
-//             case 'start_main':
-//             case 'stop_main':
-//             case 'download_save':
-//             case 'upload_save':
-//             case 'clear_save':
-//                 dispatch({ type: msg_type }); break;
-//             case 'skip_seconds': dispatch({ type: msg_type, amount: parseInt(target.dataset.amount ?? '', 10) }); break;
-//             default: throw new Error(`unknown msg_type: ${msg_type}`);
-//         }
-//     });
-// }
 /**
  * @param {HTMLElement} app 
  */
@@ -128,7 +103,7 @@ function add_event_listener_click(app) {
             handler.value({ element: action_el, event });
         }
 
-        // // const target = /** @type {HTMLElement | null} */ (el?.closest('[data-msg-type]'));
+        // // const target = /** @type {HTMLElement | null} */ (el?.closest('[data-action]'));
         // if (!target) return;
 
         // const msg_type = target.dataset.msgType;
@@ -158,4 +133,11 @@ function add_event_listener_keydown(app) {
         //     dispatch({ type: 'movement', delta: delta.value });
         // }
     });
+}
+
+export function clear() {
+    EventBus.clear(EB);
+    Action.clear();
+    set_world(World.create());
+    set_ui_state(UIState.create());
 }

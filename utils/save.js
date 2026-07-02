@@ -4,6 +4,11 @@ const STORAGE_KEY = 'machin_save';
 
 import './types.js'
 import * as Opt from './option.js'
+import * as Runtime from '../ui/core/runtime.js'
+import * as World from '../engine/core/world.js'
+import * as Scene from '../ui/scenes/scene.js'
+import * as EventBus from './event_bus.js'
+import * as Action from '../ui/core/action.js'
 
 /**
  * @typedef {Object} SaveStruct
@@ -46,9 +51,12 @@ export function load() {
 }
 
 export function clear() {
-    console.log(localStorage.getItem(STORAGE_KEY));
     localStorage.removeItem(STORAGE_KEY);
-    console.log(localStorage.getItem(STORAGE_KEY));
+    Runtime.clear();
+    const app = /**@type {HTMLElement}*/(document.getElementById('app'));
+    // Scene.render_current_scene(app, Runtime.WORLD, Runtime.UI_STATE);
+    Runtime.set_should_save(false);
+    window.location.reload();
 }
 
 /**
