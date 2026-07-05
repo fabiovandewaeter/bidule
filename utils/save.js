@@ -9,10 +9,11 @@ import * as World from '../engine/core/world.js'
 import * as Scene from '../ui/scenes/scene.js'
 import * as EventBus from './event_bus.js'
 import * as Action from '../ui/core/action.js'
+import * as Store from '../ui/core/store.js'
+import * as UIState from '../ui/core/ui_state.js'
 
 /**
  * @typedef {Object} SaveStruct
- * @property {boolean} is_initialized
  * @property {World} world
  * @property {UIState} ui_state
  */
@@ -39,8 +40,9 @@ export function load() {
         const json = localStorage.getItem(STORAGE_KEY);
         if (json) {
             const res = JSON.parse(json);
-            res.is_initialized = true;
-            return Opt.some(res);
+            if (res && res.world) {
+                return Opt.some(res);
+            }
         }
         return Opt.none;
     } catch (e) {
@@ -52,11 +54,18 @@ export function load() {
 
 export function clear() {
     localStorage.removeItem(STORAGE_KEY);
-    Runtime.clear();
-    const app = /**@type {HTMLElement}*/(document.getElementById('app'));
-    // Scene.render_current_scene(app, Runtime.WORLD, Runtime.UI_STATE);
-    Runtime.set_should_save(false);
-    window.location.reload();
+    const new_world = World.create();
+    World.init(new_world);
+    Store.set_world(new_world);
+    Store.set_ui_state(UIState.create());
+    Store.set_should_save(false);
+    Action.clear();
+    EventBus.EB.emit('scene_switched');
+    // Runtime.clear();
+    // const app = /**@type {HTMLElement}*/(document.getElementById('app'));
+    // // Scene.render_current_scene(app, Runtime.WORLD, Runtime.UI_STATE);
+    // Runtime.set_should_save(false);
+    // window.location.reload();
 }
 
 /**

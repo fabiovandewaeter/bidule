@@ -4,7 +4,7 @@
 import '../../utils/types.js'
 import * as Opt from '../../utils/option.js'
 
-/** @typedef {'toggle_tick'|'download_save'|'upload_save'|'clear_save'} ActionName */
+/** @typedef {'toggle_tick'|'download_save'|'upload_save'|'clear_save'|'hide_logs'} ActionName */
 
 /**
  * @typedef {Object} ActionContext

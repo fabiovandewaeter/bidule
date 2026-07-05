@@ -13,30 +13,12 @@ import * as MainScene from '../scenes/main_scene.js'
 import * as Scene from '../scenes/scene.js'
 import * as Store from './store.js'
 
-// export const EB = EventBus.create();
-// export let [WORLD, UI_STATE] = init();
-// export let should_save = false;
-
-// /**
-//  * @param {World} new_world 
-//  */
-// export function set_world(new_world) { WORLD = { ...WORLD, ...new_world }; }
-// /**
-//  * @param {UIState} new_ui_state 
-//  */
-// export function set_ui_state(new_ui_state) { UI_STATE = new_ui_state; }
-// /**
-//  * @param {boolean} new_should_save 
-//  */
-// export function set_should_save(new_should_save) { should_save = new_should_save; }
-
 init();
 
 function init() {
     const app = /**@type {HTMLElement}*/(document.getElementById('app'));
     app.tabIndex = -1
     app.focus();
-
 
     // let world, ui_state;
     const saved_opt = Save.load();
@@ -145,9 +127,9 @@ function add_event_listener_keydown(app) {
     });
 }
 
-export function clear() {
-    EventBus.clear(EB);
-    Action.clear();
-    set_world(World.create());
-    set_ui_state(UIState.create());
-}
+// export function clear() {
+//     EventBus.clear(EB);
+//     Action.clear();
+//     set_world(World.create());
+//     set_ui_state(UIState.create());
+// }

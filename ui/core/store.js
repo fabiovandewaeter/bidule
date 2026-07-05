@@ -16,7 +16,7 @@ import * as UIState from './ui_state.js'
 let store = {
     world: World.create(),
     ui_state: UIState.create(),
-    should_save: false,
+    should_save: true,
 };
 
 /** @returns {GameStore} */
