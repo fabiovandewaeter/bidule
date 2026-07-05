@@ -51,9 +51,8 @@ export function create_comp(container, setup) {
 export function delegate_click(root, action_map) {
     /** @type {(event: Event) => void} */
     const handler = (event) => {
-        if (!(event.target instanceof HTMLElement)) throw new Error();
-        const target = event.target?.closest('[data-action]');
-        if (!target || !(target instanceof HTMLElement)) return;
+        const target = /**@type {HTMLElement}*/((/**@type {HTMLElement}*/(event.target))?.closest('[data-action]'));
+        if (!target) throw new Error();
         const action = target.dataset.action;
         if (action && action_map[action]) {
             action_map[action](event, target);
