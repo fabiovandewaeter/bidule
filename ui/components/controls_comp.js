@@ -49,11 +49,6 @@ export function mount(container) {
     const el = document.createElement('div');
     el.innerHTML = render();
 
-    // {
-    //     name: 'hide_logs', handler: () => {
-    //     }
-    // },
-
     // @ts-ignore
     const handle_click = (event) => {
         const btn = event.target.closest('button[data-action]');
@@ -64,8 +59,10 @@ export function mount(container) {
         switch (action) {
             case 'skip_seconds': {
                 const ms = parseInt(btn.dataset.amount || '0', 10);
-                Clock.advance_clock_by(s.world.clock, ms);
-                World.update(s.world, ms);
+                // Clock.advance_clock_by(s.world.clock, ms);
+                // World.update(s.world, ms);
+                World.advance_to(s.world, s.world.clock.sim_time + ms);
+                EB.emit('tick'); // pulse UI, la simulation elle-même n'a plus de notion de "tick"
                 // TODO: faut append dans le render
                 // save_timestamp(clock.timestamp);
                 UIState.add_log(s.ui_state, `skip_seconds: ${ms} ms`);
@@ -80,11 +77,12 @@ export function mount(container) {
                 else {
                     s.ui_state.tick_interval_id = setInterval(() => {
                         const s = Store.get_store();
-                        const delta_ms = Clock.tick(s.world.clock);
-                        World.update(s.world, delta_ms);
+                        // const delta_ms = Clock.tick(s.world.clock);
+                        // World.update(s.world, delta_ms);
+                        World.advance_to(s.world); // target_time = Date.now() par défaut
                         EB.emit('tick');
                     }, TICK_DELAY_MS);
-                    s.world.clock.last_tick_timestamp = Date.now();
+                    // s.world.clock.last_tick_timestamp = Date.now();
                 }
                 EB.emit('toggle_tick');
                 UIState.add_log(s.ui_state, 'toggle_tick');
@@ -109,8 +107,10 @@ export function mount(container) {
             case 'upload_save': {
                 Save.upload().then((loaded => {
                     if (loaded && loaded.world) {
+                        // Store.set_world(loaded.world);
+                        // s.world.clock.last_tick_timestamp = Date.now();
+                        World.advance_to(loaded.world, Date.now());
                         Store.set_world(loaded.world);
-                        s.world.clock.last_tick_timestamp = Date.now();
                         EB.emit('scene_switched', s.ui_state.scene);
                     }
                 }));
@@ -118,6 +118,10 @@ export function mount(container) {
             }
             case 'clear_save': {
                 Save.clear();
+                break;
+            };
+            case 'hide_logs': {
+                EB.emit('toggle_logs')
                 break;
             };
             default: throw new Error(action);
@@ -130,12 +134,7 @@ export function mount(container) {
         const s = Store.get_store();
         const button = el.querySelector('button[data-action="toggle_tick"]');
         if (!button) throw new Error();
-        if (s.ui_state.tick_interval_id === null) {
-            button.textContent = "Start";
-        }
-        else {
-            button.textContent = "Stop";
-        }
+        button.textContent = s.ui_state.tick_interval_id === null ? "Start" : "Stop";
     };
 
     const off_toggle = EB.on('toggle_tick', update_toggle_button);
@@ -150,3 +149,7 @@ export function mount(container) {
     container.appendChild(el);
     return { element: el, destroy };
 }
+
+// - ajouter fonction update(delta) pour tout ce qui est dans engine
+//     - ajouter système DES
+//         - voir si json ou dans.js MAIS faire data - driven dans tous les cas

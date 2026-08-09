@@ -49,22 +49,3 @@ export function mount(container) {
     container.appendChild(el);
     return destroy;
 }
-
-/** @type {Action[]} */
-const ACTIONS = [
-    {
-        // @ts-ignore
-        name: 'switch_scene', handler: ({ element }) => {
-            const new_scene = element.dataset.scene;
-            if (new_scene) {
-                const s = Store.get_store();
-                // UIState.set_scene(new_scene);
-                if (!Scene.is_valid_scene(new_scene)) { throw new Error(`Invalid scene: ${new_scene}`); }
-                s.ui_state.scene = new_scene;
-                UIState.add_log(s.ui_state, `switch_scene: ${new_scene}`);
-                Scene.unregister_actions(ACTIONS);
-                EB.emit('scene_switched', new_scene);
-            }
-        }
-    },
-];

@@ -3,7 +3,7 @@
 
 // TODO: retirer et faire injection de dépendance si besoin de plusieurs event bus
 
-/** @typedef {'tick'|'logs'|'scene_switched'|'toggle_tick'} EventName */
+/** @typedef {'tick'|'logs'|'scene_switched'|'toggle_tick'|'toggle_logs'} EventName */
 
 /**
  * @typedef {Object} EventBus

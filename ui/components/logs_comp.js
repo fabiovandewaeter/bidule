@@ -29,7 +29,7 @@ export function mount(container) {
 
     const update = () => {
         const s = Store.get_store();
-        const list = el.querySelector('#log-list');
+        const list = el.querySelector('.log-list');
         if (!list) return;
         list.innerHTML = s.ui_state.logs
             .slice(-10)
@@ -38,10 +38,14 @@ export function mount(container) {
     };
 
     const off = EB.on('logs', update);
+    const off_toggle = EB.on('toggle_logs', () => {
+        el.classList.toggle('hidden');
+    });
     update();
 
     const destroy = () => {
         off();
+        off_toggle();
         el.remove();
     };
 

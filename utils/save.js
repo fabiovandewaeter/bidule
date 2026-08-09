@@ -8,7 +8,6 @@ import * as Runtime from '../ui/core/runtime.js'
 import * as World from '../engine/core/world.js'
 import * as Scene from '../ui/scenes/scene.js'
 import * as EventBus from './event_bus.js'
-import * as Action from '../ui/core/action.js'
 import * as Store from '../ui/core/store.js'
 import * as UIState from '../ui/core/ui_state.js'
 
@@ -59,7 +58,6 @@ export function clear() {
     Store.set_world(new_world);
     Store.set_ui_state(UIState.create());
     Store.set_should_save(false);
-    Action.clear();
     EventBus.EB.emit('scene_switched');
     // Runtime.clear();
     // const app = /**@type {HTMLElement}*/(document.getElementById('app'));

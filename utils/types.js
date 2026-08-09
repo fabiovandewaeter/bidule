@@ -4,10 +4,6 @@
 // ==========  ui ==========
 /** @typedef {import('../ui/core/ui_state.js').UIState} UIState*/
 
-/** @typedef {import('../ui/core/action.js').ActionName} ActionName*/
-/** @typedef {import('../ui/core/action.js').ActionHandler} ActionHandler*/
-/** @typedef {import('../ui/core/action.js').Action} Action*/
-
 /** @typedef {import('../ui/scenes/scene.js').Scene} Scene*/
 
 // -- messages --
@@ -25,6 +21,19 @@
 // ========== engine ==========
 /** @typedef {import('../engine/core/clock.js').Clock} Clock*/
 /** @typedef {import('../engine/core/world.js').World} World*/
+
+// -- event --
+/** @typedef {import('./repository.js').Repo<GameEvent, GameEventID>} GameEventRepo*/
+
+/** @typedef {import('../engine/core/event/event.js').GameEventID} GameEventID*/
+/** @typedef {import('../engine/core/event/event.js').GameEvent} GameEvent*/
+/** @typedef {import('../engine/core/event/event.js').GameEventType} GameEventType*/
+/** @typedef {import('../engine/core/event/event.js').Schedule} Schedule*/
+/** @typedef {import('../engine/core/event/event.js').EventHandler} EventHandler*/
+
+/** @typedef {import('../engine/core/event/event_heap.js').HeapEntry} HeapEntry*/
+
+/** @typedef {import('../engine/core/event/event_schedule.js').GameEventSchedule} GameEventSchedule*/
 
 // ========== utils ==========
 /** @typedef {import('./save.js').SaveStruct} SaveStruct */

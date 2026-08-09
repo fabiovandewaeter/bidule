@@ -25,42 +25,14 @@ export function create() { return { current_id: /**@type {TID}*/(0), elements: /
  * @template {Omit<T, "id">} TSpawnArgs
  * @param {Repo<T, TID>} repo
  * @param {TSpawnArgs} args
- * @returns {[Repo<T, TID>, T]}
+ * @returns {T}
  */
 export function spawn_element(repo, args) {
-    let repo_thaw = /**@type {Repo<T, TID>} */(repo);
-    const id = repo_thaw.current_id;
+    const id = repo.current_id;
     const new_element = /**@type {T} */({ id, ...args });
-    /**@type {Repo<T,TID>} */
-    const new_repo = {
-        ...repo_thaw,
-        current_id: next_id(repo),
-        elements: {
-            ...repo_thaw.elements,
-            [id]: new_element
-        }
-    };
-    return [/**@type {Repo<T, TID>}*/(new_repo), new_element];
-}
-
-/**
- * @template {{id: TID}} T
- * @template {number} TID
- * @param {Repo<T, TID>} repo
- * @param {T} element
- * @returns {Repo<T, TID>}
- */
-export function replace(repo, element) {
-    let repo_thaw = /**@type {Repo<T, TID>} */(repo);
-    const res = {
-        ...repo,
-        current_id: next_id(repo),
-        elements: {
-            ...repo_thaw.elements,
-            [element.id]: element
-        }
-    };
-    return /**@type {Repo<T, TID>} */(res);
+    repo.elements[id] = new_element;
+    repo.current_id = next_id(repo);
+    return new_element;
 }
 
 /**
@@ -71,8 +43,7 @@ export function replace(repo, element) {
  * @returns {Opt<T>}
  */
 export function get(repo, id) {
-    let repo_thaw = /**@type {Repo<T, TID>} */(repo);
-    const res = repo_thaw.elements[id];
+    const res = repo.elements[id];
     return res != null && res !== undefined ? some(/**@type {T}*/(res)) : none;
 }
 
@@ -89,16 +60,12 @@ export function next_id(repo) { return /**@type {TID}*/(repo.current_id + 1); }
  * @template {number} TID
  * @param {Repo<T, TID>} repo
  * @param {TID} id
- * @returns {Res<Repo<T, TID>, string>}
+ * @returns {Res<void, string>}
  */
 export function remove(repo, id) {
-    let repo_thaw = /**@type {Repo<T, TID>} */(repo);
-    if (!(id in repo_thaw.elements)) return err(`Couldn't delete element: ${id}`);
-    const { [id]: _, ...rest } = repo_thaw.elements;
-    return ok(/**@type {Repo<T, TID>}*/({
-        ...repo_thaw,
-        elements: /**@type {Record<TID, T>}*/(rest)
-    }));
+    if (!(id in repo.elements)) return err(`Couldn't delete element: ${id}`);
+    delete repo.elements[id];
+    return ok(undefined);
 }
 
 /**

@@ -10,7 +10,7 @@ import * as Store from '../core/store.js'
  * @returns {string}
  */
 export function render() {
-    const res = `
+    return `
     <div class="time-comp">
         <h1>Temps passé: </h1>
         <span class="time-seconds">0</span> secondes
@@ -21,10 +21,14 @@ export function render() {
         <span class="time-years">0</span> années
     </div>
     `;
+}
 
-    // update_all();
-    // EB.on('tick', update_all);
-    return res;
+/**
+ * @returns {number} temps simulé écoulé depuis la création du monde, en ms
+ */
+function get_elapsed_ms() {
+    const store = Store.get_store();
+    return store.world.clock.sim_time - store.world.clock.created_at;
 }
 
 /**
@@ -36,8 +40,8 @@ export function mount(container) {
     el.innerHTML = render();
 
     const update = () => {
-        let store = Store.get_store();
-        const accumulated_seconds = store.world.clock.accumulated_time / 1000;
+        // let store = Store.get_store();
+        const accumulated_seconds = get_elapsed_ms() / 1000;
 
         const s_counter = el.querySelector('.time-seconds');
         const m_counter = el.querySelector('.time-minutes');
@@ -70,7 +74,7 @@ export function mount(container) {
 
 export function update_all() {
     let store = Store.get_store();
-    const accumulated_seconds = store.world.clock.accumulated_time / 1000;
+    const accumulated_seconds = get_elapsed_ms() / 1000;
     document.querySelectorAll('.time-comp').forEach(
         time => {
             const s_counter = time.querySelector('.time-seconds');

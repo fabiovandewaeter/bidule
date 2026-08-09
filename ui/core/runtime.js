@@ -3,7 +3,6 @@
 
 import * as World from '../../engine/core/world.js'
 import * as Save from '../../utils/save.js'
-import * as Action from './action.js'
 import * as UIState from './ui_state.js'
 import * as Opt from '../../utils/option.js'
 import * as Clock from '../../engine/core/clock.js'
@@ -20,18 +19,11 @@ function init() {
     app.tabIndex = -1
     app.focus();
 
-    // let world, ui_state;
     const saved_opt = Save.load();
     if (Opt.is_some(saved_opt)) {
         let { world, ui_state } = saved_opt.value;
         if (world) {
-            const now = Date.now();
-            const delta = now - world.clock.last_tick_timestamp;
-            if (delta > 0) {
-                Clock.advance_clock_by(world.clock, delta);
-                World.update(world, delta);
-            }
-            world.clock.last_tick_timestamp = now;
+            load_world(world);
             Store.set_world(world);
         } else {
             const new_world = World.create();
@@ -66,17 +58,17 @@ function init() {
 
 /**
  * @param {World} world
- * @returns {World}
  */
 function load_world(world) {
-    const now = Date.now();
-    const delta = now - world.clock.last_tick_timestamp;
-    if (delta > 0) {
-        Clock.advance_clock_by(world.clock, delta);
-        World.update(world, delta);
-    }
-    world.clock.last_tick_timestamp = now;
-    return world;
+    // const now = Date.now();
+    // const delta = now - world.clock.last_tick_timestamp;
+    // if (delta > 0) {
+    //     Clock.advance_clock_by(world.clock, delta);
+    //     World.update(world, delta);
+    // }
+    // world.clock.last_tick_timestamp = now;
+    // return world;
+    World.advance_to(world, Date.now());
 }
 
 /**
@@ -90,10 +82,10 @@ function add_event_listener_click(app) {
         const action_name = action_el.dataset.action;
         if (!action_name) return;
         // @ts-ignore
-        const handler = Action.get(action_name);
-        if (Opt.is_some(handler)) {
-            handler.value({ element: action_el, event });
-        }
+        // const handler = Action.get(action_name);
+        // if (Opt.is_some(handler)) {
+        //     handler.value({ element: action_el, event });
+        // }
 
         // // const target = /** @type {HTMLElement | null} */ (el?.closest('[data-action]'));
         // if (!target) return;
@@ -126,10 +118,3 @@ function add_event_listener_keydown(app) {
         // }
     });
 }
-
-// export function clear() {
-//     EventBus.clear(EB);
-//     Action.clear();
-//     set_world(World.create());
-//     set_ui_state(UIState.create());
-// }
