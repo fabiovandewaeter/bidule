@@ -49,13 +49,26 @@ export function create_comp(container, setup) {
  * @returns {() => void} fonction de désabonnement
  */
 export function delegate_click(root, action_map) {
+    // /** @type {(event: Event) => void} */
+    // const handler = (event) => {
+    //     // const target = /**@type {HTMLElement}*/((event.target))?.closest('[data-action]');
+    //     // // if (!target) throw new Error();
+    //     // if (!target) return; // pas une erreur pour les cas où l'on clique dans le vide
+    //     // const action = target.dataset.action;
+    //     if (action && action_map[action]) {
+    //         action_map[action](event, target);
+    //     }
+    // };
     /** @type {(event: Event) => void} */
     const handler = (event) => {
-        const target = /**@type {HTMLElement}*/((/**@type {HTMLElement}*/(event.target))?.closest('[data-action]'));
-        if (!target) throw new Error();
-        const action = target.dataset.action;
+        const target = (event.target instanceof Element)
+            ? event.target.closest('[data-action]')
+            : null;
+        if (!target) return; // clic hors bouton → on ignore
+
+        const action = target.getAttribute('data-action');
         if (action && action_map[action]) {
-            action_map[action](event, target);
+            action_map[action](event, /** @type {HTMLElement} */(target));
         }
     };
     root.addEventListener('click', handler);

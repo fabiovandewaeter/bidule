@@ -107,11 +107,18 @@ function load_world(world) {
  */
 function add_event_listener_click(app) {
     app.addEventListener('click', (event) => {
-        const target = /** @type {HTMLElement | null} */ (event.target);
-        const action_el = /** @type {HTMLElement | null} */ (target?.closest('[data-action]'));
+        // const target = /** @type {HTMLElement | null} */ (event.target);
+        // const action_el = /** @type {HTMLElement | null} */ (target?.closest('[data-action]'));
+        // if (!action_el) return;
+        // const action_name = action_el.dataset.action;
+        // if (!action_name) return;
+        const target = event.target instanceof Element ? event.target : null;
+        if (!target) return;
+        const action_el = target.closest('[data-action]');
         if (!action_el) return;
-        const action_name = action_el.dataset.action;
+        const action_name = action_el.getAttribute('data-action');
         if (!action_name) return;
+
         // @ts-ignore
         // const handler = Action.get(action_name);
         // if (Opt.is_some(handler)) {
