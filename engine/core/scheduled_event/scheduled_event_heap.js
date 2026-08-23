@@ -1,28 +1,37 @@
-// engine/core/event/event_heap.js
+// engine/core/scheduled_event/scheduled_event_heap.js
 //@ts-check
 
 import '../../../utils/types.js'
 
 /**
  * @typedef {Object} HeapEntry
- * @property {GameEventID} id
  * @property {number} at
+ * @property {ScheduledEventID} id
  */
 
 // --- tas binaire interne (ordonné par at, puis par id pour départager) ---
 
-/** @param {HeapEntry} a @param {HeapEntry} b */
+/**
+ * @param {HeapEntry} a
+ * @param {HeapEntry} b
+ */
 export function is_before(a, b) {
     return a.at !== b.at ? a.at < b.at : a.id < b.id;
 }
 
-/** @param {HeapEntry[]} heap @param {HeapEntry} entry */
+/**
+ * @param {HeapEntry[]} heap
+ * @param {HeapEntry} entry
+ */
 export function push(heap, entry) {
     heap.push(entry);
     sift_up(heap, heap.length - 1);
 }
 
-/** @param {HeapEntry[]} heap @returns {HeapEntry|undefined} */
+/**
+ * @param {HeapEntry[]} heap
+ * @returns {HeapEntry|undefined}
+ */
 export function pop(heap) {
     const top = heap[0];
     const last = heap.pop();
@@ -33,7 +42,10 @@ export function pop(heap) {
     return top;
 }
 
-/** @param {HeapEntry[]} heap @param {number} i */
+/**
+ * @param {HeapEntry[]} heap
+ * @param {number} i
+ */
 function sift_up(heap, i) {
     while (i > 0) {
         const parent = (i - 1) >> 1;
@@ -43,7 +55,10 @@ function sift_up(heap, i) {
     }
 }
 
-/** @param {HeapEntry[]} heap @param {number} i */
+/**
+ * @param {HeapEntry[]} heap
+ * @param {number} i
+ */
 function sift_down(heap, i) {
     const n = heap.length;
     while (true) {

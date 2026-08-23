@@ -3,7 +3,8 @@
 
 import '../../utils/types.js'
 import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from '../../utils/const.js'
-import { EB } from '../../utils/event_bus.js';
+import * as UISB from '../core/ui_signal_bus.js'
+import * as SB from '../../utils/signal_bus.js'
 import * as Store from '../core/store.js'
 
 /**
@@ -27,7 +28,7 @@ export function render() {
  * @returns {number} temps simulé écoulé depuis la création du monde, en ms
  */
 function get_elapsed_ms() {
-    const store = Store.get_store();
+    const store = Store.get();
     return store.world.clock.sim_time - store.world.clock.created_at;
 }
 
@@ -40,7 +41,7 @@ export function mount(container) {
     el.innerHTML = render();
 
     const update = () => {
-        // let store = Store.get_store();
+        // let store = Store.get();
         const accumulated_seconds = get_elapsed_ms() / 1000;
 
         const s_counter = el.querySelector('.time-seconds');
@@ -60,7 +61,7 @@ export function mount(container) {
         y_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_YEAR).toString();
     }
 
-    const off = EB.on('tick', update);
+    const off = SB.on(UISB.BUS, 'tick', update);
     update();
 
     const destroy = () => {
@@ -73,7 +74,7 @@ export function mount(container) {
 }
 
 export function update_all() {
-    let store = Store.get_store();
+    let store = Store.get();
     const accumulated_seconds = get_elapsed_ms() / 1000;
     document.querySelectorAll('.time-comp').forEach(
         time => {

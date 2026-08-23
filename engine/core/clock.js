@@ -2,7 +2,8 @@
 // @ts-check
 
 import '../../utils/types.js'
-import { EB } from '../../utils/event_bus.js';
+import * as UISB from '../../ui/core/ui_signal_bus.js'
+import * as SB from '../../utils/signal_bus.js'
 
 /**
  * @typedef {Object} Clock
@@ -31,7 +32,7 @@ export function create(saved_timestamp) {
 //     clock.last_tick_timestamp = now;
 //     clock.accumulated_time += delta_ms;
 
-//     EB.emit('tick');
+//     SB.emit(UISB.BUS, 'tick');
 //     return delta_ms;
 // }
 
@@ -43,7 +44,7 @@ export function advance_by(clock, ms) {
     clock.sim_time += ms;
     // clock.last_tick_timestamp = Date.now();
     // clock.accumulated_time += ms;
-    // EB.emit('tick');
+    // SB.emit(UISB.BUS, 'tick');
 }
 
 /**

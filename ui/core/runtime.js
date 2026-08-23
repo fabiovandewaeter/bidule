@@ -6,13 +6,16 @@ import * as Save from '../../utils/save.js'
 import * as UIState from './ui_state.js'
 import * as Opt from '../../utils/option.js'
 import * as Clock from '../../engine/core/clock.js'
-import * as EventBus from '../../utils/event_bus.js'
+import * as UISB from './ui_signal_bus.js'
 import * as MenuScene from '../scenes/menu_scene.js'
 import * as MainScene from '../scenes/main_scene.js'
 import * as Scene from '../scenes/scene.js'
 import * as Store from './store.js'
+import * as ScheduledEvent from '../../engine/core/scheduled_event/scheduled_event.js'
+import * as ScheduledEventScheduler from '../../engine/core/scheduled_event/scheduled_event_scheduler.js'
 
 init();
+// init_test();
 
 function init() {
     const app = /**@type {HTMLElement}*/(document.getElementById('app'));
@@ -45,15 +48,43 @@ function init() {
     // init_actions();
     Scene.render_current_scene(app);
 
-    // EB.on('scene_switched', () => Scene.render_current_scene(app, world, ui_state));
+    // SB.on(UISB.BUS, 'scene_switched', () => Scene.render_current_scene(app, world, ui_state));
     window.addEventListener('beforeunload', () => {
-        const store = Store.get_store();
+        const store = Store.get();
         if (store.should_save) Save.save(store.world, store.ui_state);
     })
     window.addEventListener('pagehide', () => {
-        const store = Store.get_store();
+        const store = Store.get();
         if (store.should_save) Save.save(store.world, store.ui_state);
     })
+}
+
+function init_test() {
+    ScheduledEvent.register('craft_complete', (world, event, schedule) => {
+        console.log(
+            `✅ Event déclenché : ${event.type} à t=${event.at} (sim_time=${world.clock.sim_time})`,
+            event.payload
+        );
+    });
+
+    const world = World.create();
+    World.init(world);
+
+    const now = Date.now();
+    console.log('⏳ Temps actuel (now)          :', now);
+    console.log('🕒 sim_time initial            :', world.clock.sim_time);
+
+    // 3. Planifier un craft qui se termine dans 2 secondes
+    ScheduledEventScheduler.schedule(world.events, 'craft_complete', now + 2000, { item: 'épée en bois' });
+    ScheduledEventScheduler.schedule(world.events, 'craft_complete', now + 2000, { item: 'épée en bois' });
+
+    console.log('📅 Prochain event à            :', World.next_event_at(world));
+
+    // 4. Avancer la simulation de 3 secondes (dépasse la date de l’event)
+    World.advance_by(world, 3000);
+
+    console.log('🕒 sim_time après avance       :', world.clock.sim_time);
+    console.log('📅 Prochain event (doit être null) :', World.next_event_at(world));
 }
 
 /**

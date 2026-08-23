@@ -20,7 +20,7 @@ let store = {
 };
 
 /** @returns {GameStore} */
-export function get_store() { return store; }
+export function get() { return store; }
 
 /** @param {World} new_world */
 export function set_world(new_world) { store.world = new_world; }

@@ -3,37 +3,59 @@
 
 // ==========  ui ==========
 /** @typedef {import('../ui/core/ui_state.js').UIState} UIState*/
+/** @typedef {import('../ui/core/ui_signal_bus.js').UISignalType} UISignalType*/
 
 /** @typedef {import('../ui/scenes/scene.js').Scene} Scene*/
 
-// -- messages --
-/** @typedef {import('../ui/core/message.js').TickMsg} TickMsg*/
-/** @typedef {import('../ui/core/message.js').StartStopTickIntervalMsg} StartStopTickIntervalMsg*/
-/** @typedef {import('../ui/core/message.js').SkipSecondsMsg} SkipSecondsMsg*/
-/** @typedef {import('../ui/core/message.js').StartMainMsg} StartMainMsg*/
-/** @typedef {import('../ui/core/message.js').StopMainMsg} StopMainMsg*/
-/** @typedef {import('../ui/core/message.js').DownloadSaveMsg} DownloadSaveMsg*/
-/** @typedef {import('../ui/core/message.js').UploadSaveMsg} UploadSaveMsg*/
-/** @typedef {import('../ui/core/message.js').ClearSaveMsg} ClearSaveMsg*/
-/** @typedef {import('../ui/core/message.js').Msg} Msg*/
 // --------------
 
 // ========== engine ==========
 /** @typedef {import('../engine/core/clock.js').Clock} Clock*/
 /** @typedef {import('../engine/core/world.js').World} World*/
+/** @typedef {import('../engine/core/signal/game_signal_bus.js').GameSignalType} GameSignalType*/
 
 // -- event --
-/** @typedef {import('./repository.js').Repo<GameEvent, GameEventID>} GameEventRepo*/
+/** @typedef {import('./repository.js').Repo<ScheduledEvent, ScheduledEventID>} ScheduledEventRepo*/
 
-/** @typedef {import('../engine/core/event/event.js').GameEventID} GameEventID*/
-/** @typedef {import('../engine/core/event/event.js').GameEvent} GameEvent*/
-/** @typedef {import('../engine/core/event/event.js').GameEventType} GameEventType*/
-/** @typedef {import('../engine/core/event/event.js').Schedule} Schedule*/
-/** @typedef {import('../engine/core/event/event.js').EventHandler} EventHandler*/
+/** @typedef {import('../engine/core/scheduled_event/scheduled_event.js').ScheduledEventID} ScheduledEventID*/
+/** @typedef {import('../engine/core/scheduled_event/scheduled_event.js').ScheduledEvent} ScheduledEvent*/
+/** @typedef {import('../engine/core/scheduled_event/scheduled_event.js').ScheduledEventType} ScheduledEventType*/
+/** @typedef {import('../engine/core/scheduled_event/scheduled_event.js').Schedule} Schedule*/
+/** @typedef {import('../engine/core/scheduled_event/scheduled_event.js').EventHandler} EventHandler*/
+// -----------
 
-/** @typedef {import('../engine/core/event/event_heap.js').HeapEntry} HeapEntry*/
+// -- map --
+// /** @typedef {import('../engine/map/direction.js').Direction} Direction*/
+// /** @typedef {import('../engine/map/coord.js').Coord3D} Coord3D*/
+// /** @typedef {import('../engine/map/coord.js').Coord2D} Coord2D*/
+// /** @typedef {import('../engine/map/address.js').Address} Address*/
+/** @typedef {import('../engine/map/tower.js').Tower} Tower*/
 
-/** @typedef {import('../engine/core/event/event_schedule.js').GameEventSchedule} GameEventSchedule*/
+/** @typedef {import('../engine/map/floor.js').Floor} Floor*/
+/** @typedef {import('../engine/map/floor.js').FloorID} FloorID*/
+/** @typedef {import('./repository.js').Repo<Floor, FloorID>} FloorRepo*/
+
+/** @typedef {import('../engine/map/region.js').Region} Region*/
+/** @typedef {import('../engine/map/region.js').RegionID} RegionID*/
+/** @typedef {import('./repository.js').Repo<Region, RegionID>} RegionRepo*/
+
+/** @typedef {import('../engine/map/zone.js').Zone} Zone*/
+/** @typedef {import('../engine/map/zone.js').ZoneID} ZoneID*/
+/** @typedef {import('./repository.js').Repo<Zone, ZoneID>} ZoneRepo*/
+
+/** @typedef {import('../engine/map/area.js').Area} Area*/
+/** @typedef {import('../engine/map/area.js').AreaID} AreaID*/
+/** @typedef {import('./repository.js').Repo<Area, AreaID>} AreaRepo*/
+
+/** @typedef {import('../engine/map/room.js').Room} Room*/
+/** @typedef {import('../engine/map/room.js').RoomID} RoomID*/
+/** @typedef {import('../engine/map/room.js').RoomType} RoomType*/
+/** @typedef {import('./repository.js').Repo<Room, RoomID>} RoomRepo*/
+// ----------
+
+/** @typedef {import('../engine/core/scheduled_event/scheduled_event_heap.js').HeapEntry} HeapEntry*/
+
+/** @typedef {import('../engine/core/scheduled_event/scheduled_event_scheduler.js').ScheduledEventScheduler} ScheduledEventScheduler*/
 
 // ========== utils ==========
 /** @typedef {import('./save.js').SaveStruct} SaveStruct */

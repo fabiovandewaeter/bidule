@@ -1,11 +1,12 @@
 // ui/scenes/menu_scene.js
 // @ts-check
 
-import '../../utils/types.js';
+import '../../utils/types.js'
 import * as Scene from './scene.js'
 import * as UIState from '../core/ui_state.js'
 import * as Store from '../core/store.js'
-import { EB } from '../../utils/event_bus.js';
+import * as UISB from '../core/ui_signal_bus.js'
+import * as SB from '../../utils/signal_bus.js'
 
 /**
  * @returns {string}
@@ -29,7 +30,7 @@ export function mount(container) {
 
     // @ts-ignore
     const on_switch_scene = (element) => {
-        const s = Store.get_store();
+        const s = Store.get();
         const new_scene = element.currentTarget.dataset.scene;
         if (new_scene) {
             // UIState.set_scene(new_scene);
@@ -37,7 +38,7 @@ export function mount(container) {
             s.ui_state.scene = new_scene;
             UIState.add_log(s.ui_state, `switch_scene: ${new_scene}`);
             // Scene.unregister_actions(ACTIONS);
-            EB.emit('scene_switched', new_scene);
+            SB.emit(UISB.BUS, 'scene_switched', new_scene);
         }
     }
     const switch_scene_btn = el.querySelector('button[data-action="switch_scene"]');

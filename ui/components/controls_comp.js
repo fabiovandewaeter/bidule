@@ -3,7 +3,8 @@
 
 import '../../utils/types.js'
 import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from '../../utils/const.js'
-import { EB } from '../../utils/event_bus.js';
+import * as SB from '../../utils/signal_bus.js'
+import * as UISB from '../core/ui_signal_bus.js'
 import * as Store from '../core/store.js'
 import * as Clock from '../../engine/core/clock.js'
 import * as World from '../../engine/core/world.js'
@@ -21,11 +22,11 @@ export function render() {
     <div class="controls-comp">
         <div class="controls-time">
             <button data-action="skip_seconds" data-amount=1000>1 seconde</button>
-            <button data-action="skip_seconds" data-amount=${SECONDS_PER_MINUTE * 1000}>1 minute</button>
-            <button data-action="skip_seconds" data-amount=${SECONDS_PER_HOUR * 1000}>1 heure</button>
-            <button data-action="skip_seconds" data-amount=${SECONDS_PER_DAY * 1000}>1 jour</button>
-            <button data-action="skip_seconds" data-amount=${SECONDS_PER_WEEK * 1000}>1 semaine</button>
-            <button data-action="skip_seconds" data-amount=${SECONDS_PER_YEAR * 1000}>1 an</button>
+            <button data-action="skip_seconds" data-amount=${SECONDS_PER_MINUTE * TICK_DELAY_MS}>1 minute</button>
+            <button data-action="skip_seconds" data-amount=${SECONDS_PER_HOUR * TICK_DELAY_MS}>1 heure</button>
+            <button data-action="skip_seconds" data-amount=${SECONDS_PER_DAY * TICK_DELAY_MS}>1 jour</button>
+            <button data-action="skip_seconds" data-amount=${SECONDS_PER_WEEK * TICK_DELAY_MS}>1 semaine</button>
+            <button data-action="skip_seconds" data-amount=${SECONDS_PER_YEAR * TICK_DELAY_MS}>1 an</button>
         </div>
 
         <button data-action="toggle_tick">Start</button>
@@ -54,37 +55,38 @@ export function mount(container) {
         const btn = event.target.closest('button[data-action]');
         if (!btn) return;
         const action = btn.dataset.action;
-        const s = Store.get_store();
+        const s = Store.get();
 
         switch (action) {
             case 'skip_seconds': {
                 const ms = parseInt(btn.dataset.amount || '0', 10);
                 // Clock.advance_clock_by(s.world.clock, ms);
                 // World.update(s.world, ms);
-                World.advance_to(s.world, s.world.clock.sim_time + ms);
-                EB.emit('tick'); // pulse UI, la simulation elle-même n'a plus de notion de "tick"
+                World.advance_by(s.world, ms);
+                SB.emit(UISB.BUS, 'tick'); // pulse UI, la simulation elle-même n'a plus de notion de "tick"
                 // TODO: faut append dans le render
                 // save_timestamp(clock.timestamp);
                 UIState.add_log(s.ui_state, `skip_seconds: ${ms} ms`);
                 break;
             }
             case 'toggle_tick': {
-                const s = Store.get_store();
+                const s = Store.get();
                 if (s.ui_state.tick_interval_id !== null) {
                     clearInterval(s.ui_state.tick_interval_id);
                     s.ui_state.tick_interval_id = null;
                 }
                 else {
                     s.ui_state.tick_interval_id = setInterval(() => {
-                        const s = Store.get_store();
+                        const s = Store.get();
                         // const delta_ms = Clock.tick(s.world.clock);
                         // World.update(s.world, delta_ms);
-                        World.advance_to(s.world); // target_time = Date.now() par défaut
-                        EB.emit('tick');
+                        // World.advance_to(s.world); // target_time = Date.now() par défaut
+                        World.advance_by(s.world, TICK_DELAY_MS);
+                        SB.emit(UISB.BUS, 'tick');
                     }, TICK_DELAY_MS);
                     // s.world.clock.last_tick_timestamp = Date.now();
                 }
-                EB.emit('toggle_tick');
+                SB.emit(UISB.BUS, 'toggle_tick');
                 UIState.add_log(s.ui_state, 'toggle_tick');
                 break;
             }
@@ -96,7 +98,7 @@ export function mount(container) {
                     s.ui_state.scene = new_scene;
                     UIState.add_log(s.ui_state, `switch_scene: ${new_scene}`);
                     // Scene.unregister_actions(ACTIONS);
-                    EB.emit('scene_switched', new_scene);
+                    SB.emit(UISB.BUS, 'scene_switched', new_scene);
                 }
                 break;
             }
@@ -111,7 +113,7 @@ export function mount(container) {
                         // s.world.clock.last_tick_timestamp = Date.now();
                         World.advance_to(loaded.world, Date.now());
                         Store.set_world(loaded.world);
-                        EB.emit('scene_switched', s.ui_state.scene);
+                        SB.emit(UISB.BUS, 'scene_switched', s.ui_state.scene);
                     }
                 }));
                 break;
@@ -121,7 +123,7 @@ export function mount(container) {
                 break;
             };
             case 'hide_logs': {
-                EB.emit('toggle_logs')
+                SB.emit(UISB.BUS, 'toggle_logs')
                 break;
             };
             default: throw new Error(action);
@@ -131,13 +133,13 @@ export function mount(container) {
     el.addEventListener('click', handle_click);
 
     const update_toggle_button = () => {
-        const s = Store.get_store();
+        const s = Store.get();
         const button = el.querySelector('button[data-action="toggle_tick"]');
         if (!button) throw new Error();
         button.textContent = s.ui_state.tick_interval_id === null ? "Start" : "Stop";
     };
 
-    const off_toggle = EB.on('toggle_tick', update_toggle_button);
+    const off_toggle = SB.on(UISB.BUS, 'toggle_tick', update_toggle_button);
     update_toggle_button();
 
     const destroy = () => {
@@ -149,7 +151,3 @@ export function mount(container) {
     container.appendChild(el);
     return { element: el, destroy };
 }
-
-// - ajouter fonction update(delta) pour tout ce qui est dans engine
-//     - ajouter système DES
-//         - voir si json ou dans.js MAIS faire data - driven dans tous les cas

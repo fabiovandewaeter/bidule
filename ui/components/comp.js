@@ -45,7 +45,7 @@ export function create_comp(container, setup) {
 /**
  * Attache un écouteur de clic par délégation sur l'élément racine.
  * @param {HTMLElement} root
- * @param {Object.<string, (event: Event, target: HTMLElement) => void>} action_map
+ * @param {Record<string, (event: Event, target: HTMLElement) => void>} action_map
  * @returns {() => void} fonction de désabonnement
  */
 export function delegate_click(root, action_map) {

@@ -5,7 +5,8 @@ import * as MainScene from './main_scene.js'
 import * as MenuScene from './menu_scene.js'
 import * as Store from '../core/store.js'
 import * as Opt from '../../utils/option.js'
-import { EB } from '../../utils/event_bus.js';
+import * as UISB from '../core/ui_signal_bus.js'
+import * as SB from '../../utils/signal_bus.js'
 
 /** @type {Opt<() => void>} */
 let current_destroy = Opt.none;
@@ -33,7 +34,7 @@ export function render_current_scene(app) {
         current_destroy = Opt.none;
     }
     app.innerHTML = '';
-    const store = Store.get_store();
+    const store = Store.get();
     switch (store.ui_state.scene) {
         case 'main':
             current_destroy = Opt.some(MainScene.mount(app));
@@ -44,7 +45,7 @@ export function render_current_scene(app) {
     }
 }
 
-EB.on('scene_switched', () => {
+SB.on(UISB.BUS, 'scene_switched', () => {
     const app = document.getElementById('app');
     if (app) render_current_scene(app);
 });

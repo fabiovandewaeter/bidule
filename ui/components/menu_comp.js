@@ -29,7 +29,7 @@ export function mount(container) {
 
         const off_click = Comp.delegate_click(el, {
             toggle_time: (event, btn) => {
-                const s = Store.get_store();
+                const s = Store.get();
                 if (btn.dataset.spawn == "true") {
                     const child = Time.mount(el);
                     children.add(child);

@@ -1,7 +1,8 @@
 // ui/core/ui_state.js
 // @ts-check
 
-import { EB } from '../../utils/event_bus.js';
+import * as UISB from './ui_signal_bus.js'
+import * as SB from '../../utils/signal_bus.js'
 import '../../utils/types.js'
 
 // TODO: séparer les objets visibles des non visibles pour pas avoir besoin de tout parcourir à chaque fois pour vérifier si on doit update
@@ -28,4 +29,4 @@ export function create() {
  * @param {UIState} ui 
  * @param {string} log 
  */
-export function add_log(ui, log) { ui.logs.push(log); EB.emit('logs'); }
+export function add_log(ui, log) { ui.logs.push(log); SB.emit(UISB.BUS, 'logs'); }

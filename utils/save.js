@@ -1,13 +1,14 @@
 // utils/save.js
 // @ts-check
-const STORAGE_KEY = 'machin_save';
+const STORAGE_KEY = 'bidule_save';
 
 import './types.js'
 import * as Opt from './option.js'
+import * as SB from './signal_bus.js'
 import * as Runtime from '../ui/core/runtime.js'
 import * as World from '../engine/core/world.js'
 import * as Scene from '../ui/scenes/scene.js'
-import * as EventBus from './event_bus.js'
+import * as UISB from '../ui/core/ui_signal_bus.js'
 import * as Store from '../ui/core/store.js'
 import * as UIState from '../ui/core/ui_state.js'
 
@@ -58,12 +59,12 @@ export function clear() {
     Store.set_world(new_world);
     Store.set_ui_state(UIState.create());
     Store.set_should_save(false);
-    EventBus.EB.emit('scene_switched');
+    SB.emit(UISB.BUS, 'scene_switched');
     // Runtime.clear();
     // const app = /**@type {HTMLElement}*/(document.getElementById('app'));
     // // Scene.render_current_scene(app, Runtime.WORLD, Runtime.UI_STATE);
     // Runtime.set_should_save(false);
-    // window.location.reload();
+    // window.zone.reload();
 }
 
 /**

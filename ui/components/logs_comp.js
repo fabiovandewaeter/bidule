@@ -2,7 +2,8 @@
 // @ts-check
 
 import '../../utils/types.js'
-import { EB } from '../../utils/event_bus.js';
+import * as SB from '../../utils/signal_bus.js'
+import * as UISB from '../core/ui_signal_bus.js'
 import * as Store from '../core/store.js'
 
 const MAX_RENDERED_LOGS = 10;
@@ -28,7 +29,7 @@ export function mount(container) {
     el.innerHTML = render();
 
     const update = () => {
-        const s = Store.get_store();
+        const s = Store.get();
         const list = el.querySelector('.log-list');
         if (!list) return;
         list.innerHTML = s.ui_state.logs
@@ -37,8 +38,8 @@ export function mount(container) {
             .join('');
     };
 
-    const off = EB.on('logs', update);
-    const off_toggle = EB.on('toggle_logs', () => {
+    const off = SB.on(UISB.BUS, 'logs', update);
+    const off_toggle = SB.on(UISB.BUS, 'toggle_logs', () => {
         el.classList.toggle('hidden');
     });
     update();
