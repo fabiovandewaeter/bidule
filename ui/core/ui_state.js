@@ -5,8 +5,6 @@ import * as UISB from './ui_signal_bus.js'
 import * as SB from '../../utils/signal_bus.js'
 import '../../utils/types.js'
 
-// TODO: séparer les objets visibles des non visibles pour pas avoir besoin de tout parcourir à chaque fois pour vérifier si on doit update
-// TODO: séparer repositories UI et engine
 /**
  * @typedef {Object} UIState
  * @property {Scene} scene

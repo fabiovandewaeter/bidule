@@ -19,6 +19,13 @@ export const SCENES = Object.freeze({
  * @typedef {typeof SCENES[keyof typeof SCENES]} Scene
  */
 
+export function init() {
+    SB.on(UISB.BUS, 'scene_switched', () => {
+        const app = document.getElementById('app');
+        if (app) render_current_scene(app);
+    });
+}
+
 /**
  * @param {string} value 
  * @returns {value is Scene}
@@ -44,9 +51,3 @@ export function render_current_scene(app) {
             break;
     }
 }
-
-// TODO: faire un truc centralisé pour ça aussi pour l'importer au chargement
-SB.on(UISB.BUS, 'scene_switched', () => {
-    const app = document.getElementById('app');
-    if (app) render_current_scene(app);
-});

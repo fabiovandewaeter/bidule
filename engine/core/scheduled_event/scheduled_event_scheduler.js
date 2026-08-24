@@ -82,11 +82,10 @@ function purge_stale(schedule) {
     }
 }
 
-// TODO
+// TODO: voir si on garde ça (probablement oui)
 // /** @type {Record<ScheduledEventType, number>} */
 // const CRAFT_COMPLETE_HANDLERS = {
 // };
-
 // export function init_truc() {
 //     Event.register('craft_complete', (world, event, schedule) => {
 //         const machine = world.machines[event.payload.machineId];
