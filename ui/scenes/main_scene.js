@@ -17,8 +17,8 @@ export function mount(container) {
     const mounts = [
         Time.mount(container),
         Control.mount(container),
-        Log.mount(container),
         Menu.mount(container),
+        Log.mount(container),
     ];
 
     const destroy = () => {

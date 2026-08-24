@@ -1,29 +1,7 @@
 // ui/components/comp.js
 // @ts-check
 
-// TODO: ça marche pas ça si y'a différents types de children ou si on veut choisir
-/**
- * Crée un gestionnaire de composants enfants.
- * @returns {{ add: (child: { destroy: () => void }) => void, remove_last: () => void, destroy_all: () => void }}
- */
-export function create_child_manager() {
-    /** @type {{ destroy: () => void }[]} */
-    const children = [];
-
-    return {
-        add(child) { children.push(child); },
-        remove_last() {
-            const child = children.pop();
-            child?.destroy();
-        },
-        destroy_all() {
-            for (let i = children.length - 1; i >= 0; i--) {
-                children[i].destroy();
-            }
-            children.length = 0;
-        }
-    };
-}
+import * as CCM from './child_comp_manager.js'
 
 /**
  * Crée un composant avec un cycle de vie standard.
@@ -43,22 +21,30 @@ export function create_comp(container, setup) {
 }
 
 /**
+ * Comme create_comp, mais fournit un child_comp_manager et garantit sa destruction
+ * automatiquement après le cleanup — impossible d'oublier destroy_all.
+ * @param {HTMLElement} container
+ * @param {(root: HTMLElement, children: CCM.ChildCompManager) => (() => void) | void} setup
+ * @returns {{ element: HTMLElement, destroy: () => void }}
+ */
+export function create_comp_with_children(container, setup) {
+    return create_comp(container, (root) => {
+        const children = CCM.create();
+        const internal_destroy = setup(root, children);
+        return () => {
+            internal_destroy?.();
+            CCM.destroy_all(children);
+        };
+    });
+}
+
+/**
  * Attache un écouteur de clic par délégation sur l'élément racine.
  * @param {HTMLElement} root
  * @param {Record<string, (event: Event, target: HTMLElement) => void>} action_map
  * @returns {() => void} fonction de désabonnement
  */
 export function delegate_click(root, action_map) {
-    // /** @type {(event: Event) => void} */
-    // const handler = (event) => {
-    //     // const target = /**@type {HTMLElement}*/((event.target))?.closest('[data-action]');
-    //     // // if (!target) throw new Error();
-    //     // if (!target) return; // pas une erreur pour les cas où l'on clique dans le vide
-    //     // const action = target.dataset.action;
-    //     if (action && action_map[action]) {
-    //         action_map[action](event, target);
-    //     }
-    // };
     /** @type {(event: Event) => void} */
     const handler = (event) => {
         const target = (event.target instanceof Element)

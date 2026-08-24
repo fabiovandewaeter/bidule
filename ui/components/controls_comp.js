@@ -31,7 +31,6 @@ export function render() {
 
         <button data-action="toggle_tick">Start</button>
         <button data-action="switch_scene" data-scene="menu">Switch to menu</button>
-        <button data-action="hide_logs">Hide logs</button>
 
         <div class="controls-save">
             <button data-action="download_save">download save</button>
@@ -60,11 +59,8 @@ export function mount(container) {
         switch (action) {
             case 'skip_seconds': {
                 const ms = parseInt(btn.dataset.amount || '0', 10);
-                // Clock.advance_clock_by(s.world.clock, ms);
-                // World.update(s.world, ms);
                 World.advance_by(s.world, ms);
-                SB.emit(UISB.BUS, 'tick'); // pulse UI, la simulation elle-même n'a plus de notion de "tick"
-                // TODO: faut append dans le render
+                SB.emit(UISB.BUS, 'tick');
                 // save_timestamp(clock.timestamp);
                 UIState.add_log(s.ui_state, `skip_seconds: ${ms} ms`);
                 break;
@@ -78,13 +74,9 @@ export function mount(container) {
                 else {
                     s.ui_state.tick_interval_id = setInterval(() => {
                         const s = Store.get();
-                        // const delta_ms = Clock.tick(s.world.clock);
-                        // World.update(s.world, delta_ms);
-                        // World.advance_to(s.world); // target_time = Date.now() par défaut
                         World.advance_by(s.world, TICK_DELAY_MS);
                         SB.emit(UISB.BUS, 'tick');
                     }, TICK_DELAY_MS);
-                    // s.world.clock.last_tick_timestamp = Date.now();
                 }
                 SB.emit(UISB.BUS, 'toggle_tick');
                 UIState.add_log(s.ui_state, 'toggle_tick');
@@ -93,11 +85,9 @@ export function mount(container) {
             case 'switch_scene': {
                 const new_scene = btn.dataset.scene;
                 if (new_scene) {
-                    // UIState.set_scene(new_scene);
                     if (!Scene.is_valid_scene(new_scene)) { throw new Error(`Invalid scene: ${new_scene}`); }
                     s.ui_state.scene = new_scene;
                     UIState.add_log(s.ui_state, `switch_scene: ${new_scene}`);
-                    // Scene.unregister_actions(ACTIONS);
                     SB.emit(UISB.BUS, 'scene_switched', new_scene);
                 }
                 break;
@@ -109,8 +99,6 @@ export function mount(container) {
             case 'upload_save': {
                 Save.upload().then((loaded => {
                     if (loaded && loaded.world) {
-                        // Store.set_world(loaded.world);
-                        // s.world.clock.last_tick_timestamp = Date.now();
                         World.advance_to(loaded.world, Date.now());
                         Store.set_world(loaded.world);
                         SB.emit(UISB.BUS, 'scene_switched', s.ui_state.scene);
@@ -122,10 +110,11 @@ export function mount(container) {
                 Save.clear();
                 break;
             };
-            case 'hide_logs': {
-                SB.emit(UISB.BUS, 'toggle_logs')
-                break;
-            };
+            // case 'hide_logs': {
+            // TODO: si on le remet il faut mettre dans le parent le on() et pas dans le logs_comp directement
+            //     SB.emit(UISB.BUS, 'toggle_logs')
+            //     break;
+            // };
             default: throw new Error(action);
         }
     };

@@ -30,23 +30,24 @@ export function mount(container) {
 
     const update = () => {
         const s = Store.get();
-        const list = el.querySelector('.log-list');
+        const list = el.querySelector('.logs-list');
         if (!list) return;
         list.innerHTML = s.ui_state.logs
-            .slice(-10)
+            .slice(-MAX_RENDERED_LOGS)
             .map(log => `<li>${log}</li>`)
             .join('');
     };
 
     const off = SB.on(UISB.BUS, 'logs', update);
-    const off_toggle = SB.on(UISB.BUS, 'toggle_logs', () => {
-        el.classList.toggle('hidden');
-    });
+    // TODO: les components doivent pas se toggle eux meme
+    // const off_toggle = SB.on(UISB.BUS, 'toggle_logs', () => {
+    //     el.classList.toggle('hidden');
+    // });
     update();
 
     const destroy = () => {
         off();
-        off_toggle();
+        // off_toggle();
         el.remove();
     };
 

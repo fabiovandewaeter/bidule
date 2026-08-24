@@ -45,6 +45,7 @@ export function render_current_scene(app) {
     }
 }
 
+// TODO: faire un truc centralisé pour ça aussi pour l'importer au chargement
 SB.on(UISB.BUS, 'scene_switched', () => {
     const app = document.getElementById('app');
     if (app) render_current_scene(app);
