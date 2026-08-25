@@ -101,8 +101,6 @@ export function mount(container) {
  * @param {HTMLElement} btn
  */
 function handle_action(action, btn) {
-    console.log(btn)
-    console.log(btn.dataset)
     const s = Store.get();
     switch (action) {
         case 'move_entity': {
@@ -113,4 +111,4 @@ function handle_action(action, btn) {
         }
         default: throw new Error(action);
     }
-};
+}
