@@ -3,17 +3,23 @@
 
 import '../../utils/types.js'
 import * as Clock from './clock.js'
+import * as TimelineScheduler from './timeline/scheduler.js'
+import * as Timeline from './timeline/timeline.js'
+import * as Tower from '../map/tower.js'
+import * as Player from '../entity/player.js'
 import * as Repo from '../../utils/repository.js'
 import * as Opt from '../../utils/option.js'
-import * as Res from '../../utils/result.js'
-import * as TimelineScheduler from './timeline/scheduler.js'
-import * as TimelineDispatcher from './timeline/dispatcher.js'
-import * as Timeline from './timeline/timeline.js'
+import * as SB from '../../utils/signal_bus.js'
+import * as ESB from './signals.js'
+import * as UISB from '../../ui/core/signals.js'
+import * as Room from '../map/room.js'
 
 /**
  * @typedef {Object} World
  * @property {Clock} clock
  * @property {TimelineScheduler} timeline_scheduler 
+ * @property {Tower} tower
+ * @property {EntityRepo} entity_repo
  */
 
 /**
@@ -23,17 +29,17 @@ export function create() {
     return {
         clock: Clock.create(null),
         timeline_scheduler: TimelineScheduler.create(),
+        tower: Tower.create(),
+        entity_repo: Repo.create(),
     };
 }
 
 /**
  * @param {World} world 
- * @returns {World}
  */
 export function init(world) {
-    return {
-        ...world,
-    };
+    const map = Tower.init(world.tower);
+    const player = Player.spawn(world.entity_repo, 'The player', Tower.DEFAULT_ROOM_ID);
 }
 
 /**
@@ -41,16 +47,7 @@ export function init(world) {
  * @param {number} target_time
  */
 export function advance_to(world, target_time) {
-    // /** @type {TimelineSchedule} */
-    // const schedule = (type, at, payload) => TimelineScheduler.schedule(world.events, type, at, payload);
-
-    // while (true) {
-    //     const event = TimelineScheduler.pop_due(world.events, target_time);
-    //     if (!event) break;
-    //     TimelineDispatcher.dispatch(world, event, schedule);
-    // }
     Timeline.advance_to(world, target_time);
-
     world.clock.sim_time = target_time;
 }
 /**
@@ -71,6 +68,23 @@ export function advance_by(world, delta_ms) { advance_to(world, world.clock.sim_
 export function next_event_at(world) {
     const next = TimelineScheduler.peek(world.timeline_scheduler);
     return next ? next.at : null;
+}
+
+/**
+ * @param {World} world 
+ * @param {EntityID} id 
+ * @param {RoomID} target_id 
+ */
+export function move_entity(world, id, target_id) {
+    const entity = Opt.unwrap(Repo.get(world.entity_repo, id));
+    const target = Opt.unwrap(Repo.get(world.tower.room_repo, target_id));
+    const previous_room_id = entity.room_id;
+    entity.room_id = target_id;
+    Room.add_entity(world.tower.room_repo, target_id, id);
+    // TODO: voir si ça spam beaucoup
+    SB.emit(ESB.BUS, 'entity_moved', id);
+    SB.emit(UISB.BUS, 'entity_leave_room', previous_room_id);
+    SB.emit(UISB.BUS, 'entity_enter_room', target_id);
 }
 
 // /**

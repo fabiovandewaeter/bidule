@@ -3,15 +3,11 @@
 
 import '../../utils/types.js'
 import * as Room from './room.js'
-import * as Area from './area.js'
-import * as Region from './region.js'
-import * as Zone from './zone.js'
-// import * as Address from './address.js'
 import * as Repo from '../../utils/repository.js'
-import * as Opt from '../../utils/option.js'
-import * as Res from '../../utils/result.js'
 
 // Tower > Floor> Region > Zone > Area > Room
+
+export const DEFAULT_ROOM_ID = /**@type {RoomID} */ (0);
 
 /**
  * @typedef {Object} Tower
@@ -27,7 +23,6 @@ import * as Res from '../../utils/result.js'
  * @returns {Tower}
  */
 export function create() {
-    // let [tower, continent] = Continent.spawn(tower_tempo, "continent_A");
     return {
         regions: [],
         floor_repo: Repo.create(),
@@ -42,6 +37,23 @@ export function create() {
  * @param {Tower} tower 
  */
 export function init(tower) {
+    const first_room = Repo.spawn_element(tower.room_repo, {
+        type: 'city',
+        name: 'DEFAULT',
+        exits: {},
+        entities: [],
+    });
+    // TODO: enlever ça faire une système plus propre
+    if (first_room.id != DEFAULT_ROOM_ID) throw new Error(`first_room_id different from DEFAULT_ROOM_ID: ${first_room.id} ${DEFAULT_ROOM_ID}`)
+    const seconde_room = Repo.spawn_element(tower.room_repo, {
+        type: 'forest',
+        name: 'seconde_room',
+        exits: {},
+        entities: [],
+    });
+    Room.add_exit(tower.room_repo, first_room.id, 'sortie foret', {
+        target_id: seconde_room.id
+    });
     // let [_, area] = Area.spawn(tower.area_repo, "area_A");
     // const coords = [
     //     { x: 0, y: 0, z: 0 },

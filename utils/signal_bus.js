@@ -3,7 +3,7 @@
 
 import './types.js'
 
-/** @typedef {UISignalType|GameSignalType} SignalType */
+/** @typedef {UISignalType|EngineSignalType} SignalType */
 /**
  * @template {SignalType} SType
  * @typedef {Object} SignalBus

@@ -4,25 +4,25 @@
 import '../../utils/types.js'
 
 /**
- * @typedef {Object} ChildComp
+ * @typedef {Object} SubComp
  * @property {() => void} destroy
  */
 
 /**
- * @typedef {string} ChildCompKey
+ * @typedef {string} SubCompKey
  * 
- * @typedef {Object} ChildCompManager
- * @property {Map<ChildCompKey, ChildComp>} sub_comps
+ * @typedef {Object} SubCompManager
+ * @property {Map<SubCompKey, SubComp>} sub_comps
  */
 
 /**
- * @returns {ChildCompManager}
+ * @returns {SubCompManager}
  */
 export function create() { return { sub_comps: new Map() } };
 
 /**
- * @param {ChildCompManager} manager
- * @param {ChildCompKey} key
+ * @param {SubCompManager} manager
+ * @param {SubCompKey} key
  * @returns {boolean}
  */
 export function has(manager, key) {
@@ -30,9 +30,9 @@ export function has(manager, key) {
 }
 
 /**
- * @param {ChildCompManager} manager
- * @param {ChildCompKey} key
- * @param {ChildComp} sub
+ * @param {SubCompManager} manager
+ * @param {SubCompKey} key
+ * @param {SubComp} sub
  */
 export function add(manager, key, sub) {
     // if (manager.sub_comps.has(key)) {
@@ -43,8 +43,8 @@ export function add(manager, key, sub) {
 }
 
 /**
- * @param {ChildCompManager} manager
- * @param {ChildCompKey} key
+ * @param {SubCompManager} manager
+ * @param {SubCompKey} key
  * @returns {boolean} true si un enfant a bien été supprimé
  */
 export function remove(manager, key) {
@@ -56,7 +56,7 @@ export function remove(manager, key) {
 }
 
 /**
- * @param {ChildCompManager} manager
+ * @param {SubCompManager} manager
  */
 export function destroy_all(manager) {
     const reversed = [...manager.sub_comps.values()].reverse();
@@ -67,9 +67,9 @@ export function destroy_all(manager) {
 /**
  * Ajoute l'enfant s'il est absent, le détruit s'il est présent. Le cas d'usage
  * "un bouton spawn/destroy un component" (menu, hide_logs...) tient en un appel.
- * @param {ChildCompManager} manager
- * @param {ChildCompKey} key
- * @param {() => ChildComp} create_sub - appelé seulement si besoin de créer
+ * @param {SubCompManager} manager
+ * @param {SubCompKey} key
+ * @param {() => SubComp} create_sub - appelé seulement si besoin de créer
  * @returns {boolean} true si l'enfant vient d'être ajouté, false s'il vient d'être supprimé
  */
 export function mount_or_toggle(manager, key, create_sub) {

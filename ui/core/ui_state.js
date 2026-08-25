@@ -28,3 +28,13 @@ export function create() {
  * @param {string} log 
  */
 export function add_log(ui, log) { ui.logs.push(log); SB.emit(UISB.BUS, 'logs'); }
+
+/**
+ * @param {UIState} ui
+ */
+export function stop_tick(ui) {
+    if (ui.tick_interval_id !== null) {
+        clearInterval(ui.tick_interval_id);
+        ui.tick_interval_id = null;
+    }
+}

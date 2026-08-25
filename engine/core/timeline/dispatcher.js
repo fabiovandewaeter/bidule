@@ -1,8 +1,6 @@
 // engine/core/timeline/dispatcher.js
 //@ts-check
 
-import * as TimelineScheduler from './scheduler.js'
-
 /**
  * @typedef {import('./event.js').TimelineEvent} TimelineEvent
  * @typedef {import('./event.js').TimelineEventType} TimelineEventType

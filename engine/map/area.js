@@ -3,9 +3,7 @@
 
 import '../../utils/types.js'
 // import * as Coord from './coord.js'
-import * as Room from './room.js'
 import * as Repo from '../../utils/repository.js'
-import * as Opt from '../../utils/option.js'
 
 /** @typedef {number & {__brand:"AreaID"}} AreaID*/
 /**

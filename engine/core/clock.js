@@ -2,8 +2,6 @@
 // @ts-check
 
 import '../../utils/types.js'
-import * as UISB from '../../ui/core/signals.js'
-import * as SB from '../../utils/signal_bus.js'
 
 /**
  * @typedef {Object} Clock
@@ -22,30 +20,11 @@ export function create(saved_timestamp) {
     return { created_at: now, sim_time: now };
 }
 
-// /**
-//  * @param {Clock} clock
-//  * @returns {number}
-//  */
-// export function tick(clock) {
-//     const now = Date.now();
-//     const delta_ms = now - clock.last_tick_timestamp;
-//     clock.last_tick_timestamp = now;
-//     clock.accumulated_time += delta_ms;
-
-//     SB.emit(UISB.BUS, 'tick');
-//     return delta_ms;
-// }
-
 /**
  * @param {Clock} clock
  * @param {number} ms
  */
-export function advance_by(clock, ms) {
-    clock.sim_time += ms;
-    // clock.last_tick_timestamp = Date.now();
-    // clock.accumulated_time += ms;
-    // SB.emit(UISB.BUS, 'tick');
-}
+export function advance_by(clock, ms) { clock.sim_time += ms; }
 
 /**
  * Temps réel (ms) écoulé depuis la dernière simulation — indique s'il y a

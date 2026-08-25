@@ -6,11 +6,12 @@ import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK
 import * as SB from '../../utils/signal_bus.js'
 import * as UISB from '../core/signals.js'
 import * as Store from '../core/store.js'
-import * as Clock from '../../engine/core/clock.js'
 import * as World from '../../engine/core/world.js'
 import * as UIState from '../core/ui_state.js'
 import * as Scene from '../scenes/scene.js'
 import * as Save from '../../utils/save.js'
+import * as Comp from './comp.js'
+import * as Repo from '../../utils/repository.js'
 
 const TICK_DELAY_MS = 1000;
 
@@ -42,102 +43,103 @@ export function render() {
 }
 
 /**
+ * @param {HTMLElement} el 
+ */
+function update_toggle_button(el) {
+    const s = Store.get();
+    const button = el.querySelector('button[data-action="toggle_tick"]');
+    if (!button) throw new Error();
+    button.textContent = s.ui_state.tick_interval_id === null ? "Start" : "Stop";
+};
+
+/**
  * @param {HTMLElement} container 
  * @returns {{element: HTMLElement, destroy: () => void }}
  */
 export function mount(container) {
-    const el = document.createElement('div');
-    el.innerHTML = render();
+    return Comp.create_comp(container, (el, add_cleanup) => {
+        el.innerHTML = render();
 
-    // @ts-ignore
-    const handle_click = (event) => {
-        const btn = event.target.closest('button[data-action]');
-        if (!btn) return;
-        const action = btn.dataset.action;
-        const s = Store.get();
+        // TODO: PAS BESOIN de addEventListener ni removeEventListener car on a Comp.delegate_click()
+        // el.addEventListener('click', handle_click);
+        add_cleanup(Comp.delegate_click(el, (action, event, btn) => {
+            handle_action(action, btn);
+        }));
 
-        switch (action) {
-            case 'skip_seconds': {
-                const ms = parseInt(btn.dataset.amount || '0', 10);
-                World.advance_by(s.world, ms);
-                SB.emit(UISB.BUS, 'tick');
-                // save_timestamp(clock.timestamp);
-                UIState.add_log(s.ui_state, `skip_seconds: ${ms} ms`);
-                break;
-            }
-            case 'toggle_tick': {
-                const s = Store.get();
-                if (s.ui_state.tick_interval_id !== null) {
-                    clearInterval(s.ui_state.tick_interval_id);
-                    s.ui_state.tick_interval_id = null;
-                }
-                else {
-                    s.ui_state.tick_interval_id = setInterval(() => {
-                        const s = Store.get();
-                        World.advance_by(s.world, TICK_DELAY_MS);
-                        SB.emit(UISB.BUS, 'tick');
-                        UIState.add_log(s.ui_state, 'tick');
-                    }, TICK_DELAY_MS);
-                }
-                SB.emit(UISB.BUS, 'toggle_tick');
-                UIState.add_log(s.ui_state, 'toggle_tick');
-                break;
-            }
-            case 'switch_scene': {
-                const new_scene = btn.dataset.scene;
-                if (new_scene) {
-                    if (!Scene.is_valid_scene(new_scene)) { throw new Error(`Invalid scene: ${new_scene}`); }
-                    s.ui_state.scene = new_scene;
-                    UIState.add_log(s.ui_state, `switch_scene: ${new_scene}`);
-                    SB.emit(UISB.BUS, 'scene_switched', new_scene);
-                }
-                break;
-            }
-            case 'download_save': {
-                Save.download(s.world, s.ui_state);
-                break;
-            }
-            case 'upload_save': {
-                Save.upload().then((loaded => {
-                    if (loaded && loaded.world) {
-                        World.advance_to(loaded.world, Date.now());
-                        Store.set_world(loaded.world);
-                        SB.emit(UISB.BUS, 'scene_switched', s.ui_state.scene);
-                    }
-                }));
-                break;
-            }
-            case 'clear_save': {
-                Save.clear();
-                break;
-            };
-            // case 'hide_logs': {
-            // TODO: si on le remet il faut mettre dans le parent le on() et pas dans le logs_comp directement
-            //     SB.emit(UISB.BUS, 'toggle_logs')
-            //     break;
-            // };
-            default: throw new Error(action);
-        }
-    };
-
-    el.addEventListener('click', handle_click);
-
-    const update_toggle_button = () => {
-        const s = Store.get();
-        const button = el.querySelector('button[data-action="toggle_tick"]');
-        if (!button) throw new Error();
-        button.textContent = s.ui_state.tick_interval_id === null ? "Start" : "Stop";
-    };
-
-    const off_toggle = SB.on(UISB.BUS, 'toggle_tick', update_toggle_button);
-    update_toggle_button();
-
-    const destroy = () => {
-        el.removeEventListener('click', handle_click);
-        off_toggle();
-        el.remove();
-    };
-
-    container.appendChild(el);
-    return { element: el, destroy };
+        add_cleanup(SB.on(UISB.BUS, 'toggle_tick', () => update_toggle_button(el)));
+        update_toggle_button(el);
+    });
 }
+
+/**
+ * @param {string} action
+ * @param {HTMLElement} btn
+ */
+function handle_action(action, btn) {
+    const s = Store.get();
+    switch (action) {
+        case 'skip_seconds': {
+            // const ms = Number(btn.dataset.ms);
+            // if (!Number.isSafeInteger(ms)) throw new Error();
+            const ms = Repo.string_to_id(btn.dataset.amount);
+            World.advance_by(s.world, ms);
+            SB.emit(UISB.BUS, 'tick');
+            // save_timestamp(clock.timestamp);
+            UIState.add_log(s.ui_state, `skip_seconds: ${ms} ms`);
+            break;
+        }
+        case 'toggle_tick': {
+            const s = Store.get();
+            if (s.ui_state.tick_interval_id !== null) {
+                clearInterval(s.ui_state.tick_interval_id);
+                s.ui_state.tick_interval_id = null;
+            }
+            else {
+                s.ui_state.tick_interval_id = setInterval(() => {
+                    const s = Store.get();
+                    World.advance_by(s.world, TICK_DELAY_MS);
+                    SB.emit(UISB.BUS, 'tick');
+                    UIState.add_log(s.ui_state, 'tick');
+                }, TICK_DELAY_MS);
+            }
+            SB.emit(UISB.BUS, 'toggle_tick');
+            UIState.add_log(s.ui_state, 'toggle_tick');
+            break;
+        }
+        case 'switch_scene': {
+            const new_scene = btn.dataset.scene;
+            if (new_scene) {
+                if (!Scene.is_valid_scene(new_scene)) { throw new Error(`Invalid scene: ${new_scene}`); }
+                s.ui_state.scene = new_scene;
+                UIState.add_log(s.ui_state, `switch_scene: ${new_scene}`);
+                SB.emit(UISB.BUS, 'scene_switched', new_scene);
+            }
+            break;
+        }
+        case 'download_save': {
+            Save.download(s.world, s.ui_state);
+            break;
+        }
+        case 'upload_save': {
+            Save.upload().then((loaded => {
+                if (loaded && loaded.world) {
+                    World.advance_to(loaded.world, Date.now());
+                    Store.set_world(loaded.world);
+                    SB.emit(UISB.BUS, 'scene_switched', s.ui_state.scene);
+                }
+            }));
+            break;
+        }
+        case 'clear_save': {
+            UIState.stop_tick(s.ui_state);
+            Save.clear();
+            break;
+        };
+        // case 'hide_logs': {
+        // TODO: si on le remet il faut mettre dans le parent le on() et pas dans le logs_comp directement
+        //     SB.emit(UISB.BUS, 'toggle_logs')
+        //     break;
+        // };
+        default: throw new Error(action);
+    }
+};

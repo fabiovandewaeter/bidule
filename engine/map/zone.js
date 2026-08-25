@@ -2,7 +2,6 @@
 // @ts-check
 
 import '../../utils/types.js'
-import * as Area from './area.js'
 import * as Repo from '../../utils/repository.js'
 
 /** @typedef {number & {__brand:"ZoneID"}} ZoneID*/

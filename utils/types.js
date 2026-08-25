@@ -8,16 +8,17 @@
 
 /** @typedef {import('../ui/scenes/scene.js').Scene} Scene*/
 
-/** @typedef {import('../ui/components/sub_comp_manager.js').ChildCompKey} ChildCompKey*/
+/** @typedef {import('../ui/components/sub_comp_manager.js').SubCompKey} SubCompKey*/
+/** @typedef {import('../ui/components/sub_comp_manager.js').SubCompManager} SubCompManager*/
 // --------------
 
 // ========== engine ==========
 /** @typedef {import('../engine/core/clock.js').Clock} Clock*/
 /** @typedef {import('../engine/core/world.js').World} World*/
-/** @typedef {import('../engine/core/signals.js').GameSignalType} GameSignalType*/
+/** @typedef {import('../engine/core/signals.js').EngineSignalType} EngineSignalType*/
 
 // -- timeline --
-/** @typedef {import('./repository.js').Repo<TimelineEvent, TimelineEventID>} TimelineEventRepo*/
+/** @typedef {import('./repository.js').Repo<TimelineEventID, TimelineEvent>} TimelineEventRepo*/
 
 /** @typedef {import('../engine/core/timeline/event.js').TimelineEventID} TimelineEventID*/
 /** @typedef {import('../engine/core/timeline/event.js').TimelineEvent} TimelineEvent*/
@@ -37,26 +38,32 @@
 
 /** @typedef {import('../engine/map/floor.js').Floor} Floor*/
 /** @typedef {import('../engine/map/floor.js').FloorID} FloorID*/
-/** @typedef {import('./repository.js').Repo<Floor, FloorID>} FloorRepo*/
+/** @typedef {import('./repository.js').Repo<FloorID, Floor>} FloorRepo*/
 
 /** @typedef {import('../engine/map/region.js').Region} Region*/
 /** @typedef {import('../engine/map/region.js').RegionID} RegionID*/
-/** @typedef {import('./repository.js').Repo<Region, RegionID>} RegionRepo*/
+/** @typedef {import('./repository.js').Repo<RegionID, Region>} RegionRepo*/
 
 /** @typedef {import('../engine/map/zone.js').Zone} Zone*/
 /** @typedef {import('../engine/map/zone.js').ZoneID} ZoneID*/
-/** @typedef {import('./repository.js').Repo<Zone, ZoneID>} ZoneRepo*/
+/** @typedef {import('./repository.js').Repo<ZoneID, Zone>} ZoneRepo*/
 
 /** @typedef {import('../engine/map/area.js').Area} Area*/
 /** @typedef {import('../engine/map/area.js').AreaID} AreaID*/
-/** @typedef {import('./repository.js').Repo<Area, AreaID>} AreaRepo*/
+/** @typedef {import('./repository.js').Repo<AreaID, Area>} AreaRepo*/
 
 /** @typedef {import('../engine/map/room.js').Room} Room*/
 /** @typedef {import('../engine/map/room.js').RoomID} RoomID*/
 /** @typedef {import('../engine/map/room.js').RoomType} RoomType*/
-/** @typedef {import('./repository.js').Repo<Room, RoomID>} RoomRepo*/
+/** @typedef {import('./repository.js').Repo<RoomID, Room>} RoomRepo*/
 // ----------
 
+
+// -- entity --
+/** @typedef {import('../engine/entity/entity.js').Entity} Entity*/
+/** @typedef {import('../engine/entity/entity.js').EntityID} EntityID*/
+/** @typedef {import('./repository.js').Repo<EntityID, Entity>} EntityRepo*/
+// ------------
 
 // ========== utils ==========
 /** @typedef {import('./save.js').SaveStruct} SaveStruct */
@@ -88,11 +95,9 @@
  * @template T
  * @typedef {{ readonly _tag: "Some", readonly value: T}} Some
  */
-
 /**
  * @typedef {{ readonly _tag: "None"}} None
  */
-
 /**
  * @template T
  * @typedef { Some<T> | None} Opt
@@ -104,12 +109,10 @@
  * @template T, E
  * @typedef {{ readonly _tag: "Ok", readonly value: T}} Ok
  */
-
 /**
  * @template T, E
  * @typedef {{ readonly _tag: "Err", readonly error: E}} Err
  */
-
 /**
  * @template T, E
  * @typedef {Ok<T, E> | Err<T, E>} Res

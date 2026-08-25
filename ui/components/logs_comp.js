@@ -5,6 +5,7 @@ import '../../utils/types.js'
 import * as SB from '../../utils/signal_bus.js'
 import * as UISB from '../core/signals.js'
 import * as Store from '../core/store.js'
+import * as Comp from './comp.js'
 
 const MAX_RENDERED_LOGS = 10;
 
@@ -25,32 +26,24 @@ export function render() {
  * @returns {{element: HTMLElement, destroy: () => void }}
  */
 export function mount(container) {
-    const el = document.createElement('div');
-    el.innerHTML = render();
+    return Comp.create_comp(container, (el, add_cleanup) => {
+        el.innerHTML = render();
 
-    const update = () => {
-        const s = Store.get();
-        const list = el.querySelector('.logs-list');
-        if (!list) return;
-        list.innerHTML = s.ui_state.logs
-            .slice(-MAX_RENDERED_LOGS)
-            .map(log => `<li>${log}</li>`)
-            .join('');
-    };
+        const update = () => {
+            const s = Store.get();
+            const list = el.querySelector('.logs-list');
+            if (!list) return;
+            list.innerHTML = s.ui_state.logs
+                .slice(-MAX_RENDERED_LOGS)
+                .map(log => `<li>${log}</li>`)
+                .join('');
+        };
 
-    const off = SB.on(UISB.BUS, 'logs', update);
-    // TODO: les components ne doivent pas se toggle eux meme
-    // const off_toggle = SB.on(UISB.BUS, 'toggle_logs', () => {
-    //     el.classList.toggle('hidden');
-    // });
-    update();
-
-    const destroy = () => {
-        off();
-        // off_toggle();
-        el.remove();
-    };
-
-    container.appendChild(el);
-    return { element: el, destroy };
+        add_cleanup(SB.on(UISB.BUS, 'logs', update));
+        // TODO: NE PAS METTRE CAR les components ne doivent pas se toggle eux meme ça se fait dans menu_comp.js
+        // const off_toggle = SB.on(UISB.BUS, 'toggle_logs', () => {
+        //     el.classList.toggle('hidden');
+        // });
+        update();
+    });
 }

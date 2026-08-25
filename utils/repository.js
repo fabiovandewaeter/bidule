@@ -6,8 +6,8 @@ import { some, none } from "./option.js"
 import { ok, err } from "./result.js"
 
 /**
- * @template T
  * @template {number} TID
+ * @template T
  * @typedef {Object} Repo
  * @property {TID} current_id
  * @property {Record<TID, T>} elements
@@ -16,7 +16,7 @@ import { ok, err } from "./result.js"
 /**
  * @template T
  * @template {number} TID
- * @returns {Repo<T, TID>}
+ * @returns {Repo<TID, T>}
  */
 export function create() { return { current_id: /**@type {TID}*/(0), elements: /** @type {Record<TID, T>}*/({}) }; }
 
@@ -24,7 +24,7 @@ export function create() { return { current_id: /**@type {TID}*/(0), elements: /
  * @template T
  * @template {number} TID
  * @template {Omit<T, "id">} TSpawnArgs
- * @param {Repo<T, TID>} repo
+ * @param {Repo<TID, T>} repo
  * @param {TSpawnArgs} args
  * @returns {T}
  */
@@ -39,7 +39,7 @@ export function spawn_element(repo, args) {
 /**
  * @template T
  * @template {number} TID
- * @param {Repo<T, TID>} repo
+ * @param {Repo<TID, T>} repo
  * @param {TID} id
  * @returns {Opt<T>}
  */
@@ -51,7 +51,7 @@ export function get(repo, id) {
 /**
  * @template T
  * @template {number} TID
- * @param {Repo<T, TID>} repo
+ * @param {Repo<TID, T>} repo
  * @returns {TID}
  */
 export function next_id(repo) { return /**@type {TID}*/(repo.current_id + 1); }
@@ -59,7 +59,7 @@ export function next_id(repo) { return /**@type {TID}*/(repo.current_id + 1); }
 /**
  * @template T
  * @template {number} TID
- * @param {Repo<T, TID>} repo
+ * @param {Repo<TID, T>} repo
  * @param {TID} id
  * @returns {Res<void, string>}
  */
@@ -72,7 +72,7 @@ export function remove(repo, id) {
 /**
  * @template T
  * @template {number} TID
- * @param {Repo<T, TID>} repo
+ * @param {Repo<TID, T>} repo
  * @return {TID[]}
  */
 export function all_ids(repo) { return /**@type {TID[]}*/(Object.keys(repo.elements).map(Number)); }
@@ -80,7 +80,7 @@ export function all_ids(repo) { return /**@type {TID[]}*/(Object.keys(repo.eleme
 /**
  * @template T
  * @template {number} TID
- * @param {Repo<T, TID>} repo
+ * @param {Repo<TID, T>} repo
  * @return {T[]}
  */
 export function all(repo) { return Object.values(repo.elements); }
@@ -90,7 +90,9 @@ export function all(repo) { return Object.values(repo.elements); }
  * @param {string|undefined} id_string
  * @returns {TID}
  */
-export function id_string_to_id(id_string) {
+export function string_to_id(id_string) {
     if (!id_string) throw new Error();
-    return  /**@type {TID}*/(parseInt(id_string, 10));
+    const id = Number(id_string);
+    if (!Number.isSafeInteger(id) || id < 0) throw new Error;
+    return  /**@type {TID}*/(id);
 }
