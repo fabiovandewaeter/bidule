@@ -76,6 +76,7 @@ export function mount(container) {
                         const s = Store.get();
                         World.advance_by(s.world, TICK_DELAY_MS);
                         SB.emit(UISB.BUS, 'tick');
+                        UIState.add_log(s.ui_state, 'tick');
                     }, TICK_DELAY_MS);
                 }
                 SB.emit(UISB.BUS, 'toggle_tick');

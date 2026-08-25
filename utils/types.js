@@ -4,9 +4,11 @@
 // ==========  ui ==========
 /** @typedef {import('../ui/core/ui_state.js').UIState} UIState*/
 /** @typedef {import('../ui/core/signals.js').UISignalType} UISignalType*/
+/** @typedef {import('../ui/core/store.js').GameStore} GameStore*/
 
 /** @typedef {import('../ui/scenes/scene.js').Scene} Scene*/
 
+/** @typedef {import('../ui/components/sub_comp_manager.js').ChildCompKey} ChildCompKey*/
 // --------------
 
 // ========== engine ==========
@@ -21,7 +23,9 @@
 /** @typedef {import('../engine/core/timeline/event.js').TimelineEvent} TimelineEvent*/
 /** @typedef {import('../engine/core/timeline/event.js').TimelineEventType} TimelineEventType*/
 
+/** @typedef {import('../engine/core/timeline/heap.js').HeapEntry} HeapEntry*/
 /** @typedef {import('../engine/core/timeline/dispatcher.js').TimelineEventHandler} TimelineEventHandler*/
+/** @typedef {import('../engine/core/timeline/scheduler.js').TimelineScheduler} TimelineScheduler*/
 // -----------
 
 // -- map --
@@ -53,9 +57,6 @@
 /** @typedef {import('./repository.js').Repo<Room, RoomID>} RoomRepo*/
 // ----------
 
-/** @typedef {import('../engine/core/timeline/heap.js').HeapEntry} HeapEntry*/
-
-/** @typedef {import('../engine/core/timeline/scheduler.js').TimelineScheduler} TimelineScheduler*/
 
 // ========== utils ==========
 /** @typedef {import('./save.js').SaveStruct} SaveStruct */

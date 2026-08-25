@@ -4,8 +4,9 @@
 import '../../utils/types.js'
 import * as Time from '../components/time_comp.js'
 import * as Control from '../components/controls_comp.js'
-import * as Log from '../components/logs_comp.js'
+// import * as Room from '../components/room_comp.js'
 import * as Menu from '../components/menu_comp.js'
+import * as Log from '../components/logs_comp.js'
 
 /**
  * @param {HTMLElement} container
@@ -17,6 +18,7 @@ export function mount(container) {
     const mounts = [
         Time.mount(container),
         Control.mount(container),
+        // Room.mount(container),
         Menu.mount(container),
         Log.mount(container),
     ];

@@ -6,7 +6,10 @@ import * as Store from '../core/store.js'
 import * as UIState from '../core/ui_state.js'
 import * as Time from './time_comp.js'
 import * as Comp from './comp.js'
-import * as CCM from './child_comp_manager.js'
+import * as SCM from './sub_comp_manager.js'
+
+/**@type {ChildCompKey} */
+const TIME_KEY = 'time';
 
 /**
  * @returns {string}
@@ -24,13 +27,13 @@ export function render() {
  * @returns {{element: HTMLElement, destroy: () => void }}
  */
 export function mount(container) {
-    return Comp.create_comp_with_children(container, (el, child_comp_manager) => {
+    return Comp.create_comp_with_sub_comps(container, (el, sub_comp_manager) => {
         el.innerHTML = render();
 
         const off_click = Comp.delegate_click(el, {
             toggle_time: (event, btn) => {
                 const s = Store.get();
-                const visible = CCM.toggle_child(child_comp_manager, 'time', () => Time.mount(el));
+                const visible = SCM.mount_or_toggle(sub_comp_manager, TIME_KEY, () => Time.mount(el));
                 btn.textContent = visible ? "Hide time" : "Spawn time";
                 UIState.add_log(s.ui_state, 'toggle_time');
             }

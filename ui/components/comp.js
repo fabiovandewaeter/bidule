@@ -1,7 +1,7 @@
 // ui/components/comp.js
 // @ts-check
 
-import * as CCM from './child_comp_manager.js'
+import * as SCM from './sub_comp_manager.js'
 
 /**
  * Crée un composant avec un cycle de vie standard.
@@ -21,19 +21,19 @@ export function create_comp(container, setup) {
 }
 
 /**
- * Comme create_comp, mais fournit un child_comp_manager et garantit sa destruction
+ * Comme create_comp, mais fournit un sub_comp_manager et garantit sa destruction
  * automatiquement après le cleanup — impossible d'oublier destroy_all.
  * @param {HTMLElement} container
- * @param {(root: HTMLElement, children: CCM.ChildCompManager) => (() => void) | void} setup
+ * @param {(root: HTMLElement, sub_comps: SCM.ChildCompManager) => (() => void) | void} setup
  * @returns {{ element: HTMLElement, destroy: () => void }}
  */
-export function create_comp_with_children(container, setup) {
+export function create_comp_with_sub_comps(container, setup) {
     return create_comp(container, (root) => {
-        const children = CCM.create();
-        const internal_destroy = setup(root, children);
+        const sub_comps = SCM.create();
+        const internal_destroy = setup(root, sub_comps);
         return () => {
             internal_destroy?.();
-            CCM.destroy_all(children);
+            SCM.destroy_all(sub_comps);
         };
     });
 }

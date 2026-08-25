@@ -39,7 +39,7 @@ export function mount(container) {
     };
 
     const off = SB.on(UISB.BUS, 'logs', update);
-    // TODO: les components doivent pas se toggle eux meme
+    // TODO: les components ne doivent pas se toggle eux meme
     // const off_toggle = SB.on(UISB.BUS, 'toggle_logs', () => {
     //     el.classList.toggle('hidden');
     // });

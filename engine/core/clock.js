@@ -56,3 +56,9 @@ export function advance_by(clock, ms) {
 export function real_time_elapsed_since(clock) {
     return Date.now() - clock.sim_time;
 }
+
+/**
+ * @param {Clock} clock
+ * @returns {number} temps simulé écoulé depuis la création du monde, en ms
+ */
+export function get_elapsed_ms(clock) { return clock.sim_time - clock.created_at; }
