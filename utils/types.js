@@ -3,7 +3,7 @@
 
 // ==========  ui ==========
 /** @typedef {import('../ui/core/ui_state.js').UIState} UIState*/
-/** @typedef {import('../ui/core/signal_bus.js').UISignalType} UISignalType*/
+/** @typedef {import('../ui/core/signals.js').UISignalType} UISignalType*/
 
 /** @typedef {import('../ui/scenes/scene.js').Scene} Scene*/
 

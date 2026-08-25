@@ -1,7 +1,7 @@
-// ui/core/signal_bus.js
+// ui/core/signals.js
 // @ts-check
 
-import * as SB from '../../utils/signals.js'
+import * as SB from '../../utils/signal_bus.js'
 
 /** @typedef {'tick'|'logs'|'scene_switched'|'toggle_tick'|'toggle_logs'} UISignalType*/
 

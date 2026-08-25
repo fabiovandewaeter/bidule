@@ -1,4 +1,4 @@
-// utils/signals.js
+// utils/signal_bus.js
 // @ts-check
 
 import './types.js'

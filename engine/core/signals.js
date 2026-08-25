@@ -1,7 +1,7 @@
 // engine/core/signals.js
 //@ts-check
 
-import * as SB from '../../utils/signals.js'
+import * as SB from '../../utils/signal_bus.js'
 
 /** @typedef {'entity_killed'} GameSignalType*/
 

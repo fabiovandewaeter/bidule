@@ -3,8 +3,8 @@
 
 import '../../utils/types.js'
 import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from '../../utils/const.js'
-import * as UISB from '../core/signal_bus.js'
-import * as SB from '../../utils/signals.js'
+import * as UISB from '../core/signals.js'
+import * as SB from '../../utils/signal_bus.js'
 import * as Store from '../core/store.js'
 
 /**
