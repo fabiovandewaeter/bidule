@@ -4,11 +4,11 @@ const STORAGE_KEY = 'bidule_save';
 
 import './types.js'
 import * as Opt from './option.js'
-import * as SB from './signal_bus.js'
+import * as SB from './signals.js'
 import * as Runtime from '../ui/core/runtime.js'
 import * as World from '../engine/core/world.js'
 import * as Scene from '../ui/scenes/scene.js'
-import * as UISB from '../ui/core/ui_signal_bus.js'
+import * as UISB from '../ui/core/signal_bus.js'
 import * as Store from '../ui/core/store.js'
 import * as UIState from '../ui/core/ui_state.js'
 

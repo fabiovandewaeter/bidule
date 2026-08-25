@@ -6,13 +6,14 @@ import * as Clock from './clock.js'
 import * as Repo from '../../utils/repository.js'
 import * as Opt from '../../utils/option.js'
 import * as Res from '../../utils/result.js'
-import * as ScheduledEventScheduler from './scheduled_event/scheduled_event_scheduler.js'
-import * as Event from './scheduled_event/scheduled_event.js'
+import * as TimelineScheduler from './timeline/scheduler.js'
+import * as TimelineDispatcher from './timeline/dispatcher.js'
+import * as Timeline from './timeline/timeline.js'
 
 /**
  * @typedef {Object} World
  * @property {Clock} clock
- * @property {ScheduledEventScheduler} events
+ * @property {TimelineScheduler} timeline_scheduler 
  */
 
 /**
@@ -21,7 +22,7 @@ import * as Event from './scheduled_event/scheduled_event.js'
 export function create() {
     return {
         clock: Clock.create(null),
-        events: ScheduledEventScheduler.create(),
+        timeline_scheduler: TimelineScheduler.create(),
     };
 }
 
@@ -36,25 +37,19 @@ export function init(world) {
 }
 
 /**
- * Fait avancer la simulation jusqu'à `target_time` en traitant, dans l'ordre,
- * tous les events planifiés dont `at <= target_time`.
- *
- * À appeler :
- *  - au chargement d'une sauvegarde, avec target_time = Date.now() (rattrapage hors-ligne)
- *  - en jeu, avant de lire un état qui dépend du temps
- *
  * @param {World} world
  * @param {number} target_time
  */
 export function advance_to(world, target_time) {
-    /** @type {Schedule} */
-    const schedule = (type, at, payload) => ScheduledEventScheduler.schedule(world.events, type, at, payload);
+    // /** @type {TimelineSchedule} */
+    // const schedule = (type, at, payload) => TimelineScheduler.schedule(world.events, type, at, payload);
 
-    while (true) {
-        const event = ScheduledEventScheduler.pop_due(world.events, target_time);
-        if (!event) break;
-        Event.dispatch(world, event, schedule);
-    }
+    // while (true) {
+    //     const event = TimelineScheduler.pop_due(world.events, target_time);
+    //     if (!event) break;
+    //     TimelineDispatcher.dispatch(world, event, schedule);
+    // }
+    Timeline.advance_to(world, target_time);
 
     world.clock.sim_time = target_time;
 }
@@ -74,7 +69,7 @@ export function advance_by(world, delta_ms) { advance_to(world, world.clock.sim_
  * @returns {number|null} timestamp du prochain event, ou null si rien de planifié
  */
 export function next_event_at(world) {
-    const next = ScheduledEventScheduler.peek(world.events);
+    const next = TimelineScheduler.peek(world.timeline_scheduler);
     return next ? next.at : null;
 }
 

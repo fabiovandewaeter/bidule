@@ -11,8 +11,12 @@
 # events
 ## SignalBus
 - Action locale (cliquer pour faire une explosion) -> SignalBus.emit('explosion_occured') -> les SignalBus.on('explosion_occured') réagissent pour update une quête par exemple
-## ScheduledEvent
+## TimelineEvent
 - pour faire tourner la simulation, utile pour le mode hors-ligne
 
 # A VOIR
 - mettre flag sur attaque refletée pour pas faire boucle
+
+# à faire
+- ajouter système jour nuit avec event qui lance un nouvel event dans DAY_MS et change l'état etc.
+- pareil pour saisons

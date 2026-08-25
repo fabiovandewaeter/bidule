@@ -2,8 +2,8 @@
 // @ts-check
 
 import '../../utils/types.js'
-import * as UISB from '../../ui/core/ui_signal_bus.js'
-import * as SB from '../../utils/signal_bus.js'
+import * as UISB from '../../ui/core/signal_bus.js'
+import * as SB from '../../utils/signals.js'
 
 /**
  * @typedef {Object} Clock

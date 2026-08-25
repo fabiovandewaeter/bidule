@@ -1,8 +1,8 @@
 // ui/core/ui_state.js
 // @ts-check
 
-import * as UISB from './ui_signal_bus.js'
-import * as SB from '../../utils/signal_bus.js'
+import * as UISB from './signal_bus.js'
+import * as SB from '../../utils/signals.js'
 import '../../utils/types.js'
 
 /**

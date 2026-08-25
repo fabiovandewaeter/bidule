@@ -2,8 +2,8 @@
 // @ts-check
 
 import '../../utils/types.js'
-import * as SB from '../../utils/signal_bus.js'
-import * as UISB from '../core/ui_signal_bus.js'
+import * as SB from '../../utils/signals.js'
+import * as UISB from '../core/signal_bus.js'
 import * as Store from '../core/store.js'
 
 const MAX_RENDERED_LOGS = 10;

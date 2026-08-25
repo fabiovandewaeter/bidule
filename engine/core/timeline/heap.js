@@ -1,4 +1,4 @@
-// engine/core/scheduled_event/scheduled_event_heap.js
+// engine/core/timeline/heap.js
 //@ts-check
 
 import '../../../utils/types.js'
@@ -6,7 +6,7 @@ import '../../../utils/types.js'
 /**
  * @typedef {Object} HeapEntry
  * @property {number} at
- * @property {ScheduledEventID} id
+ * @property {TimelineEventID} id
  */
 
 // --- tas binaire interne (ordonné par at, puis par id pour départager) ---

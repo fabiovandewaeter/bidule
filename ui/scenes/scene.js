@@ -5,8 +5,8 @@ import * as MainScene from './main_scene.js'
 import * as MenuScene from './menu_scene.js'
 import * as Store from '../core/store.js'
 import * as Opt from '../../utils/option.js'
-import * as UISB from '../core/ui_signal_bus.js'
-import * as SB from '../../utils/signal_bus.js'
+import * as UISB from '../core/signal_bus.js'
+import * as SB from '../../utils/signals.js'
 
 /** @type {Opt<() => void>} */
 let current_destroy = Opt.none;

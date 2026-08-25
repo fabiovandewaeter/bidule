@@ -1,7 +1,7 @@
-// utils/signal_bus.js
+// utils/signals.js
 // @ts-check
 
-import '../utils/types.js'
+import './types.js'
 
 /** @typedef {UISignalType|GameSignalType} SignalType */
 /**
