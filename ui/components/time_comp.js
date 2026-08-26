@@ -7,6 +7,7 @@ import * as UISB from '../core/signals.js'
 import * as SB from '../../utils/signal_bus.js'
 import * as Store from '../core/store.js'
 import * as Clock from '../../engine/core/clock.js'
+import * as Comp from './comp.js'
 
 /**
  * @returns {string}
@@ -32,66 +33,62 @@ export function render() {
 function get_accumulated_seconds(store) { return Clock.get_elapsed_ms(store.world.clock) / 1000; }
 
 /**
+ * @param {HTMLElement} el
+ */
+export function update(el) {
+    let s = Store.get();
+    const accumulated_seconds = get_accumulated_seconds(s);
+
+    const s_counter = el.querySelector('.time-seconds');
+    const m_counter = el.querySelector('.time-minutes');
+    const h_counter = el.querySelector('.time-hours');
+    const d_counter = el.querySelector('.time-days');
+    const w_counter = el.querySelector('.time-weeks');
+    const y_counter = el.querySelector('.time-years');
+
+    if (!s_counter || !m_counter || !h_counter || !d_counter || !w_counter || !y_counter) throw new Error();
+
+    s_counter.textContent = Math.floor(accumulated_seconds).toString();
+    m_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_MINUTE).toString();
+    h_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_HOUR).toString();
+    d_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_DAY).toString();
+    w_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_WEEK).toString();
+    y_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_YEAR).toString();
+}
+
+/**
  * @param {HTMLElement} container 
  * @returns {{element: HTMLElement, destroy: () => void }}
  */
 export function mount(container) {
-    const el = document.createElement('div');
-    el.innerHTML = render();
+    return Comp.create_comp(container, (el, add_cleanup) => {
+        el.innerHTML = render();
 
-    const update = () => {
-        let store = Store.get();
-        const accumulated_seconds = get_accumulated_seconds(store);
-
-        const s_counter = el.querySelector('.time-seconds');
-        const m_counter = el.querySelector('.time-minutes');
-        const h_counter = el.querySelector('.time-hours');
-        const d_counter = el.querySelector('.time-days');
-        const w_counter = el.querySelector('.time-weeks');
-        const y_counter = el.querySelector('.time-years');
-
-        if (!s_counter || !m_counter || !h_counter || !d_counter || !w_counter || !y_counter) throw new Error();
-
-        s_counter.textContent = Math.floor(accumulated_seconds).toString();
-        m_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_MINUTE).toString();
-        h_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_HOUR).toString();
-        d_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_DAY).toString();
-        w_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_WEEK).toString();
-        y_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_YEAR).toString();
-    }
-
-    const off = SB.on(UISB.BUS, 'tick', update);
-    update();
-
-    const destroy = () => {
-        off();
-        el.remove();
-    };
-
-    container.appendChild(el);
-    return { element: el, destroy };
+        add_cleanup(SB.on(UISB.BUS, 'tick', () => update(el)));
+        update(el);
+    });
 }
 
-export function update_all() {
-    let store = Store.get();
-    const accumulated_seconds = get_accumulated_seconds(store);
-    document.querySelectorAll('.time-comp').forEach(
-        time => {
-            const s_counter = time.querySelector('.time-seconds');
-            const m_counter = time.querySelector('.time-minutes');
-            const h_counter = time.querySelector('.time-hours');
-            const d_counter = time.querySelector('.time-days');
-            const w_counter = time.querySelector('.time-weeks');
-            const y_counter = time.querySelector('.time-years');
+// export function update_all() {
+//     let store = Store.get();
+//     const accumulated_seconds = get_accumulated_seconds(store);
+//     document.querySelectorAll('.time-comp').forEach(
+//         time => {
+//             const s_counter = time.querySelector('.time-seconds');
+//             const m_counter = time.querySelector('.time-minutes');
+//             const h_counter = time.querySelector('.time-hours');
+//             const d_counter = time.querySelector('.time-days');
+//             const w_counter = time.querySelector('.time-weeks');
+//             const y_counter = time.querySelector('.time-years');
 
-            if (!s_counter || !m_counter || !h_counter || !d_counter || !w_counter || !y_counter) throw new Error();
+//             if (!s_counter || !m_counter || !h_counter || !d_counter || !w_counter || !y_counter) throw new Error();
 
-            s_counter.textContent = Math.floor(accumulated_seconds).toString();
-            m_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_MINUTE).toString();
-            h_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_HOUR).toString();
-            d_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_DAY).toString();
-            w_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_WEEK).toString();
-            y_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_YEAR).toString();
-        }
-    );
-}
+//             s_counter.textContent = Math.floor(accumulated_seconds).toString();
+//             m_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_MINUTE).toString();
+//             h_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_HOUR).toString();
+//             d_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_DAY).toString();
+//             w_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_WEEK).toString();
+//             y_counter.textContent = Math.floor(accumulated_seconds / SECONDS_PER_YEAR).toString();
+//         }
+//     );
+// }

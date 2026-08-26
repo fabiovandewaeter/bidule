@@ -91,20 +91,20 @@ export function mount(container) {
         // add_cleanup(SB.on(UISB.BUS, 'room_changed', () => update(el)));
         // faire plus fin que ça faut faut event entrer et quitter room je pense
         // add_cleanup(SB.on(ESB.BUS, 'entity_moved', () => update(el)));
-        const update_on_entity_enter_room = (/**@type {RoomID}*/room_id) => {
+        const on_entity_enter_room = (/**@type {RoomID}*/room_id) => {
             const current_room_id = get_current_room_id();
             if (room_id == current_room_id) {
                 update(el);
             }
         };
-        add_cleanup(SB.on(UISB.BUS, 'entity_enter_room', update_on_entity_enter_room));
-        const update_on_entity_leave_room = (/**@type {RoomID}*/previous_room_id) => {
+        add_cleanup(SB.on(UISB.BUS, 'entity_enter_room', on_entity_enter_room));
+        const on_entity_leave_room = (/**@type {RoomID}*/previous_room_id) => {
             const current_room_id = get_current_room_id();
             if (previous_room_id == current_room_id) {
                 update(el);
             }
         };
-        add_cleanup(SB.on(UISB.BUS, 'entity_leave_room', update_on_entity_leave_room));
+        add_cleanup(SB.on(UISB.BUS, 'entity_leave_room', on_entity_leave_room));
         update(el);
     });
 }

@@ -14,6 +14,7 @@ import * as SB from '../../utils/signal_bus.js'
 import * as ESB from './signals.js'
 import * as UISB from '../../ui/core/signals.js'
 import * as Room from '../map/room.js'
+import * as Group from '../entity/group.js'
 
 /**
  * @typedef {Object} World
@@ -21,6 +22,7 @@ import * as Room from '../map/room.js'
  * @property {TimelineScheduler} timeline_scheduler 
  * @property {Tower} tower
  * @property {EntityRepo} entity_repo
+ * @property {GroupRepo} group_repo
  */
 
 /**
@@ -32,6 +34,7 @@ export function create() {
         timeline_scheduler: TimelineScheduler.create(),
         tower: Tower.create(),
         entity_repo: Repo.create(),
+        group_repo: Repo.create(),
     };
 }
 
@@ -83,15 +86,14 @@ export function next_event_at(world) {
  * @param {RoomID} target_id 
  */
 export function move_entity(world, entity_id, target_id) {
-    const entity = Opt.unwrap(Repo.get(world.entity_repo, entity_id));
-    Opt.expect(Repo.get(world.tower.room_repo, target_id), 'targeted room should exist');
+    Opt.expect(Repo.get(world.entity_repo, entity_id), `entity should exist: ${entity_id}`);
+    Opt.expect(Repo.get(world.tower.room_repo, target_id), `targeted room should exist: ${target_id}`);
     /**
      * TODO: faire en sorte que move_entity vérifie si l'exit choisie existe dans la room de l'entity
      * et si les conditions sont bonnes etc.
      */
-    const previous_room_id = entity.room_id;
+    const previous_room_id = Entity.move(world.entity_repo, entity_id, target_id);
     Room.remove_entity(world.tower.room_repo, previous_room_id, entity_id);
-    entity.room_id = target_id;
     Room.add_entity(world.tower.room_repo, target_id, entity_id);
 
     // TODO: voir si ça spam beaucoup
@@ -100,10 +102,29 @@ export function move_entity(world, entity_id, target_id) {
     SB.emit(UISB.BUS, 'entity_enter_room', target_id);
 }
 
+/**
+ * @param {World} world 
+ * @param {EntityID} entity_id 
+ * @param {GroupID} group_id 
+ */
+export function change_entity_group(world, entity_id, group_id) {
+    Opt.expect(Repo.get(world.entity_repo, entity_id), `entity should exist: ${entity_id}`);
+    Opt.expect(Repo.get(world.group_repo, group_id), `targeted room should exist: ${group_id}`);
+
+    const previous_group_id_opt = Entity.change_group(world.entity_repo, entity_id, group_id);
+    if (Opt.is_some(previous_group_id_opt)) {
+        Group.remove_entity(world.group_repo, previous_group_id_opt.value, entity_id);
+    }
+    Group.add_entity(world.group_repo, group_id, entity_id);
+
+    // TODO: voir si ça spam beaucoup
+    // SB.emit(ESB.BUS, 'entity_group_changed', entity_id);
+    SB.emit(UISB.BUS, 'entity_changed_group', group_id, entity_id);
+}
+
 // /**
 //  * @param {World} world
 //  * @param {number} delta_ms
 //  */
 // export function update(world, delta_ms) {
-//     // TODO: update la clock aussi ? ou faire dehors je sais pas
 // }

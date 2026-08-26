@@ -63,6 +63,10 @@
 /** @typedef {import('../engine/entity/entity.js').Entity} Entity*/
 /** @typedef {import('../engine/entity/entity.js').EntityID} EntityID*/
 /** @typedef {import('./repository.js').Repo<EntityID, Entity>} EntityRepo*/
+
+/** @typedef {import('../engine/entity/group.js').Group} Group*/
+/** @typedef {import('../engine/entity/group.js').GroupID} GroupID*/
+/** @typedef {import('./repository.js').Repo<GroupID, Group>} GroupRepo*/
 // ------------
 
 // ========== utils ==========

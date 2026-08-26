@@ -21,7 +21,12 @@
 - ajouter système jour nuit avec event qui lance un nouvel event dans DAY_MS et change l'état etc.
 - pareil pour saisons
 
-# comp
+# conseils
+## id en paramètre vs objet
+- dans room.js comme je modifie l'objet et que je vais surement l'appelé depuis une fonction dans World ou autre pour rester cohérent, autant passer l'objet directement
+-> en plus comme ça on voit bien la différence entre ce qui est modifié ou pas
+-> EN FAIT NON car sinon des fois on peut passer un objet qui a été supprimé car on a inversé deux lignes alors qu'avec l'id on est toujours sur l'état actuel
+## comp
 - pas de `addEventListener` ni `removeEventListener` faut utiliser `Comp.delegate_click()`
 - utiliser `add_cleanup()` à chaque fois pour sauvegarder les off() des SB.on()
 ```js

@@ -54,6 +54,7 @@ export function add_exit(repo, id, name, exit) {
 }
 
 /**
+ * passer par méthodes du World à la place
  * @param {RoomRepo} repo 
  * @param {RoomID} id
  * @param {EntityID} entity_id
@@ -65,6 +66,7 @@ export function add_entity(repo, id, entity_id) {
     SB.emit(UISB.BUS, 'room_modified');
 }
 /**
+ * passer par méthodes du World à la place
  * @param {RoomRepo} repo 
  * @param {RoomID} id
  * @param {EntityID} entity_id
@@ -75,14 +77,3 @@ export function remove_entity(repo, id, entity_id) {
     room.entities = room.entities.filter(e => e != entity_id);
     SB.emit(UISB.BUS, 'room_modified');
 }
-
-// je vois pas pourquoi on aurait besoin de ce cas et pas juste tester si c'est dedans comme pour les autres noms de sorties
-// /**
-//  * @param {Room} room 
-//  * @param {Direction} direction 
-//  * @returns {Opt<D<RoomExit>>}
-//  */
-// export function get_exit_from_direction(room, direction) {
-//     if (Object.keys(room.exits).includes(direction)) return Opt.some(room.exits[direction]);
-//     return Opt.none;
-// }

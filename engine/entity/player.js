@@ -4,6 +4,7 @@
 import '../../utils/types.js'
 import * as Opt from '../../utils/option.js'
 import * as Repo from '../../utils/repository.js'
+import * as Entity from './entity.js'
 
 /** @type {EntityID} */
 export const ID = /**@type {EntityID}*/(0);
@@ -17,13 +18,11 @@ export const ID = /**@type {EntityID}*/(0);
  * @param {EntityRepo} repo
  * @param {string} name
  * @param {RoomID} room_id
+ * @param {GroupID} [group_id] 
  * @returns {Entity}
  */
-export function spawn(repo, name, room_id) {
-    const player = Repo.spawn_element(repo, {
-        name,
-        room_id,
-    });
+export function spawn(repo, name, room_id, group_id) {
+    const player = Entity.spawn(repo, name, room_id, group_id);
     // ajouter autres données
     return player;
 }

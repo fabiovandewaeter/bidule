@@ -51,5 +51,6 @@ function handle_action(action, btn, sub_comp_manager, el) {
             UIState.add_log(s.ui_state, 'toggle_time');
             break;
         }
+        default: throw new Error(action);
     }
 }
