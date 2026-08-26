@@ -6,6 +6,7 @@ import * as Clock from './clock.js'
 import * as TimelineScheduler from './timeline/scheduler.js'
 import * as Timeline from './timeline/timeline.js'
 import * as Tower from '../map/tower.js'
+import * as Entity from '../entity/entity.js'
 import * as Player from '../entity/player.js'
 import * as Repo from '../../utils/repository.js'
 import * as Opt from '../../utils/option.js'
@@ -39,10 +40,13 @@ export function create() {
  */
 export function init(world) {
     const map = Tower.init(world.tower);
+    // TODO: système pour ajouter les entity directement dans leur room au spawn
     const player = Player.spawn(world.entity_repo, 'The player', Tower.DEFAULT_ROOM_ID);
+    const second_entity = Entity.spawn(world.entity_repo, 'entity 2', Tower.DEFAULT_ROOM_ID);
 
     const default_room = Opt.expect(Repo.get(world.tower.room_repo, Tower.DEFAULT_ROOM_ID), 'Room of id DEFAULT_ROOM_ID shoud exist');
     Room.add_entity(world.tower.room_repo, default_room.id, player.id);
+    Room.add_entity(world.tower.room_repo, default_room.id, second_entity.id);
 }
 
 /**

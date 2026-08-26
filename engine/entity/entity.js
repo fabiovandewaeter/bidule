@@ -8,6 +8,7 @@ import * as Opt from '../../utils/option.js'
 /**
  * @typedef {Object} Entity
  * @property {EntityID} id
+ * @property {string} name
  * @property {RoomID} room_id
  */
 

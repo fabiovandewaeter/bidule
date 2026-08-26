@@ -13,6 +13,7 @@ import * as Save from '../../utils/save.js'
 import * as Comp from './comp.js'
 import * as Repo from '../../utils/repository.js'
 import * as Runtime from '../core/runtime.js'
+import * as Utils from '../../utils/utils.js'
 
 const TICK_DELAY_MS = 1000;
 
@@ -82,7 +83,7 @@ function handle_action(action, btn) {
         case 'skip_seconds': {
             // const ms = Number(btn.dataset.ms);
             // if (!Number.isSafeInteger(ms)) throw new Error();
-            const ms = Repo.string_to_id(btn.dataset.amount);
+            const ms = Utils.string_to_rtype(btn.dataset.amount);
             World.advance_by(s.world, ms);
             SB.emit(UISB.BUS, 'tick');
             // save_timestamp(clock.timestamp);

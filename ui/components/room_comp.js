@@ -10,6 +10,7 @@ import * as Player from '../../engine/entity/player.js'
 import * as Repo from '../../utils/repository.js'
 import * as Opt from '../../utils/option.js'
 import * as Comp from './comp.js'
+import * as Utils from '../../utils/utils.js'
 
 /**
  * @returns {string}
@@ -21,6 +22,7 @@ export function render() {
         id: <span class="room-id"></span>
         type: <span class="room-type"></span>
         name: <span class="room-name"></span>
+        <div class="visible-entities"></div>
         <div class="connected-rooms"></div>
     </div>
     `;
@@ -54,13 +56,24 @@ export function update(el) {
     name.textContent = current_room.name;
 
     // exit list
-    const list = el.querySelector('.connected-rooms');
-    if (!list) return;
-    list.innerHTML = Object.entries(current_room.exits).map(([name, exit]) => (
+    const exit_list = el.querySelector('.connected-rooms');
+    if (!exit_list) return;
+    exit_list.innerHTML = Object.entries(current_room.exits).map(([name, exit]) => (
         `<button data-action="move_entity" data-room-id="${exit.target_id}">
             ${name}
         </button>`
     )).join('');
+
+    const entity_list = el.querySelector('.visible-entities');
+    if (!entity_list) return;
+    let entity_list_string = '';
+    for (const entity_id of current_room.entities) {
+        const entity = Opt.unwrap(Repo.get(s.world.entity_repo, entity_id));
+        entity_list_string += `<button data-action="show_entity_menu" data-entity-id="${entity.id}">
+            ${entity.name}
+        </button>`
+    }
+    entity_list.innerHTML = entity_list_string;
 }
 
 /**
@@ -108,7 +121,12 @@ function handle_action(action, btn) {
              * TODO: faire en sorte que move_entity vérifie si l'exit choisie existe dans la room de l'entity
              * et si les conditions sont bonnes etc.
              */
-            World.move_entity(s.world, Player.ID, Repo.string_to_id(btn.dataset.roomId));
+            World.move_entity(s.world, Player.ID, Utils.string_to_rtype(btn.dataset.roomId));
+            break;
+        }
+        case 'show_entity_menu': {
+            const entity = Opt.unwrap(Repo.get(s.world.entity_repo, Utils.string_to_rtype(btn.dataset.entityId)));
+            console.log(entity);
             break;
         }
         default: throw new Error(action);

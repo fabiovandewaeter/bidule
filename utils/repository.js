@@ -84,15 +84,3 @@ export function all_ids(repo) { return /**@type {TID[]}*/(Object.keys(repo.eleme
  * @return {T[]}
  */
 export function all(repo) { return Object.values(repo.elements); }
-
-/**
- * @template {number} TID
- * @param {string|undefined} id_string
- * @returns {TID}
- */
-export function string_to_id(id_string) {
-    if (!id_string) throw new Error();
-    const id = Number(id_string);
-    if (!Number.isSafeInteger(id) || id < 0) throw new Error;
-    return  /**@type {TID}*/(id);
-}
