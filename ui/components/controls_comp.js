@@ -12,6 +12,7 @@ import * as Scene from '../scenes/scene.js'
 import * as Save from '../../utils/save.js'
 import * as Comp from './comp.js'
 import * as Repo from '../../utils/repository.js'
+import * as Runtime from '../core/runtime.js'
 
 const TICK_DELAY_MS = 1000;
 
@@ -133,6 +134,7 @@ function handle_action(action, btn) {
         case 'clear_save': {
             UIState.stop_tick(s.ui_state);
             Save.clear();
+            Runtime.init();
             break;
         };
         // case 'hide_logs': {

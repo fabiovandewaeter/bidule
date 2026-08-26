@@ -37,22 +37,25 @@ export function create() {
  * @param {Tower} tower 
  */
 export function init(tower) {
-    const first_room = Repo.spawn_element(tower.room_repo, {
+    const default_room = Repo.spawn_element(tower.room_repo, {
         type: 'city',
         name: 'DEFAULT',
         exits: {},
         entities: [],
     });
     // TODO: enlever ça faire une système plus propre
-    if (first_room.id != DEFAULT_ROOM_ID) throw new Error(`first_room_id different from DEFAULT_ROOM_ID: ${first_room.id} ${DEFAULT_ROOM_ID}`)
+    if (default_room.id != DEFAULT_ROOM_ID) throw new Error(`default_room_id different from DEFAULT_ROOM_ID: ${default_room.id} ${DEFAULT_ROOM_ID}`)
     const seconde_room = Repo.spawn_element(tower.room_repo, {
         type: 'forest',
         name: 'seconde_room',
         exits: {},
         entities: [],
     });
-    Room.add_exit(tower.room_repo, first_room.id, 'sortie foret', {
+    Room.add_exit(tower.room_repo, default_room.id, 'sortie foret', {
         target_id: seconde_room.id
+    });
+    Room.add_exit(tower.room_repo, seconde_room.id, 'room default', {
+        target_id: default_room.id
     });
     // let [_, area] = Area.spawn(tower.area_repo, "area_A");
     // const coords = [

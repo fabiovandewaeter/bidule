@@ -104,8 +104,10 @@ function handle_action(action, btn) {
     const s = Store.get();
     switch (action) {
         case 'move_entity': {
-            // TODO: pas dutout sécurisé car ça se base sur ce qui est affiché à l'écran pour trouver l'id mais pas forcément grave
-            // const room = Opt.unwrap(Repo.get(s.world.tower.room_repo, Repo.string_to_id(btn.dataset.room_id)));
+            /**
+             * TODO: faire en sorte que move_entity vérifie si l'exit choisie existe dans la room de l'entity
+             * et si les conditions sont bonnes etc.
+             */
             World.move_entity(s.world, Player.ID, Repo.string_to_id(btn.dataset.roomId));
             break;
         }

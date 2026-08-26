@@ -40,6 +40,9 @@ export function create() {
 export function init(world) {
     const map = Tower.init(world.tower);
     const player = Player.spawn(world.entity_repo, 'The player', Tower.DEFAULT_ROOM_ID);
+
+    const default_room = Opt.expect(Repo.get(world.tower.room_repo, Tower.DEFAULT_ROOM_ID), 'Room of id DEFAULT_ROOM_ID shoud exist');
+    Room.add_entity(world.tower.room_repo, default_room.id, player.id);
 }
 
 /**
@@ -72,17 +75,23 @@ export function next_event_at(world) {
 
 /**
  * @param {World} world 
- * @param {EntityID} id 
+ * @param {EntityID} entity_id 
  * @param {RoomID} target_id 
  */
-export function move_entity(world, id, target_id) {
-    const entity = Opt.unwrap(Repo.get(world.entity_repo, id));
-    const target = Opt.unwrap(Repo.get(world.tower.room_repo, target_id));
+export function move_entity(world, entity_id, target_id) {
+    const entity = Opt.unwrap(Repo.get(world.entity_repo, entity_id));
+    Opt.expect(Repo.get(world.tower.room_repo, target_id), 'targeted room should exist');
+    /**
+     * TODO: faire en sorte que move_entity vérifie si l'exit choisie existe dans la room de l'entity
+     * et si les conditions sont bonnes etc.
+     */
     const previous_room_id = entity.room_id;
+    Room.remove_entity(world.tower.room_repo, previous_room_id, entity_id);
     entity.room_id = target_id;
-    Room.add_entity(world.tower.room_repo, target_id, id);
+    Room.add_entity(world.tower.room_repo, target_id, entity_id);
+
     // TODO: voir si ça spam beaucoup
-    SB.emit(ESB.BUS, 'entity_moved', id);
+    SB.emit(ESB.BUS, 'entity_moved', entity_id);
     SB.emit(UISB.BUS, 'entity_leave_room', previous_room_id);
     SB.emit(UISB.BUS, 'entity_enter_room', target_id);
 }

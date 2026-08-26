@@ -13,7 +13,7 @@ import * as Signal from '../../engine/core/signals.js'
 init();
 // init_test();
 
-function init() {
+export function init() {
     Scene.init();
 
     Timeline.init();

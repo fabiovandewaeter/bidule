@@ -60,8 +60,19 @@ export function add_exit(repo, id, name, exit) {
  */
 export function add_entity(repo, id, entity_id) {
     const room = Opt.unwrap(Repo.get(repo, id));
-    if (room.entities.includes(entity_id)) throw new Error(`entity id already in this room: ${room.id} ${entity_id}`);
+    if (room.entities.includes(entity_id)) throw new Error(`entity_id already in this room: ${room.id} ${entity_id}`);
     room.entities.push(entity_id);
+    SB.emit(UISB.BUS, 'room_modified');
+}
+/**
+ * @param {RoomRepo} repo 
+ * @param {RoomID} id
+ * @param {EntityID} entity_id
+ */
+export function remove_entity(repo, id, entity_id) {
+    const room = Opt.unwrap(Repo.get(repo, id));
+    if (!room.entities.includes(entity_id)) throw new Error(`entity_id is not in this room: ${room.id} ${entity_id}`);
+    room.entities = room.entities.filter(e => e != entity_id);
     SB.emit(UISB.BUS, 'room_modified');
 }
 
