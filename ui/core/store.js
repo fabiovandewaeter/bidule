@@ -1,9 +1,13 @@
 // ui/core/store.js
 // @ts-check
 
+/**
+ * @typedef {import('../../engine/core/world.js').World} World
+ * @typedef {import('./ui_state.js').UIState} UIState
+ */
 import '../../utils/types.js'
-import * as World from '../../engine/core/world.js'
-import * as UIState from './ui_state.js'
+import * as WorldM from '../../engine/core/world.js'
+import * as UIStateM from './ui_state.js'
 
 /**
  * @typedef {Object} GameStore
@@ -14,8 +18,8 @@ import * as UIState from './ui_state.js'
 
 /** @type {GameStore} */
 let store = {
-    world: World.create(),
-    ui_state: UIState.create(),
+    world: WorldM.create(),
+    ui_state: UIStateM.create(),
     should_save: true,
 };
 

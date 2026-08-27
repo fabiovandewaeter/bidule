@@ -1,17 +1,17 @@
 // ui/scenes/menu_scene.js
 // @ts-check
 
-import '../../utils/types.js'
-import * as Scene from './scene.js'
-import * as UIState from '../core/ui_state.js'
-import * as Store from '../core/store.js'
-import * as UISB from '../core/signals.js'
-import * as SB from '../../utils/signal_bus.js'
-import * as Utils from '../../utils/utils.js'
-import * as Comp from '../components/comp.js'
 /**
  * @typedef {import('../components/comp.js').DestroyFunction} DestroyFunction
  */
+import '../../utils/types.js'
+import * as SceneM from './scene.js'
+import * as UIStateM from '../core/ui_state.js'
+import * as StoreM from '../core/store.js'
+import * as UISBM from '../core/signals.js'
+import * as SBM from '../../utils/signal_bus.js'
+import * as UtilsM from '../../utils/utils.js'
+import * as CompM from '../components/comp.js'
 
 const ACTIONS = Object.freeze({
     SWITCH_SCENE: 'switch_scene',
@@ -35,10 +35,10 @@ function render() {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return Comp.create_comp_with_sub_comps(container, 'scene-menu', (el, sub_comps, add_cleanup) => {
+    return CompM.create_comp_with_sub_comps(container, 'scene-menu', (el, sub_comps, add_cleanup) => {
         el.innerHTML = render();
 
-        add_cleanup(Comp.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {
+        add_cleanup(CompM.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {
             handle_action(action, btn);
         }));
     });
@@ -49,16 +49,16 @@ export function mount(container) {
  * @param {HTMLElement} btn
  */
 function handle_action(action, btn) {
-    const s = Store.get();
+    const s = StoreM.get();
     switch (action) {
         case ACTIONS.SWITCH_SCENE: {
-            const s = Store.get();
+            const s = StoreM.get();
             const new_scene = btn.dataset.scene;
             if (new_scene) {
-                if (!Utils.is_enum_value(Scene.SCENES, new_scene)) throw new Error();
+                if (!UtilsM.is_enum_value(SceneM.SCENES, new_scene)) throw new Error();
                 s.ui_state.scene = new_scene;
-                UIState.add_log(s.ui_state, `switch_scene: ${new_scene}`);
-                SB.emit(UISB.BUS, 'scene_switched', new_scene);
+                UIStateM.add_log(s.ui_state, `switch_scene: ${new_scene}`);
+                SBM.emit(UISBM.BUS, 'scene_switched', new_scene);
             }
             break;
         }

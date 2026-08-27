@@ -1,8 +1,11 @@
 // ui/core/ui_state.js
 // @ts-check
 
-import * as UISB from './signals.js'
-import * as SB from '../../utils/signal_bus.js'
+/**
+ * @typedef {import('../scenes/scene.js').Scene} Scene
+ */
+import * as UISBM from './signals.js'
+import * as SBM from '../../utils/signal_bus.js'
 import '../../utils/types.js'
 
 /**
@@ -27,7 +30,7 @@ export function create() {
  * @param {UIState} ui 
  * @param {string} log 
  */
-export function add_log(ui, log) { ui.logs.push(log); SB.emit(UISB.BUS, 'logs'); }
+export function add_log(ui, log) { ui.logs.push(log); SBM.emit(UISBM.BUS, 'logs'); }
 
 /**
  * @param {UIState} ui

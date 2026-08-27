@@ -1,19 +1,19 @@
 // ui/scenes/scene.js
 // @ts-check
 
-import * as MainScene from './main_scene.js'
-import * as MenuScene from './menu_scene.js'
-import * as Store from '../core/store.js'
-import * as Opt from '../../utils/option.js'
-import * as UISB from '../core/signals.js'
-import * as SB from '../../utils/signal_bus.js'
+import * as MainSceneM from './main_scene.js'
+import * as MenuSceneM from './menu_scene.js'
+import * as StoreM from '../core/store.js'
+import * as OptM from '../../utils/option.js'
+import * as UISBM from '../core/signals.js'
+import * as SBM from '../../utils/signal_bus.js'
 /**
  * @typedef {import('../components/comp.js').DestroyFunction} DestroyFunction
  */
 
 // TODO: voir si on garde ça en global
 /** @type {Opt<DestroyFunction>} */
-let current_destroy = Opt.none;
+let current_destroy = OptM.none;
 
 export const SCENES = Object.freeze({
     MAIN: 'main',
@@ -22,7 +22,7 @@ export const SCENES = Object.freeze({
 /** @typedef {EnumValue<typeof SCENES>} Scene */
 
 export function init() {
-    SB.on(UISB.BUS, 'scene_switched', () => {
+    SBM.on(UISBM.BUS, 'scene_switched', () => {
         const app = document.getElementById('app');
         if (app) render_current_scene(app);
     });
@@ -32,18 +32,18 @@ export function init() {
  * @param {HTMLElement} app
  */
 export function render_current_scene(app) {
-    if (Opt.is_some(current_destroy)) {
+    if (OptM.is_some(current_destroy)) {
         current_destroy.value();
-        current_destroy = Opt.none;
+        current_destroy = OptM.none;
     }
     app.innerHTML = '';
-    const store = Store.get();
+    const store = StoreM.get();
     switch (store.ui_state.scene) {
         case SCENES.MAIN:
-            current_destroy = Opt.some(MainScene.mount(app).destroy);
+            current_destroy = OptM.some(MainSceneM.mount(app).destroy);
             break;
         case SCENES.MENU:
-            current_destroy = Opt.some(MenuScene.mount(app).destroy);
+            current_destroy = OptM.some(MenuSceneM.mount(app).destroy);
             break;
     }
 }

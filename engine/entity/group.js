@@ -1,17 +1,23 @@
 // engine/entity/group.js
 //@ts-check
 
+/**
+ * @typedef {import('./entity.js').EntityID} EntityID
+ * @typedef {import('../map/room.js').RoomID} RoomID
+ */
 import '../../utils/types.js'
-import * as Repo from '../../utils/repository.js'
-import * as Opt from '../../utils/option.js'
-import * as Res from '../../utils/result.js'
+import * as RepoM from '../../utils/repository.js'
+import * as OptM from '../../utils/option.js'
+import * as ResM from '../../utils/result.js'
 import { some, none } from '../../utils/option.js'
 import { ok, err } from '../../utils/result.js'
-import * as SB from '../../utils/signal_bus.js'
-import * as UISB from '../../ui/core/signals.js'
+import * as SBM from '../../utils/signal_bus.js'
+import * as UISBM from '../../ui/core/signals.js'
 
-/** @typedef {number & {__brand:"GroupID"}} GroupID */
 /**
+ * @typedef {number & {__brand:"GroupID"}} GroupID
+ * @typedef {import('../../utils/repository.js').Repo<GroupID, Group>} GroupRepo
+ * 
  * @typedef {Object} Group
  * @property {GroupID} id
  * @property {string} name
@@ -26,7 +32,7 @@ import * as UISB from '../../ui/core/signals.js'
  * @returns {Group}
  */
 export function spawn(repo, name, max_size) {
-    return Repo.spawn_element(repo, {
+    return RepoM.spawn_element(repo, {
         name,
         entities: [],
         max_size,
@@ -40,10 +46,10 @@ export function spawn(repo, name, max_size) {
  * @param {EntityID} entity_id
  */
 export function add_entity(group_repo, group_id, entity_id) {
-    const group = Opt.unwrap(Repo.get(group_repo, group_id));
+    const group = OptM.unwrap(RepoM.get(group_repo, group_id));
     if (group.entities.includes(entity_id)) throw new Error(`entity_id already in this group: ${group.id} ${entity_id}`);
     group.entities.push(entity_id);
-    SB.emit(UISB.BUS, 'group_modified');
+    SBM.emit(UISBM.BUS, 'group_modified');
 }
 /**
  * passer par méthodes du World à la place
@@ -52,10 +58,10 @@ export function add_entity(group_repo, group_id, entity_id) {
  * @param {EntityID} entity_id
  */
 export function remove_entity(group_repo, group_id, entity_id) {
-    const group = Opt.unwrap(Repo.get(group_repo, group_id));
+    const group = OptM.unwrap(RepoM.get(group_repo, group_id));
     if (!group.entities.includes(entity_id)) throw new Error(`entity_id is not in this group: ${group.id} ${entity_id}`);
     group.entities = group.entities.filter(e => e != entity_id);
-    SB.emit(UISB.BUS, 'group_modified');
+    SBM.emit(UISBM.BUS, 'group_modified');
 }
 
 // Faction.spawn(trucs_pour_group, truc pour faction){

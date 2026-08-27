@@ -1,8 +1,11 @@
 // ui/components/comp.js
 // @ts-check
 
-import * as SCM from './sub_comp_manager.js'
-import * as Utils from '../../utils/utils.js'
+/**
+ * @typedef {import('./sub_comp_manager.js').SubCompManager} SubCompManager
+ */
+import * as SCMM from './sub_comp_manager.js'
+import * as UtilsM from '../../utils/utils.js'
 /** @typedef {() => void} DestroyFunction */
 
 /**
@@ -50,9 +53,9 @@ export function create_comp(container, name, setup) {
  */
 export function create_comp_with_sub_comps(container, name, setup) {
     return create_comp(container, name, (root, add_cleanup) => {
-        const sub_comps = SCM.create();
+        const sub_comps = SCMM.create();
         // On enregistre la destruction des sous-composants comme nettoyage automatique.
-        add_cleanup(() => SCM.destroy_all(sub_comps));
+        add_cleanup(() => SCMM.destroy_all(sub_comps));
         // On appelle le setup de l'utilisateur avec le manager et addCleanup.
         return setup(root, sub_comps, add_cleanup);
     });
@@ -91,7 +94,7 @@ export function delegate_click(root, handler) {
  */
 export function delegate_click_with_enum(root, action_enum, handler) {
     return delegate_click(root, (action, event, target) => {
-        if (!Utils.is_enum_value(action_enum, action)) throw new Error(`Invalid action: ${action}`);
+        if (!UtilsM.is_enum_value(action_enum, action)) throw new Error(`Invalid action: ${action}`);
         handler(action, event, target);
     });
 }

@@ -1,6 +1,10 @@
 // utils/signal_bus.js
 // @ts-check
 
+/**
+ * @typedef {import('../ui/core/signals.js').UISignalType} UISignalType
+ * @typedef {import('../engine/core/signals.js').EngineSignalType} EngineSignalType
+ */
 import './types.js'
 
 /** @typedef {UISignalType|EngineSignalType} SignalType */

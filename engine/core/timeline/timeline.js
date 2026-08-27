@@ -1,11 +1,12 @@
 // engine/core/timeline/timeline.js
 //@ts-check
 
+/**
+ * @typedef {import('../world.js').World} World
+ */
 import '../../../utils/types.js'
-
-import * as TimelineScheduler from './scheduler.js'
-import * as TimelineDispatcher from './dispatcher.js'
-
+import * as TimelineSchedulerM from './scheduler.js'
+import * as TimelineDispatcherM from './dispatcher.js'
 
 /**
  * Fait avancer la simulation jusqu'à `target_time` en traitant, dans l'ordre,
@@ -16,9 +17,9 @@ import * as TimelineDispatcher from './dispatcher.js'
  */
 export function advance_to(world, target_time) {
     while (true) {
-        const event = TimelineScheduler.pop_due(world.timeline_scheduler, target_time);
+        const event = TimelineSchedulerM.pop_due(world.timeline_scheduler, target_time);
         if (!event) break;
-        TimelineDispatcher.dispatch(world, event);
+        TimelineDispatcherM.dispatch(world, event);
     }
 }
 

@@ -1,12 +1,12 @@
 // engine/core/signals.js
 //@ts-check
 
-import * as SB from '../../utils/signal_bus.js'
+import * as SBM from '../../utils/signal_bus.js'
 
 /** @typedef {'entity_killed'|'entity_moved'} EngineSignalType*/
 
 /**@type {import('../../utils/signal_bus.js').SignalBus<EngineSignalType>} */
-export const BUS = SB.create();
+export const BUS = SBM.create();
 
 // transmet une informations pour: progression dans une quests (pour guilde des aventuriers ou bosses globaux notamment), honor/factions, passage secret etc.
 

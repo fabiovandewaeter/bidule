@@ -1,11 +1,16 @@
 // engine/map/floor.js
 // @ts-check
 
-import '../../utils/types.js'
-import * as Repo from '../../utils/repository.js'
-
-/** @typedef {number & {__brand:"FloorID"}} FloorID*/
 /**
+ * @typedef {import('./region.js').RegionID} RegionID 
+ */
+import '../../utils/types.js'
+import * as RepoM from '../../utils/repository.js'
+
+/**
+ * @typedef {number & {__brand:"FloorID"}} FloorID
+ * @typedef {import('../../utils/repository.js').Repo<FloorID, Floor>} FloorRepo
+ *
  * @typedef {Object} Floor
  * @property {FloorID} id
  * @property {string} name
@@ -18,7 +23,7 @@ import * as Repo from '../../utils/repository.js'
  * @returns {Floor}
  */
 export function spawn(repo, name) {
-    return Repo.spawn_element(/**@type {FloorRepo}*/(repo), {
+    return RepoM.spawn_element(/**@type {FloorRepo}*/(repo), {
         name,
         regions: []
     });

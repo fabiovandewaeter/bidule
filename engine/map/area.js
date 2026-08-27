@@ -1,12 +1,16 @@
 // engine/map/area.js
 // @ts-check
 
-import '../../utils/types.js'
-// import * as Coord from './coord.js'
-import * as Repo from '../../utils/repository.js'
-
-/** @typedef {number & {__brand:"AreaID"}} AreaID*/
 /**
+ * @typedef {import('./room.js').RoomID} RoomID
+ */
+import '../../utils/types.js'
+import * as RepoM from '../../utils/repository.js'
+
+/**
+ * @typedef {number & {__brand:"AreaID"}} AreaID
+ * @typedef {import('../../utils/repository.js').Repo<AreaID, Area>} AreaRepo
+ * 
  * @typedef {Object} Area
  * @property {AreaID} id
  * @property {string} name
@@ -19,7 +23,7 @@ import * as Repo from '../../utils/repository.js'
  * @returns {Area}
  */
 export function spawn(repo, name) {
-    return Repo.spawn_element(repo, {
+    return RepoM.spawn_element(repo, {
         name,
         rooms: []
     });

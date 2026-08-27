@@ -1,11 +1,14 @@
 // engine/map/room.js
 // @ts-check
 
+/**
+ * @typedef {import('../entity/entity.js').EntityID} EntityID
+ */
 import '../../utils/types.js'
-import * as UISB from '../../ui/core/signals.js'
-import * as Repo from '../../utils/repository.js'
-import * as Opt from '../../utils/option.js'
-import * as SB from '../../utils/signal_bus.js'
+import * as UISBM from '../../ui/core/signals.js'
+import * as RepoM from '../../utils/repository.js'
+import * as OptM from '../../utils/option.js'
+import * as SBM from '../../utils/signal_bus.js'
 
 export const ROOM_TYPES = Object.freeze({
     CITY: 'city',
@@ -17,6 +20,7 @@ export const ROOM_TYPES = Object.freeze({
 
 /**
  * @typedef {number & {__brand:"RoomID"}} RoomID
+ * @typedef {import('../../utils/repository.js').Repo<RoomID, Room>} RoomRepo
  * 
  * @typedef {Object} Room
  * @property {RoomID} id
@@ -39,7 +43,7 @@ export const ROOM_TYPES = Object.freeze({
  * @returns {Room}
  */
 export function spawn(repo, type, name) {
-    return Repo.spawn_element(repo, {
+    return RepoM.spawn_element(repo, {
         type,
         name,
         exits: {},
@@ -54,10 +58,10 @@ export function spawn(repo, type, name) {
  * @param {RoomExit} exit 
  */
 export function add_exit(repo, id, name, exit) {
-    const room = Opt.unwrap(Repo.get(repo, id));
+    const room = OptM.unwrap(RepoM.get(repo, id));
     if (Object.keys(room.exits).includes(name)) throw new Error(`exit name already used for this room: ${room.id} ${name}`);
     room.exits[name] = exit;
-    SB.emit(UISB.BUS, 'room_modified');
+    SBM.emit(UISBM.BUS, 'room_modified');
 }
 
 /**
@@ -67,10 +71,10 @@ export function add_exit(repo, id, name, exit) {
  * @param {EntityID} entity_id
  */
 export function add_entity(repo, id, entity_id) {
-    const room = Opt.unwrap(Repo.get(repo, id));
+    const room = OptM.unwrap(RepoM.get(repo, id));
     if (room.entities.includes(entity_id)) throw new Error(`entity_id already in this room: ${room.id} ${entity_id}`);
     room.entities.push(entity_id);
-    SB.emit(UISB.BUS, 'room_modified');
+    SBM.emit(UISBM.BUS, 'room_modified');
 }
 /**
  * passer par méthodes du World à la place
@@ -79,8 +83,8 @@ export function add_entity(repo, id, entity_id) {
  * @param {EntityID} entity_id
  */
 export function remove_entity(repo, id, entity_id) {
-    const room = Opt.unwrap(Repo.get(repo, id));
+    const room = OptM.unwrap(RepoM.get(repo, id));
     if (!room.entities.includes(entity_id)) throw new Error(`entity_id is not in this room: ${room.id} ${entity_id}`);
     room.entities = room.entities.filter(e => e != entity_id);
-    SB.emit(UISB.BUS, 'room_modified');
+    SBM.emit(UISBM.BUS, 'room_modified');
 }

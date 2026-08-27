@@ -1,16 +1,17 @@
 // ui/components/time_comp.js
 // @ts-check
 
-import '../../utils/types.js'
-import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from '../../utils/const.js'
-import * as UISB from '../core/signals.js'
-import * as SB from '../../utils/signal_bus.js'
-import * as Store from '../core/store.js'
-import * as Clock from '../../engine/core/clock.js'
-import * as Comp from './comp.js'
 /**
  * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
+ * @typedef {import('../core/store.js').GameStore} GameStore
  */
+import '../../utils/types.js'
+import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from '../../utils/const.js'
+import * as UISBM from '../core/signals.js'
+import * as SBM from '../../utils/signal_bus.js'
+import * as StoreM from '../core/store.js'
+import * as ClockM from '../../engine/core/clock.js'
+import * as CompM from './comp.js'
 
 /**
  * @returns {string}
@@ -31,13 +32,13 @@ export function render() {
  * @param {GameStore} store
  * @returns {number} temps simulé écoulé depuis la création du monde, en ms
  */
-function get_accumulated_seconds(store) { return Clock.get_elapsed_ms(store.world.clock) / 1000; }
+function get_accumulated_seconds(store) { return ClockM.get_elapsed_ms(store.world.clock) / 1000; }
 
 /**
  * @param {HTMLElement} el
  */
 export function update(el) {
-    let s = Store.get();
+    let s = StoreM.get();
     const accumulated_seconds = get_accumulated_seconds(s);
 
     const s_counter = el.querySelector('.time-seconds');
@@ -62,10 +63,10 @@ export function update(el) {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return Comp.create_comp(container, 'time-comp', (el, add_cleanup) => {
+    return CompM.create_comp(container, 'time-comp', (el, add_cleanup) => {
         el.innerHTML = render();
 
-        add_cleanup(SB.on(UISB.BUS, 'tick', () => update(el)));
+        add_cleanup(SBM.on(UISBM.BUS, 'tick', () => update(el)));
         update(el);
     });
 }

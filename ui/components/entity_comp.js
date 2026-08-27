@@ -1,19 +1,20 @@
 // ui/components/entity_comp.js
 // @ts-check
 
-import '../../utils/types.js'
-import * as SB from '../../utils/signal_bus.js'
-import * as UISB from '../core/signals.js'
-import * as Store from '../core/store.js'
-import * as World from '../../engine/core/world.js'
-import * as Player from '../../engine/entity/player.js'
-import * as Repo from '../../utils/repository.js'
-import * as Opt from '../../utils/option.js'
-import * as Comp from './comp.js'
-import * as Utils from '../../utils/utils.js'
 /**
  * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
+ * @typedef {import('../../engine/entity/entity.js').EntityID} EntityID
  */
+import '../../utils/types.js'
+import * as SBM from '../../utils/signal_bus.js'
+import * as UISBM from '../core/signals.js'
+import * as StoreM from '../core/store.js'
+import * as WorldM from '../../engine/core/world.js'
+import * as PlayerM from '../../engine/entity/player.js'
+import * as RepoM from '../../utils/repository.js'
+import * as OptM from '../../utils/option.js'
+import * as CompM from './comp.js'
+import * as UtilsM from '../../utils/utils.js'
 
 const ACTIONS = Object.freeze({
     CLOSE_PANEL: 'close_panel',
@@ -41,8 +42,8 @@ export function render() {
  * @param {EntityID} entity_id
  */
 export function update(el, entity_id) {
-    const s = Store.get();
-    const entity = Opt.unwrap(Repo.get(s.world.entity_repo, entity_id));
+    const s = StoreM.get();
+    const entity = OptM.unwrap(RepoM.get(s.world.entity_repo, entity_id));
 
     const span_id = el.querySelector('.entity-id');
     const span_name = el.querySelector('.entity-name');
@@ -55,7 +56,7 @@ export function update(el, entity_id) {
     span_id.textContent = entity.id.toString();
     span_name.textContent = entity.name;
     span_room_id.textContent = entity.room_id.toString();
-    span_group_id.textContent = Opt.is_some(entity.group_id)
+    span_group_id.textContent = OptM.is_some(entity.group_id)
         ? entity.group_id.value.toString()
         : 'none';
 }
@@ -66,10 +67,10 @@ export function update(el, entity_id) {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container, entity_id) {
-    return Comp.create_comp(container, 'entity-comp', (el, add_cleanup) => {
+    return CompM.create_comp(container, 'entity-comp', (el, add_cleanup) => {
         el.innerHTML = render();
 
-        add_cleanup(Comp.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {
+        add_cleanup(CompM.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {
             handle_action(action, btn);
         }));
 
@@ -78,7 +79,7 @@ export function mount(container, entity_id) {
                 update(el, entity_id);
             }
         };
-        add_cleanup(SB.on(UISB.BUS, 'entity_changed', on_entity_changed));
+        add_cleanup(SBM.on(UISBM.BUS, 'entity_changed', on_entity_changed));
         update(el, entity_id);
     });
 }
@@ -88,10 +89,10 @@ export function mount(container, entity_id) {
  * @param {HTMLElement} btn
  */
 function handle_action(action, btn) {
-    const s = Store.get();
+    const s = StoreM.get();
     switch (action) {
         case ACTIONS.CLOSE_PANEL: {
-            SB.emit(UISB.BUS, 'close_entity_panel');
+            SBM.emit(UISBM.BUS, 'close_entity_panel');
             break;
         }
         case ACTIONS.ADD_TO_FACTION: {

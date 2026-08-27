@@ -1,20 +1,22 @@
 // ui/scenes/main_scene.js
 // @ts-check
 
-import '../../utils/types.js'
-import * as TimeC from '../components/time_comp.js'
-import * as ControlC from '../components/controls_comp.js'
-import * as RoomC from '../components/room_comp.js'
-import * as MenuC from '../components/menu_comp.js'
-import * as LogC from '../components/logs_comp.js'
-import * as Comp from '../components/comp.js'
-import * as EntityC from '../components/entity_comp.js'
-import * as SCM from '../components/sub_comp_manager.js'
-import * as UISB from '../core/signals.js'
-import * as SB from '../../utils/signal_bus.js'
 /**
  * @typedef {import('../components/comp.js').DestroyFunction} DestroyFunction
+ * @typedef {import('../components/sub_comp_manager.js').SubCompKey} SubCompKey
+ * @typedef {import('../../engine/entity/entity.js').EntityID} EntityID
  */
+import '../../utils/types.js'
+import * as TimeCM from '../components/time_comp.js'
+import * as ControlCM from '../components/controls_comp.js'
+import * as RoomCM from '../components/room_comp.js'
+import * as MenuCM from '../components/menu_comp.js'
+import * as LogCM from '../components/logs_comp.js'
+import * as CompM from '../components/comp.js'
+import * as EntityCM from '../components/entity_comp.js'
+import * as SCMM from '../components/sub_comp_manager.js'
+import * as UISBM from '../core/signals.js'
+import * as SBM from '../../utils/signal_bus.js'
 
 /**@type {SubCompKey} */
 const ENTITY_PANEL_KEY = 'entity_panel';
@@ -34,25 +36,25 @@ export function render() {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return Comp.create_comp_with_sub_comps(container, 'scene-main', (el, sub_comps, add_cleanup) => {
+    return CompM.create_comp_with_sub_comps(container, 'scene-main', (el, sub_comps, add_cleanup) => {
         el.innerHTML = render();
 
         const left = /**@type {HTMLElement}*/(el.querySelector('.scene-left'));
         const right = /**@type {HTMLElement}*/(el.querySelector('.scene-right'));
 
-        SCM.add(sub_comps, 'time', TimeC.mount(left));
-        SCM.add(sub_comps, 'controls', ControlC.mount(left));
-        SCM.add(sub_comps, 'room', RoomC.mount(left));
-        SCM.add(sub_comps, 'menu', MenuC.mount(left));
-        SCM.add(sub_comps, 'logs', LogC.mount(left));
+        SCMM.add(sub_comps, 'time', TimeCM.mount(left));
+        SCMM.add(sub_comps, 'controls', ControlCM.mount(left));
+        SCMM.add(sub_comps, 'room', RoomCM.mount(left));
+        SCMM.add(sub_comps, 'menu', MenuCM.mount(left));
+        SCMM.add(sub_comps, 'logs', LogCM.mount(left));
 
         const on_show_entity_menu = (/**@type {EntityID} */entity_id) => {
-            SCM.remove(sub_comps, ENTITY_PANEL_KEY); // no-op si absent
-            SCM.add(sub_comps, ENTITY_PANEL_KEY, EntityC.mount(right, entity_id));
+            SCMM.remove(sub_comps, ENTITY_PANEL_KEY); // no-op si absent
+            SCMM.add(sub_comps, ENTITY_PANEL_KEY, EntityCM.mount(right, entity_id));
         };
-        add_cleanup(SB.on(UISB.BUS, 'open_entity_panel', on_show_entity_menu));
+        add_cleanup(SBM.on(UISBM.BUS, 'open_entity_panel', on_show_entity_menu));
 
-        const on_close_entity_menu = () => { SCM.remove(sub_comps, ENTITY_PANEL_KEY); };
-        add_cleanup(SB.on(UISB.BUS, 'close_entity_panel', on_close_entity_menu));
+        const on_close_entity_menu = () => { SCMM.remove(sub_comps, ENTITY_PANEL_KEY); };
+        add_cleanup(SBM.on(UISBM.BUS, 'close_entity_panel', on_close_entity_menu));
     });
 }

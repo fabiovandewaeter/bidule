@@ -1,6 +1,9 @@
 // engine/core/timeline/heap.js
 //@ts-check
 
+/**
+ * @typedef {import('./event.js').TimelineEventID} TimelineEventID
+ */
 import '../../../utils/types.js'
 
 /**

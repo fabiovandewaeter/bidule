@@ -1,21 +1,21 @@
 // ui/components/controls_comp.js
 // @ts-check
 
-import '../../utils/types.js'
-import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from '../../utils/const.js'
-import * as SB from '../../utils/signal_bus.js'
-import * as UISB from '../core/signals.js'
-import * as Store from '../core/store.js'
-import * as World from '../../engine/core/world.js'
-import * as UIState from '../core/ui_state.js'
-import * as Scene from '../scenes/scene.js'
-import * as Save from '../../utils/save.js'
-import * as Comp from './comp.js'
-import * as Runtime from '../core/runtime.js'
-import * as Utils from '../../utils/utils.js'
 /**
  * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
  */
+import '../../utils/types.js'
+import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from '../../utils/const.js'
+import * as SBM from '../../utils/signal_bus.js'
+import * as UISBM from '../core/signals.js'
+import * as StoreM from '../core/store.js'
+import * as WorldM from '../../engine/core/world.js'
+import * as UIStateM from '../core/ui_state.js'
+import * as SceneM from '../scenes/scene.js'
+import * as SaveM from '../../utils/save.js'
+import * as CompM from './comp.js'
+import * as RuntimeM from '../core/runtime.js'
+import * as UtilsM from '../../utils/utils.js'
 
 const TICK_DELAY_MS = 1000;
 
@@ -44,7 +44,7 @@ export function render() {
 </div>
 
 <button data-action="${ACTIONS.TOGGLE_TICK}">Start</button>
-<button data-action="${ACTIONS.SWITCH_SCENE}" data-scene="${Scene.SCENES.MENU}">Switch to menu</button>
+<button data-action="${ACTIONS.SWITCH_SCENE}" data-scene="${SceneM.SCENES.MENU}">Switch to menu</button>
 
 <div class="controls-save">
     <button data-action="${ACTIONS.DOWNLOAD_SAVE}">download save</button>
@@ -58,7 +58,7 @@ export function render() {
  * @param {HTMLElement} el 
  */
 function update_toggle_button(el) {
-    const s = Store.get();
+    const s = StoreM.get();
     const button = el.querySelector(`button[data-action="${ACTIONS.TOGGLE_TICK}"]`);
     if (!button) throw new Error();
     button.textContent = s.ui_state.tick_interval_id === null ? "Start" : "Stop";
@@ -69,17 +69,17 @@ function update_toggle_button(el) {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return Comp.create_comp(container, 'controls-comp', (el, add_cleanup) => {
+    return CompM.create_comp(container, 'controls-comp', (el, add_cleanup) => {
         el.innerHTML = render();
 
         // TODO: PAS BESOIN de addEventListener ni removeEventListener car on a Comp.delegate_click()
         // el.addEventListener('click', handle_click);
-        add_cleanup(Comp.delegate_click(el, (action, event, btn) => {
-            if (!Utils.is_enum_value(ACTIONS, action)) throw new Error();
+        add_cleanup(CompM.delegate_click(el, (action, event, btn) => {
+            if (!UtilsM.is_enum_value(ACTIONS, action)) throw new Error();
             handle_action(action, btn);
         }));
 
-        add_cleanup(SB.on(UISB.BUS, 'toggle_tick', () => update_toggle_button(el)));
+        add_cleanup(SBM.on(UISBM.BUS, 'toggle_tick', () => update_toggle_button(el)));
         update_toggle_button(el);
     });
 }
@@ -89,62 +89,62 @@ export function mount(container) {
  * @param {HTMLElement} btn
  */
 function handle_action(action, btn) {
-    const s = Store.get();
+    const s = StoreM.get();
     switch (action) {
         case ACTIONS.SKIP_SECONDS: {
-            const ms = Utils.string_to_rtype(btn.dataset.amount);
-            World.advance_by(s.world, ms);
-            SB.emit(UISB.BUS, 'tick');
+            const ms = UtilsM.string_to_rtype(btn.dataset.amount);
+            WorldM.advance_by(s.world, ms);
+            SBM.emit(UISBM.BUS, 'tick');
             // save_timestamp(clock.timestamp);
-            UIState.add_log(s.ui_state, `skip_seconds: ${ms} ms`);
+            UIStateM.add_log(s.ui_state, `skip_seconds: ${ms} ms`);
             break;
         }
         case ACTIONS.TOGGLE_TICK: {
-            const s = Store.get();
+            const s = StoreM.get();
             if (s.ui_state.tick_interval_id !== null) {
                 clearInterval(s.ui_state.tick_interval_id);
                 s.ui_state.tick_interval_id = null;
             }
             else {
                 s.ui_state.tick_interval_id = setInterval(() => {
-                    const s = Store.get();
-                    World.advance_by(s.world, TICK_DELAY_MS);
-                    SB.emit(UISB.BUS, 'tick');
-                    UIState.add_log(s.ui_state, 'tick');
+                    const s = StoreM.get();
+                    WorldM.advance_by(s.world, TICK_DELAY_MS);
+                    SBM.emit(UISBM.BUS, 'tick');
+                    UIStateM.add_log(s.ui_state, 'tick');
                 }, TICK_DELAY_MS);
             }
-            SB.emit(UISB.BUS, 'toggle_tick');
-            UIState.add_log(s.ui_state, 'toggle_tick');
+            SBM.emit(UISBM.BUS, 'toggle_tick');
+            UIStateM.add_log(s.ui_state, 'toggle_tick');
             break;
         }
         case ACTIONS.SWITCH_SCENE: {
             const new_scene = btn.dataset.scene;
             if (new_scene) {
-                if (!Utils.is_enum_value(Scene.SCENES, new_scene)) { throw new Error(`Invalid scene: ${new_scene}`); }
+                if (!UtilsM.is_enum_value(SceneM.SCENES, new_scene)) { throw new Error(`Invalid scene: ${new_scene}`); }
                 s.ui_state.scene = new_scene;
-                UIState.add_log(s.ui_state, `switch_scene: ${new_scene}`);
-                SB.emit(UISB.BUS, 'scene_switched', new_scene);
+                UIStateM.add_log(s.ui_state, `switch_scene: ${new_scene}`);
+                SBM.emit(UISBM.BUS, 'scene_switched', new_scene);
             }
             break;
         }
         case ACTIONS.DOWNLOAD_SAVE: {
-            Save.download(s.world, s.ui_state);
+            SaveM.download(s.world, s.ui_state);
             break;
         }
         case ACTIONS.UPLOAD_SAVE: {
-            Save.upload().then((loaded => {
+            SaveM.upload().then((loaded => {
                 if (loaded && loaded.world) {
-                    World.advance_to(loaded.world, Date.now());
-                    Store.set_world(loaded.world);
-                    SB.emit(UISB.BUS, 'scene_switched', s.ui_state.scene);
+                    WorldM.advance_to(loaded.world, Date.now());
+                    StoreM.set_world(loaded.world);
+                    SBM.emit(UISBM.BUS, 'scene_switched', s.ui_state.scene);
                 }
             }));
             break;
         }
         case ACTIONS.CLEAR_SAVE: {
-            UIState.stop_tick(s.ui_state);
-            Save.clear();
-            Runtime.init();
+            UIStateM.stop_tick(s.ui_state);
+            SaveM.clear();
+            RuntimeM.init();
             break;
         };
         // case 'hide_logs': {

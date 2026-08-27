@@ -1,9 +1,16 @@
 // engine/core/timeline/scheduler.js
 //@ts-check
 
+/**
+ * @typedef {import('./heap.js').HeapEntry} HeapEntry
+ * @typedef {import('./event.js').TimelineEventType} TimelineEventType
+ * @typedef {import('./event.js').TimelineEvent} TimelineEvent
+ * @typedef {import('./event.js').TimelineEventID} TimelineEventID
+ * @typedef {import('./event.js').TimelineEventRepo} TimelineEventRepo
+ */
 import '../../../utils/types.js'
-import * as Heap from './heap.js'
-import * as Repo from '../../../utils/repository.js'
+import * as HeapM from './heap.js'
+import * as RepoM from '../../../utils/repository.js'
 
 /**
  * @typedef {Object} TimelineScheduler
@@ -13,7 +20,7 @@ import * as Repo from '../../../utils/repository.js'
 
 /** @returns {TimelineScheduler} */
 export function create() {
-    return { repo: Repo.create(), heap: [] };
+    return { repo: RepoM.create(), heap: [] };
 }
 
 /**
@@ -25,8 +32,8 @@ export function create() {
  * @returns {TimelineEvent}
  */
 export function schedule(scheduler, type, at, payload) {
-    const event = Repo.spawn_element(scheduler.repo, { type, at, payload });
-    Heap.push(scheduler.heap, { at: event.at, id: event.id });
+    const event = RepoM.spawn_element(scheduler.repo, { type, at, payload });
+    HeapM.push(scheduler.heap, { at: event.at, id: event.id });
     return event;
 }
 
@@ -38,7 +45,7 @@ export function schedule(scheduler, type, at, payload) {
  */
 export function cancel(scheduler, id) {
     const existed = id in scheduler.repo.elements;
-    if (existed) Repo.remove(scheduler.repo, id);
+    if (existed) RepoM.remove(scheduler.repo, id);
     return existed;
 }
 
@@ -63,9 +70,9 @@ export function pop_due(scheduler, target_time) {
     purge_stale(scheduler);
     const top = scheduler.heap[0];
     if (!top || top.at > target_time) return null;
-    Heap.pop(scheduler.heap);
+    HeapM.pop(scheduler.heap);
     const event = scheduler.repo.elements[top.id];
-    Repo.remove(scheduler.repo, top.id);
+    RepoM.remove(scheduler.repo, top.id);
     return event;
 }
 
@@ -73,12 +80,12 @@ export function pop_due(scheduler, target_time) {
  * @param {TimelineScheduler} scheduler
  * @returns {TimelineEvent[]} tous les events en attente (non triés) — utile pour debug/UI
  */
-export function all_pending(scheduler) { return Repo.all(scheduler.repo); }
+export function all_pending(scheduler) { return RepoM.all(scheduler.repo); }
 
 /** @param {TimelineScheduler} scheduler */
 function purge_stale(scheduler) {
     while (scheduler.heap.length > 0 && !(scheduler.heap[0].id in scheduler.repo.elements)) {
-        Heap.pop(scheduler.heap);
+        HeapM.pop(scheduler.heap);
     }
 }
 

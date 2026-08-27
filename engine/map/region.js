@@ -1,11 +1,16 @@
 // engine/map/region.js
 // @ts-check
 
-import '../../utils/types.js'
-import * as Repo from '../../utils/repository.js'
-
-/** @typedef {number & {__brand:"RegionID"}} RegionID*/
 /**
+ * @typedef {import('./zone.js').ZoneID} ZoneID
+ */
+import '../../utils/types.js'
+import * as RepoM from '../../utils/repository.js'
+
+/**
+ * @typedef {number & {__brand:"RegionID"}} RegionID
+ * @typedef {import('../../utils/repository.js').Repo<RegionID, Region>} RegionRepo
+ * 
  * @typedef {Object} Region
  * @property {RegionID} id
  * @property {string} name
@@ -18,7 +23,7 @@ import * as Repo from '../../utils/repository.js'
  * @returns {Region}
  */
 export function spawn(repo, name) {
-    return Repo.spawn_element(/**@type {RegionRepo}*/(repo), {
+    return RepoM.spawn_element(/**@type {RegionRepo}*/(repo), {
         name,
         zones: []
     });

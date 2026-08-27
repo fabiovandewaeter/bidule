@@ -1,14 +1,19 @@
 // utils/save.js
 // @ts-check
-const STORAGE_KEY = 'bidule_save';
 
+/**
+ * @typedef {import('../engine/core/world.js').World} World
+ * @typedef {import('../ui/core/ui_state.js').UIState} UIState
+ */
 import './types.js'
-import * as Opt from './option.js'
-import * as SB from './signal_bus.js'
-import * as World from '../engine/core/world.js'
-import * as UISB from '../ui/core/signals.js'
-import * as Store from '../ui/core/store.js'
-import * as UIState from '../ui/core/ui_state.js'
+import * as OptM from './option.js'
+import * as SBM from './signal_bus.js'
+import * as WorldM from '../engine/core/world.js'
+import * as UISBM from '../ui/core/signals.js'
+import * as StoreM from '../ui/core/store.js'
+import * as UIStateM from '../ui/core/ui_state.js'
+
+const STORAGE_KEY = 'bidule_save';
 
 /**
  * @typedef {Object} SaveStruct
@@ -39,25 +44,25 @@ export function load() {
         if (json) {
             const res = JSON.parse(json);
             if (res && res.world) {
-                return Opt.some(res);
+                return OptM.some(res);
             }
         }
-        return Opt.none;
+        return OptM.none;
     } catch (e) {
         console.error('Could not load save:', e);
         localStorage.removeItem(STORAGE_KEY);
-        return Opt.none;
+        return OptM.none;
     }
 }
 
 export function clear() {
     localStorage.removeItem(STORAGE_KEY);
-    const new_world = World.create();
-    World.init(new_world);
-    Store.set_world(new_world);
-    Store.set_ui_state(UIState.create());
-    Store.set_should_save(false);
-    SB.emit(UISB.BUS, 'scene_switched');
+    const new_world = WorldM.create();
+    WorldM.init(new_world);
+    StoreM.set_world(new_world);
+    StoreM.set_ui_state(UIStateM.create());
+    StoreM.set_should_save(false);
+    SBM.emit(UISBM.BUS, 'scene_switched');
     // Runtime.clear();
     // const app = /**@type {HTMLElement}*/(document.getElementById('app'));
     // // Scene.render_current_scene(app, Runtime.WORLD, Runtime.UI_STATE);

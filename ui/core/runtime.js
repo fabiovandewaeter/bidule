@@ -1,67 +1,70 @@
 // ui/core/runtime.js
 // @ts-check
 
-import * as World from '../../engine/core/world.js'
-import * as Save from '../../utils/save.js'
-import * as UIState from './ui_state.js'
-import * as Opt from '../../utils/option.js'
-import * as Scene from '../scenes/scene.js'
-import * as Store from './store.js'
-import * as Timeline from '../../engine/core/timeline/timeline.js'
-import * as Signal from '../../engine/core/signals.js'
+/**
+ * @typedef {import('../../engine/core/world.js').World} World
+ */
+import * as WorldM from '../../engine/core/world.js'
+import * as SaveM from '../../utils/save.js'
+import * as UIStateM from './ui_state.js'
+import * as OptM from '../../utils/option.js'
+import * as SceneM from '../scenes/scene.js'
+import * as StoreM from './store.js'
+import * as TimelineM from '../../engine/core/timeline/timeline.js'
+import * as SignalM from '../../engine/core/signals.js'
 
 init();
 // init_test();
 
 export function init() {
-    Scene.init();
+    SceneM.init();
 
-    Timeline.init();
-    Signal.init();
+    TimelineM.init();
+    SignalM.init();
 
     const app = /**@type {HTMLElement}*/(document.getElementById('app'));
     app.tabIndex = -1
     app.focus();
 
-    const saved_opt = Save.load();
-    if (Opt.is_some(saved_opt)) {
+    const saved_opt = SaveM.load();
+    if (OptM.is_some(saved_opt)) {
         let { world, ui_state } = saved_opt.value;
         if (world) {
             load_world(world);
-            Store.set_world(world);
+            StoreM.set_world(world);
         } else {
-            const new_world = World.create();
-            World.init(new_world);
-            Store.set_world(new_world);
+            const new_world = WorldM.create();
+            WorldM.init(new_world);
+            StoreM.set_world(new_world);
         }
-        Store.set_ui_state(ui_state || UIState.create());
+        StoreM.set_ui_state(ui_state || UIStateM.create());
     } else {
-        const new_world = World.create();
-        World.init(new_world);
-        Store.set_world(new_world);
-        Store.set_ui_state(UIState.create());
+        const new_world = WorldM.create();
+        WorldM.init(new_world);
+        StoreM.set_world(new_world);
+        StoreM.set_ui_state(UIStateM.create());
     }
 
     // // attache les events listeners au app pour qu'ils ne soient jamais détruit par un innerHTML
     // add_event_listener_click(app);
     // add_event_listener_keydown(app);
 
-    Scene.render_current_scene(app);
+    SceneM.render_current_scene(app);
 
     window.addEventListener('beforeunload', () => {
-        const store = Store.get();
-        if (store.should_save) Save.save(store.world, store.ui_state);
+        const store = StoreM.get();
+        if (store.should_save) SaveM.save(store.world, store.ui_state);
     })
     window.addEventListener('pagehide', () => {
-        const store = Store.get();
-        if (store.should_save) Save.save(store.world, store.ui_state);
+        const store = StoreM.get();
+        if (store.should_save) SaveM.save(store.world, store.ui_state);
     })
 }
 
 /**
  * @param {World} world
  */
-function load_world(world) { World.advance_to(world, Date.now()); }
+function load_world(world) { WorldM.advance_to(world, Date.now()); }
 
 // /**
 //  * @param {HTMLElement} app 
