@@ -42,11 +42,11 @@ export function mount(container) {
         const left = /**@type {HTMLElement}*/(el.querySelector('.scene-left'));
         const right = /**@type {HTMLElement}*/(el.querySelector('.scene-right'));
 
-        SCM.add(sub_comps, 'time', TimeC.mount(container));
-        SCM.add(sub_comps, 'controls', ControlC.mount(container));
-        SCM.add(sub_comps, 'room', RoomC.mount(container));
-        SCM.add(sub_comps, 'menu', MenuC.mount(container));
-        SCM.add(sub_comps, 'logs', LogC.mount(container));
+        SCM.add(sub_comps, 'time', TimeC.mount(left));
+        SCM.add(sub_comps, 'controls', ControlC.mount(left));
+        SCM.add(sub_comps, 'room', RoomC.mount(left));
+        SCM.add(sub_comps, 'menu', MenuC.mount(left));
+        SCM.add(sub_comps, 'logs', LogC.mount(left));
 
         const on_show_entity_menu = (/**@type {EntityID} */entity_id) => {
             SCM.remove(sub_comps, ENTITY_PANEL_KEY); // no-op si absent

@@ -49,11 +49,6 @@ export function create_comp(container, setup) {
 export function create_comp_with_sub_comps(container, setup) {
     return create_comp(container, (root, add_cleanup) => {
         const sub_comps = SCM.create();
-        // const internal_destroy = setup(root, sub_comps);
-        // return () => {
-        //     internal_destroy?.();
-        //     SCM.destroy_all(sub_comps);
-        // };
         // On enregistre la destruction des sous-composants comme nettoyage automatique.
         add_cleanup(() => SCM.destroy_all(sub_comps));
         // On appelle le setup de l'utilisateur avec le manager et addCleanup.

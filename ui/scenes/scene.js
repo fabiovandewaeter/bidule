@@ -7,9 +7,12 @@ import * as Store from '../core/store.js'
 import * as Opt from '../../utils/option.js'
 import * as UISB from '../core/signals.js'
 import * as SB from '../../utils/signal_bus.js'
+/**
+ * @typedef {import('../components/comp.js').DestroyFunction} DestroyFunction
+ */
 
 // TODO: voir si on garde ça en global
-/** @type {Opt<() => void>} */
+/** @type {Opt<DestroyFunction>} */
 let current_destroy = Opt.none;
 
 export const SCENES = Object.freeze({
