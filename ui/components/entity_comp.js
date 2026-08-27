@@ -71,7 +71,7 @@ export function mount(container, entity_id) {
         el.innerHTML = render();
 
         add_cleanup(CompM.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {
-            handle_action(action, btn);
+            handle_action(action, btn, entity_id);
         }));
 
         const on_entity_changed = (/**@type {EntityID}*/changed_entity_id) => {
@@ -87,8 +87,9 @@ export function mount(container, entity_id) {
 /**
  * @param {Action} action
  * @param {HTMLElement} btn
+ * @param {EntityID} entity_id
  */
-function handle_action(action, btn) {
+function handle_action(action, btn, entity_id) {
     const s = StoreM.get();
     switch (action) {
         case ACTIONS.CLOSE_PANEL: {
@@ -96,7 +97,16 @@ function handle_action(action, btn) {
             break;
         }
         case ACTIONS.ADD_TO_FACTION: {
-            // TODO: voir comment récupérer id
+            const player = PlayerM.get(s.world.entity_repo);
+            if (entity_id === player.id) {
+                console.error(`can't add entity to player's faction because the entity is the player`);
+                break;
+            }
+            if (OptM.is_none(player.faction_id)) {
+                console.error(`can't add entity to player's faction because player does not have a faction: ${entity_id}`);
+                break;
+            }
+            WorldM.change_entity_faction(s.world, entity_id, player.faction_id.value);
             break;
         }
         default: throw new Error(action);

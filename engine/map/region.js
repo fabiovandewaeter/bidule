@@ -8,13 +8,13 @@ import '../../utils/types.js'
 import * as RepoM from '../../utils/repository.js'
 
 /**
- * @typedef {number & {__brand:"RegionID"}} RegionID
- * @typedef {import('../../utils/repository.js').Repo<RegionID, Region>} RegionRepo
- * 
  * @typedef {Object} Region
  * @property {RegionID} id
  * @property {string} name
  * @property {ZoneID[]} zones
+ * 
+ * @typedef {number & {__brand:"RegionID"}} RegionID
+ * @typedef {import('../../utils/repository.js').Repo<RegionID, Region>} RegionRepo
  */
 
 /**

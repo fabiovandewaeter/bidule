@@ -8,13 +8,13 @@ import '../../utils/types.js'
 import * as RepoM from '../../utils/repository.js'
 
 /**
- * @typedef {number & {__brand:"AreaID"}} AreaID
- * @typedef {import('../../utils/repository.js').Repo<AreaID, Area>} AreaRepo
- * 
  * @typedef {Object} Area
  * @property {AreaID} id
  * @property {string} name
  * @property {RoomID[]} rooms not Record<string, RoomID> because name can change
+ * 
+ * @typedef {number & {__brand:"AreaID"}} AreaID
+ * @typedef {import('../../utils/repository.js').Repo<AreaID, Area>} AreaRepo
  */
 
 /**

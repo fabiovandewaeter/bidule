@@ -16,13 +16,13 @@ import * as GroupM from './group.js'
 const MAX_SIZE = 500;
 
 /**
- * @typedef {number & {__brand:"FactionID"}} FactionID
- * @typedef {import('../../utils/repository.js').Repo<FactionID, Faction>} FactionRepo
- * 
  * @typedef {Object} Faction
  * @property {FactionID} id
  * @property {string} name
  * @property {Group} group
+ * 
+ * @typedef {number & {__brand:"FactionID"}} FactionID
+ * @typedef {import('../../utils/repository.js').Repo<FactionID, Faction>} FactionRepo
  */
 
 /**

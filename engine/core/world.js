@@ -57,6 +57,9 @@ export function init(world) {
     const player = PlayerM.spawn(world.entity_repo, 'The player', TowerM.DEFAULT_ROOM_ID);
     const second_entity = EntityM.spawn(world.entity_repo, 'entity 2', TowerM.DEFAULT_ROOM_ID);
 
+    const faction = FactionM.spawn(world.faction_repo, 'Faction !');
+    change_entity_faction(world, player.id, faction.id);
+
     const default_room = OptM.expect(RepoM.get(world.tower.room_repo, TowerM.DEFAULT_ROOM_ID), 'Room of id DEFAULT_ROOM_ID shoud exist');
     RoomM.add_entity(world.tower.room_repo, default_room.id, player.id);
     RoomM.add_entity(world.tower.room_repo, default_room.id, second_entity.id);
@@ -119,7 +122,7 @@ export function move_entity(world, entity_id, target_id) {
  */
 export function change_entity_faction(world, entity_id, faction_id) {
     OptM.expect(RepoM.get(world.entity_repo, entity_id), `entity should exist: ${entity_id}`);
-    OptM.expect(RepoM.get(world.faction_repo, faction_id), `targeted room should exist: ${faction_id}`);
+    OptM.expect(RepoM.get(world.faction_repo, faction_id), `targeted faction should exist: ${faction_id}`);
 
     const previous_faction_id_opt = EntityM.change_faction(world.entity_repo, entity_id, faction_id);
     if (OptM.is_some(previous_faction_id_opt)) {
@@ -128,7 +131,6 @@ export function change_entity_faction(world, entity_id, faction_id) {
     FactionM.add_entity(world.faction_repo, faction_id, entity_id);
 
     // TODO: voir si ça spam beaucoup
-    // SB.emit(ESB.BUS, 'entity_faction_changed', entity_id);
     SBM.emit(UISBM.BUS, 'entity_changed_faction', faction_id, entity_id);
 }
 

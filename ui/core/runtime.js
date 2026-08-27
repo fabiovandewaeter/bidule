@@ -14,7 +14,6 @@ import * as TimelineM from '../../engine/core/timeline/timeline.js'
 import * as SignalM from '../../engine/core/signals.js'
 
 init();
-// init_test();
 
 export function init() {
     SceneM.init();

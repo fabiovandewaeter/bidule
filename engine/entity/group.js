@@ -6,10 +6,6 @@
  * @typedef {import('../map/room.js').RoomID} RoomID
  */
 import '../../utils/types.js'
-import * as RepoM from '../../utils/repository.js'
-import * as OptM from '../../utils/option.js'
-import * as SBM from '../../utils/signal_bus.js'
-import * as UISBM from '../../ui/core/signals.js'
 
 /**
  * @typedef {Object} Group

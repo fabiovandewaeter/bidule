@@ -19,15 +19,15 @@ export const ROOM_TYPES = Object.freeze({
 /** @typedef {EnumValue<ROOM_TYPES>} RoomType */
 
 /**
- * @typedef {number & {__brand:"RoomID"}} RoomID
- * @typedef {import('../../utils/repository.js').Repo<RoomID, Room>} RoomRepo
- * 
  * @typedef {Object} Room
  * @property {RoomID} id
  * @property {RoomType} type
  * @property {string} name
  * @property {Record<string, RoomExit>} exits // "north", "portal"
  * @property {EntityID[]} entities
+ * 
+ * @typedef {number & {__brand:"RoomID"}} RoomID
+ * @typedef {import('../../utils/repository.js').Repo<RoomID, Room>} RoomRepo
  */
 
 /**
