@@ -33,7 +33,7 @@ export function render() {
 <p>id: <span class="entity-id"></span></p>
 <p>name: <span class="entity-name"></span></p>
 <p>room_id: <span class="entity-room-id"></span></p>
-<p>group_id: <span class="entity-group-id"></span></p>
+<p>faction_id: <span class="entity-faction-id"></span></p>
     `;
 }
 
@@ -48,16 +48,16 @@ export function update(el, entity_id) {
     const span_id = el.querySelector('.entity-id');
     const span_name = el.querySelector('.entity-name');
     const span_room_id = el.querySelector('.entity-room-id');
-    // TODO: faire faction/party/guilds et pas group_id
-    const span_group_id = el.querySelector('.entity-group-id');
+    // TODO: faire faction/party/guilds et pas faction_id
+    const span_faction_id = el.querySelector('.entity-faction-id');
 
-    if (!span_id || !span_name || !span_room_id || !span_group_id) throw new Error();
+    if (!span_id || !span_name || !span_room_id || !span_faction_id) throw new Error();
 
     span_id.textContent = entity.id.toString();
     span_name.textContent = entity.name;
     span_room_id.textContent = entity.room_id.toString();
-    span_group_id.textContent = OptM.is_some(entity.group_id)
-        ? entity.group_id.value.toString()
+    span_faction_id.textContent = OptM.is_some(entity.faction_id)
+        ? entity.faction_id.value.toString()
         : 'none';
 }
 

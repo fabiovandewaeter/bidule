@@ -4,8 +4,8 @@
 /**
  * @typedef {import('../entity/entity.js').EntityID} EntityID
  * @typedef {import('../entity/entity.js').EntityRepo} EntityRepo
- * @typedef {import('../entity/group.js').GroupID} GroupID
- * @typedef {import('../entity/group.js').GroupRepo} GroupRepo
+ * @typedef {import('../entity/faction.js').FactionID} FactionID
+ * @typedef {import('../entity/faction.js').FactionRepo} FactionRepo
  * @typedef {import('../map/room.js').RoomID} RoomID
  * @typedef {import('../map/tower.js').Tower} Tower
  * @typedef {import('./clock.js').Clock} Clock
@@ -24,7 +24,7 @@ import * as SBM from '../../utils/signal_bus.js'
 import * as ESBM from './signals.js'
 import * as UISBM from '../../ui/core/signals.js'
 import * as RoomM from '../map/room.js'
-import * as GroupM from '../entity/group.js'
+import * as FactionM from '../entity/faction.js'
 
 /**
  * @typedef {Object} World
@@ -32,7 +32,7 @@ import * as GroupM from '../entity/group.js'
  * @property {TimelineScheduler} timeline_scheduler 
  * @property {Tower} tower
  * @property {EntityRepo} entity_repo
- * @property {GroupRepo} group_repo
+ * @property {FactionRepo} faction_repo
  */
 
 /**
@@ -44,7 +44,7 @@ export function create() {
         timeline_scheduler: TimelineSchedulerM.create(),
         tower: TowerM.create(),
         entity_repo: RepoM.create(),
-        group_repo: RepoM.create(),
+        faction_repo: RepoM.create(),
     };
 }
 
@@ -115,21 +115,21 @@ export function move_entity(world, entity_id, target_id) {
 /**
  * @param {World} world 
  * @param {EntityID} entity_id 
- * @param {GroupID} group_id 
+ * @param {FactionID} faction_id 
  */
-export function change_entity_group(world, entity_id, group_id) {
+export function change_entity_faction(world, entity_id, faction_id) {
     OptM.expect(RepoM.get(world.entity_repo, entity_id), `entity should exist: ${entity_id}`);
-    OptM.expect(RepoM.get(world.group_repo, group_id), `targeted room should exist: ${group_id}`);
+    OptM.expect(RepoM.get(world.faction_repo, faction_id), `targeted room should exist: ${faction_id}`);
 
-    const previous_group_id_opt = EntityM.change_group(world.entity_repo, entity_id, group_id);
-    if (OptM.is_some(previous_group_id_opt)) {
-        GroupM.remove_entity(world.group_repo, previous_group_id_opt.value, entity_id);
+    const previous_faction_id_opt = EntityM.change_faction(world.entity_repo, entity_id, faction_id);
+    if (OptM.is_some(previous_faction_id_opt)) {
+        FactionM.remove_entity(world.faction_repo, previous_faction_id_opt.value, entity_id);
     }
-    GroupM.add_entity(world.group_repo, group_id, entity_id);
+    FactionM.add_entity(world.faction_repo, faction_id, entity_id);
 
     // TODO: voir si ça spam beaucoup
-    // SB.emit(ESB.BUS, 'entity_group_changed', entity_id);
-    SBM.emit(UISBM.BUS, 'entity_changed_group', group_id, entity_id);
+    // SB.emit(ESB.BUS, 'entity_faction_changed', entity_id);
+    SBM.emit(UISBM.BUS, 'entity_changed_faction', faction_id, entity_id);
 }
 
 // /**

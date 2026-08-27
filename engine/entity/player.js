@@ -5,7 +5,7 @@
  * @typedef {import('./entity.js').Entity} Entity
  * @typedef {import('./entity.js').EntityID} EntityID
  * @typedef {import('./entity.js').EntityRepo} EntityRepo
- * @typedef {import('./group.js').GroupID} GroupID
+ * @typedef {import('./faction.js').FactionID} FactionID
  * @typedef {import('../map/room.js').RoomID} RoomID
  */
 import '../../utils/types.js'
@@ -25,11 +25,11 @@ export const ID = /**@type {EntityID}*/(0);
  * @param {EntityRepo} repo
  * @param {string} name
  * @param {RoomID} room_id
- * @param {GroupID} [group_id] 
+ * @param {FactionID} [faction_id] 
  * @returns {Entity}
  */
-export function spawn(repo, name, room_id, group_id) {
-    const player = EntityM.spawn(repo, name, room_id, group_id);
+export function spawn(repo, name, room_id, faction_id) {
+    const player = EntityM.spawn(repo, name, room_id, faction_id);
     // ajouter autres données
     return player;
 }
