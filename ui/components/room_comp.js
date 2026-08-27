@@ -26,12 +26,12 @@ const ACTIONS = Object.freeze({
  */
 export function render() {
     return `
-    <h1>Room</h1>
-    id: <span class="room-id"></span>
-    type: <span class="room-type"></span>
-    name: <span class="room-name"></span>
-    <div class="visible-entities"></div>
-    <div class="connected-rooms"></div>
+<h1>Room</h1>
+id: <span class="room-id"></span>
+type: <span class="room-type"></span>
+name: <span class="room-name"></span>
+<div class="visible-entities"></div>
+<div class="connected-rooms"></div>
     `;
 }
 

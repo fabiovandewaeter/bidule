@@ -34,23 +34,23 @@ const ACTIONS = Object.freeze({
  */
 export function render() {
     return `
-    <div class="controls-time">
-        <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${1 * TICK_DELAY_MS}>1 seconde</button>
-        <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_MINUTE * TICK_DELAY_MS}>1 minute</button>
-        <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_HOUR * TICK_DELAY_MS}>1 heure</button>
-        <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_DAY * TICK_DELAY_MS}>1 jour</button>
-        <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_WEEK * TICK_DELAY_MS}>1 semaine</button>
-        <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_YEAR * TICK_DELAY_MS}>1 an</button>
-    </div>
+<div class="controls-time">
+    <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${1 * TICK_DELAY_MS}>1 seconde</button>
+    <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_MINUTE * TICK_DELAY_MS}>1 minute</button>
+    <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_HOUR * TICK_DELAY_MS}>1 heure</button>
+    <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_DAY * TICK_DELAY_MS}>1 jour</button>
+    <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_WEEK * TICK_DELAY_MS}>1 semaine</button>
+    <button data-action="${ACTIONS.SKIP_SECONDS}" data-amount=${SECONDS_PER_YEAR * TICK_DELAY_MS}>1 an</button>
+</div>
 
-    <button data-action="${ACTIONS.TOGGLE_TICK}">Start</button>
-    <button data-action="${ACTIONS.SWITCH_SCENE}" data-scene="${Scene.SCENES.MENU}">Switch to menu</button>
+<button data-action="${ACTIONS.TOGGLE_TICK}">Start</button>
+<button data-action="${ACTIONS.SWITCH_SCENE}" data-scene="${Scene.SCENES.MENU}">Switch to menu</button>
 
-    <div class="controls-save">
-        <button data-action="${ACTIONS.DOWNLOAD_SAVE}">download save</button>
-        <button data-action="${ACTIONS.UPLOAD_SAVE}">upload save</button>
-        <button data-action="${ACTIONS.CLEAR_SAVE}">clear save</button>
-    </div>
+<div class="controls-save">
+    <button data-action="${ACTIONS.DOWNLOAD_SAVE}">download save</button>
+    <button data-action="${ACTIONS.UPLOAD_SAVE}">upload save</button>
+    <button data-action="${ACTIONS.CLEAR_SAVE}">clear save</button>
+</div>
     `;
 }
 

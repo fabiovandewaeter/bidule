@@ -24,8 +24,8 @@ const ENTITY_PANEL_KEY = 'entity_panel';
  */
 export function render() {
     return `
-    <div class="scene-left"> </div>
-    <div class="scene-right"> </div>
+<div class="scene-left"> </div>
+<div class="scene-right"> </div>
     `;
 }
 

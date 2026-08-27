@@ -26,13 +26,13 @@ const ACTIONS = Object.freeze({
  */
 export function render() {
     return `
-    <h1>Entity</h1>
-    <button data-action="${ACTIONS.CLOSE_PANEL}">Close</button>
-    <button data-action="${ACTIONS.ADD_TO_FACTION}">Add to faction</button>
-    <p>id: <span class="entity-id"></span></p>
-    <p>name: <span class="entity-name"></span></p>
-    <p>room_id: <span class="entity-room-id"></span></p>
-    <p>group_id: <span class="entity-group-id"></span></p>
+<h1>Entity</h1>
+<button data-action="${ACTIONS.CLOSE_PANEL}">Close</button>
+<button data-action="${ACTIONS.ADD_TO_FACTION}">Add to faction</button>
+<p>id: <span class="entity-id"></span></p>
+<p>name: <span class="entity-name"></span></p>
+<p>room_id: <span class="entity-room-id"></span></p>
+<p>group_id: <span class="entity-group-id"></span></p>
     `;
 }
 

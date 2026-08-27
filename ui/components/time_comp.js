@@ -17,13 +17,13 @@ import * as Comp from './comp.js'
  */
 export function render() {
     return `
-    <h1>Temps passé: </h1>
-    <span class="time-seconds">0</span> secondes
-    <span class="time-minutes">0</span> minutes
-    <span class="time-hours">0</span> heures
-    <span class="time-days">0</span> jours
-    <span class="time-weeks">0</span> semaines
-    <span class="time-years">0</span> années
+<h1>Temps passé: </h1>
+<span class="time-seconds">0</span> secondes
+<span class="time-minutes">0</span> minutes
+<span class="time-hours">0</span> heures
+<span class="time-days">0</span> jours
+<span class="time-weeks">0</span> semaines
+<span class="time-years">0</span> années
     `;
 }
 

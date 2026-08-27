@@ -24,7 +24,7 @@ const ACTIONS = Object.freeze({
  */
 export function render() {
     return `
-    <button data-action="${ACTIONS.TOGGLE_TIME}" data-spawn="true">Spawn time</button>
+<button data-action="${ACTIONS.TOGGLE_TIME}" data-spawn="true">Spawn time</button>
     `;
 }
 

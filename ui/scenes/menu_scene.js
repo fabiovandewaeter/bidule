@@ -23,10 +23,10 @@ const ACTIONS = Object.freeze({
  */
 function render() {
     return `
-    <h1>Scene: Menu</h1>
-    <div id="controls">
-        <button data-action=${ACTIONS.SWITCH_SCENE} data-scene="main">Switch to main</button>
-    </div>
+<h1>Scene: Menu</h1>
+<div id="controls">
+    <button data-action=${ACTIONS.SWITCH_SCENE} data-scene="main">Switch to main</button>
+</div>
     `;
 }
 

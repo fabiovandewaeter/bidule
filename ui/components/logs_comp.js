@@ -17,8 +17,8 @@ const MAX_RENDERED_LOGS = 10;
  */
 export function render() {
     return `
-    <h1>Logs</h1>
-    <ul class="logs-list"></ul>
+<h1>Logs</h1>
+<ul class="logs-list"></ul>
     `;
 }
 
