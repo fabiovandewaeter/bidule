@@ -26,14 +26,12 @@ const ACTIONS = Object.freeze({
  */
 export function render() {
     return `
-    <div class="room-comp">
-        <h1>Room</h1>
-        id: <span class="room-id"></span>
-        type: <span class="room-type"></span>
-        name: <span class="room-name"></span>
-        <div class="visible-entities"></div>
-        <div class="connected-rooms"></div>
-    </div>
+    <h1>Room</h1>
+    id: <span class="room-id"></span>
+    type: <span class="room-type"></span>
+    name: <span class="room-name"></span>
+    <div class="visible-entities"></div>
+    <div class="connected-rooms"></div>
     `;
 }
 
@@ -81,7 +79,7 @@ export function update(el) {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return Comp.create_comp(container, (el, add_cleanup) => {
+    return Comp.create_comp(container, 'room-comp', (el, add_cleanup) => {
         el.innerHTML = render();
 
         add_cleanup(Comp.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {

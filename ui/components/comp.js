@@ -3,19 +3,20 @@
 
 import * as SCM from './sub_comp_manager.js'
 import * as Utils from '../../utils/utils.js'
-
 /** @typedef {() => void} DestroyFunction */
 
 /**
  * Crée un composant avec un cycle de vie standard.
  * @param {HTMLElement} container
+ * @param {string} name
  * @param {(root: HTMLElement, add_cleanup: (fn: DestroyFunction) => void) => void | DestroyFunction} setup
  *        - `add_cleanup` : enregistre une fonction de nettoyage (sera appelée au destroy).
  *        - le retour éventuel de `setup` est aussi utilisé comme nettoyage.
  * @returns {{ element: HTMLElement, destroy: DestroyFunction }}
  */
-export function create_comp(container, setup) {
+export function create_comp(container, name, setup) {
     const root = document.createElement('div');
+    root.className = name;
     /**@type {Function[]} */
     const cleanups = [];
 
@@ -43,11 +44,12 @@ export function create_comp(container, setup) {
 /**
  * Version qui gère en plus un SubCompManager.
  * @param {HTMLElement} container
+ * @param {string} name
  * @param {(root: HTMLElement, sub_comps: SubCompManager, add_cleanup: (fn: DestroyFunction) => void) => void | DestroyFunction} setup
  * @returns {{ element: HTMLElement, destroy: DestroyFunction }}
  */
-export function create_comp_with_sub_comps(container, setup) {
-    return create_comp(container, (root, add_cleanup) => {
+export function create_comp_with_sub_comps(container, name, setup) {
+    return create_comp(container, name, (root, add_cleanup) => {
         const sub_comps = SCM.create();
         // On enregistre la destruction des sous-composants comme nettoyage automatique.
         add_cleanup(() => SCM.destroy_all(sub_comps));

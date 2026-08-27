@@ -35,7 +35,7 @@ function render() {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return Comp.create_comp_with_sub_comps(container, (el, sub_comps, add_cleanup) => {
+    return Comp.create_comp_with_sub_comps(container, 'scene-menu', (el, sub_comps, add_cleanup) => {
         el.innerHTML = render();
 
         add_cleanup(Comp.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {

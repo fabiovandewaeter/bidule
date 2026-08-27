@@ -24,10 +24,8 @@ const ENTITY_PANEL_KEY = 'entity_panel';
  */
 export function render() {
     return `
-    <div class="scene-main">
-        <div class="scene-left"> </div>
-        <div class="scene-right"> </div>
-    </div>
+    <div class="scene-left"> </div>
+    <div class="scene-right"> </div>
     `;
 }
 
@@ -36,7 +34,7 @@ export function render() {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return Comp.create_comp_with_sub_comps(container, (el, sub_comps, add_cleanup) => {
+    return Comp.create_comp_with_sub_comps(container, 'scene-main', (el, sub_comps, add_cleanup) => {
         el.innerHTML = render();
 
         const left = /**@type {HTMLElement}*/(el.querySelector('.scene-left'));

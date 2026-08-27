@@ -17,10 +17,8 @@ const MAX_RENDERED_LOGS = 10;
  */
 export function render() {
     return `
-    <div class="logs-comp">
-        <h1>Logs</h1>
-        <ul class="logs-list"></ul>
-    </div>
+    <h1>Logs</h1>
+    <ul class="logs-list"></ul>
     `;
 }
 
@@ -29,7 +27,7 @@ export function render() {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return Comp.create_comp(container, (el, add_cleanup) => {
+    return Comp.create_comp(container, 'logs-comp', (el, add_cleanup) => {
         el.innerHTML = render();
 
         const update = () => {

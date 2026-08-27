@@ -26,15 +26,13 @@ const ACTIONS = Object.freeze({
  */
 export function render() {
     return `
-    <div class="entity-comp">
-        <h1>Entity</h1>
-        <button data-action="${ACTIONS.CLOSE_PANEL}">Close</button>
-        <button data-action="${ACTIONS.ADD_TO_FACTION}">Add to faction</button>
-        <p>id: <span class="entity-id"></span></p>
-        <p>name: <span class="entity-name"></span></p>
-        <p>room_id: <span class="entity-room-id"></span></p>
-        <p>group_id: <span class="entity-group-id"></span></p>
-    </div>
+    <h1>Entity</h1>
+    <button data-action="${ACTIONS.CLOSE_PANEL}">Close</button>
+    <button data-action="${ACTIONS.ADD_TO_FACTION}">Add to faction</button>
+    <p>id: <span class="entity-id"></span></p>
+    <p>name: <span class="entity-name"></span></p>
+    <p>room_id: <span class="entity-room-id"></span></p>
+    <p>group_id: <span class="entity-group-id"></span></p>
     `;
 }
 
@@ -68,7 +66,7 @@ export function update(el, entity_id) {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container, entity_id) {
-    return Comp.create_comp(container, (el, add_cleanup) => {
+    return Comp.create_comp(container, 'entity-comp', (el, add_cleanup) => {
         el.innerHTML = render();
 
         add_cleanup(Comp.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {

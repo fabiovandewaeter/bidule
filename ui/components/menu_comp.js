@@ -24,9 +24,7 @@ const ACTIONS = Object.freeze({
  */
 export function render() {
     return `
-    <div class="menu-comp">
-        <button data-action="${ACTIONS.TOGGLE_TIME}" data-spawn="true">Spawn time</button>
-    </div>
+    <button data-action="${ACTIONS.TOGGLE_TIME}" data-spawn="true">Spawn time</button>
     `;
 }
 
@@ -35,7 +33,7 @@ export function render() {
  * @returns {{element: HTMLElement, destroy: DestroyFunction}}
  */
 export function mount(container) {
-    return Comp.create_comp_with_sub_comps(container, (el, sub_comp_manager, add_cleanup) => {
+    return Comp.create_comp_with_sub_comps(container, 'menu-comp', (el, sub_comp_manager, add_cleanup) => {
         el.innerHTML = render();
 
         add_cleanup(Comp.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {

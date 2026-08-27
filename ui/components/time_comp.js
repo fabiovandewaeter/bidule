@@ -17,15 +17,13 @@ import * as Comp from './comp.js'
  */
 export function render() {
     return `
-    <div class="time-comp">
-        <h1>Temps passé: </h1>
-        <span class="time-seconds">0</span> secondes
-        <span class="time-minutes">0</span> minutes
-        <span class="time-hours">0</span> heures
-        <span class="time-days">0</span> jours
-        <span class="time-weeks">0</span> semaines
-        <span class="time-years">0</span> années
-    </div>
+    <h1>Temps passé: </h1>
+    <span class="time-seconds">0</span> secondes
+    <span class="time-minutes">0</span> minutes
+    <span class="time-hours">0</span> heures
+    <span class="time-days">0</span> jours
+    <span class="time-weeks">0</span> semaines
+    <span class="time-years">0</span> années
     `;
 }
 
@@ -64,7 +62,7 @@ export function update(el) {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return Comp.create_comp(container, (el, add_cleanup) => {
+    return Comp.create_comp(container, 'time-comp', (el, add_cleanup) => {
         el.innerHTML = render();
 
         add_cleanup(SB.on(UISB.BUS, 'tick', () => update(el)));
