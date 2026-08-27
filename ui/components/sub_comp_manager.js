@@ -2,10 +2,13 @@
 // @ts-check
 
 import '../../utils/types.js'
+/**
+ * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
+ */
 
 /**
  * @typedef {Object} SubComp
- * @property {() => void} destroy
+ * @property {DestroyFunction} destroy
  */
 
 /**

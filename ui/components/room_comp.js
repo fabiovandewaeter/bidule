@@ -11,6 +11,15 @@ import * as Repo from '../../utils/repository.js'
 import * as Opt from '../../utils/option.js'
 import * as Comp from './comp.js'
 import * as Utils from '../../utils/utils.js'
+/**
+ * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
+ */
+
+const ACTIONS = Object.freeze({
+    MOVE_ENTITY: 'move_entity',
+    SHOW_ENTITY_MENU: 'show_entity_menu',
+});
+/**@typedef {EnumValue<typeof ACTIONS>} Action*/
 
 /**
  * @returns {string}
@@ -26,15 +35,6 @@ export function render() {
         <div class="connected-rooms"></div>
     </div>
     `;
-}
-
-/**
- * TODO: ajouter système pour voir d'autres rooms sans déplacer le player mais il faut stocker l'information dans l'UI state
- */
-function get_current_room_id() {
-    const s = Store.get();
-    const player = Player.get(s.world.entity_repo);
-    return player.room_id;
 }
 
 /**
@@ -59,7 +59,7 @@ export function update(el) {
     const exit_list = el.querySelector('.connected-rooms');
     if (!exit_list) return;
     exit_list.innerHTML = Object.entries(current_room.exits).map(([name, exit]) => (
-        `<button data-action="move_entity" data-room-id="${exit.target_id}">
+        `<button data-action="${ACTIONS.MOVE_ENTITY}" data-room-id="${exit.target_id}">
             ${name}
         </button>`
     )).join('');
@@ -69,7 +69,7 @@ export function update(el) {
     let entity_list_string = '';
     for (const entity_id of current_room.entities) {
         const entity = Opt.unwrap(Repo.get(s.world.entity_repo, entity_id));
-        entity_list_string += `<button data-action="show_entity_menu" data-entity-id="${entity.id}">
+        entity_list_string += `<button data-action="${ACTIONS.SHOW_ENTITY_MENU}" data-entity-id="${entity.id}">
             ${entity.name}
         </button>`
     }
@@ -78,19 +78,16 @@ export function update(el) {
 
 /**
  * @param {HTMLElement} container 
- * @returns {{element: HTMLElement, destroy: () => void }}
+ * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
     return Comp.create_comp(container, (el, add_cleanup) => {
         el.innerHTML = render();
 
-        add_cleanup(Comp.delegate_click(el, (action, event, btn) => {
+        add_cleanup(Comp.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {
             handle_action(action, btn);
         }));
 
-        // add_cleanup(SB.on(UISB.BUS, 'room_changed', () => update(el)));
-        // faire plus fin que ça faut faut event entrer et quitter room je pense
-        // add_cleanup(SB.on(ESB.BUS, 'entity_moved', () => update(el)));
         const on_entity_enter_room = (/**@type {RoomID}*/room_id) => {
             const current_room_id = get_current_room_id();
             if (room_id == current_room_id) {
@@ -110,13 +107,13 @@ export function mount(container) {
 }
 
 /**
- * @param {string} action
+ * @param {Action} action
  * @param {HTMLElement} btn
  */
 function handle_action(action, btn) {
     const s = Store.get();
     switch (action) {
-        case 'move_entity': {
+        case ACTIONS.MOVE_ENTITY: {
             /**
              * TODO: faire en sorte que move_entity vérifie si l'exit choisie existe dans la room de l'entity
              * et si les conditions sont bonnes etc.
@@ -124,11 +121,22 @@ function handle_action(action, btn) {
             World.move_entity(s.world, Player.ID, Utils.string_to_rtype(btn.dataset.roomId));
             break;
         }
-        case 'show_entity_menu': {
-            const entity = Opt.unwrap(Repo.get(s.world.entity_repo, Utils.string_to_rtype(btn.dataset.entityId)));
-            console.log(entity);
+        case ACTIONS.SHOW_ENTITY_MENU: {
+            // const entity = Opt.unwrap(Repo.get(s.world.entity_repo, Utils.string_to_rtype(btn.dataset.entityId)));
+            // console.log(entity);
+            const entity_id = Utils.string_to_rtype(btn.dataset.entityId);
+            SB.emit(UISB.BUS, 'open_entity_panel', entity_id);
             break;
         }
         default: throw new Error(action);
     }
+}
+
+/**
+ * TODO: ajouter système pour voir d'autres rooms sans déplacer le player mais il faut stocker l'information dans l'UI state
+ */
+function get_current_room_id() {
+    const s = Store.get();
+    const player = Player.get(s.world.entity_repo);
+    return player.room_id;
 }

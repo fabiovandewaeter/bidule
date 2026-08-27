@@ -32,7 +32,7 @@
 ```js
 /**
  * @param {HTMLElement} container 
- * @returns {{element: HTMLElement, destroy: () => void }}
+ * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
     return Comp.create_comp_with_sub_comps(container, (el, sub_comp_manager, add_cleanup) => {
@@ -41,7 +41,7 @@ export function mount(container) {
         add_cleanup(Comp.delegate_click(el, {
             toggle_time: (event, btn) => {
                 const s = Store.get();
-                const visible = SCM.mount_or_toggle(sub_comp_manager, TIME_KEY, () => Time.mount(el));
+                const visible = SCMC.mount_or_toggle(sub_comp_manager, TIME_KEY, () => TimeC.mount(el));
                 btn.textContent = visible ? "Hide time" : "Spawn time";
                 UIState.add_log(s.ui_state, 'toggle_time');
             }
@@ -62,7 +62,7 @@ function update_toggle_button(el) {
 
 /**
  * @param {HTMLElement} container 
- * @returns {{element: HTMLElement, destroy: () => void }}
+ * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
     return Comp.create_comp(container, (el, add_cleanup) => {

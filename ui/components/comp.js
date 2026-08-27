@@ -2,14 +2,17 @@
 // @ts-check
 
 import * as SCM from './sub_comp_manager.js'
+import * as Utils from '../../utils/utils.js'
+
+/** @typedef {() => void} DestroyFunction */
 
 /**
  * Crée un composant avec un cycle de vie standard.
  * @param {HTMLElement} container
- * @param {(root: HTMLElement, add_cleanup: (fn: () => void) => void) => void | (() => void)} setup
+ * @param {(root: HTMLElement, add_cleanup: (fn: DestroyFunction) => void) => void | DestroyFunction} setup
  *        - `add_cleanup` : enregistre une fonction de nettoyage (sera appelée au destroy).
  *        - le retour éventuel de `setup` est aussi utilisé comme nettoyage.
- * @returns {{ element: HTMLElement, destroy: () => void }}
+ * @returns {{ element: HTMLElement, destroy: DestroyFunction }}
  */
 export function create_comp(container, setup) {
     const root = document.createElement('div');
@@ -40,8 +43,8 @@ export function create_comp(container, setup) {
 /**
  * Version qui gère en plus un SubCompManager.
  * @param {HTMLElement} container
- * @param {(root: HTMLElement, sub_comps: SCM.SubCompManager, addCleanup: (fn: () => void) => void) => void | (() => void)} setup
- * @returns {{ element: HTMLElement, destroy: () => void }}
+ * @param {(root: HTMLElement, sub_comps: SubCompManager, add_cleanup: (fn: DestroyFunction) => void) => void | DestroyFunction} setup
+ * @returns {{ element: HTMLElement, destroy: DestroyFunction }}
  */
 export function create_comp_with_sub_comps(container, setup) {
     return create_comp(container, (root, add_cleanup) => {
@@ -58,12 +61,11 @@ export function create_comp_with_sub_comps(container, setup) {
     });
 }
 
-//  TODO: voir pour prendre un switch au lieu d'une map ??? sinon faut recopier à la main les clés c'est nul
 /**
  * Attache un écouteur de clic par délégation sur l'élément racine.
  * @param {HTMLElement} root
  * @param {(action: string, event: Event, target: HTMLElement) => void} handler
- * @returns {() => void} fonction de désabonnement
+ * @returns {DestroyFunction}
  */
 export function delegate_click(root, handler) {
     /** @type {(event: Event) => void} */
@@ -71,16 +73,28 @@ export function delegate_click(root, handler) {
         const target = (event.target instanceof Element)
             ? event.target.closest('[data-action]')
             : null;
-        if (!target) return; // clic hors bouton → on ignore
+        if (!target) return; // clic hors bouton donc on ignore
 
         const action = target.getAttribute('data-action');
-        // if (action && action_map[action]) {
-        //     action_map[action](event, /** @type {HTMLElement} */(target));
-        // }
         if (action) {
             handler(action, event, /** @type {HTMLElement} */(target));
         }
     };
     root.addEventListener('click', on_click);
     return () => root.removeEventListener('click', on_click);
+}
+
+/**
+ * Attache un écouteur de clic par délégation sur l'élément racine.
+ * @template {Record<string, string>} T
+ * @param {HTMLElement} root
+ * @param {T} action_enum
+ * @param {(action: T[keyof T], event: Event, target: HTMLElement) => void} handler
+ * @returns {DestroyFunction} fonction de désabonnement
+ */
+export function delegate_click_with_enum(root, action_enum, handler) {
+    return delegate_click(root, (action, event, target) => {
+        if (!Utils.is_enum_value(action_enum, action)) throw new Error(`Invalid action: ${action}`);
+        handler(action, event, target);
+    });
 }

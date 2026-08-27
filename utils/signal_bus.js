@@ -59,8 +59,8 @@ export function emit(bus, signal_type, ...args) {
     const handlers = bus.listeners[signal_type];
     if (!handlers || handlers.length === 0) return;
     // Copie pour éviter les problèmes si un callback modifie les abonnements pendant l'émission
-    const toCall = handlers.slice();
-    for (const cb of toCall) {
+    const to_call = handlers.slice();
+    for (const cb of to_call) {
         cb(...args);
     }
 }

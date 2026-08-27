@@ -58,7 +58,6 @@
 /** @typedef {import('./repository.js').Repo<RoomID, Room>} RoomRepo*/
 // ----------
 
-
 // -- entity --
 /** @typedef {import('../engine/entity/entity.js').Entity} Entity*/
 /** @typedef {import('../engine/entity/entity.js').EntityID} EntityID*/
@@ -71,6 +70,11 @@
 
 // ========== utils ==========
 /** @typedef {import('./save.js').SaveStruct} SaveStruct */
+/**
+ * Extrait l'union des valeurs d'un objet constant.
+ * @template {Record<string, string>} T
+ * @typedef {T[keyof T]} EnumValue
+ */
 
 // -- deep readonly --
 /**

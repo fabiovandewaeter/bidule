@@ -9,7 +9,9 @@ import * as SB from '../../utils/signal_bus.js'
  * @typedef {'group_modified'|'entity_changed_group'} GroupUISignalType
  * @typedef {'entity_changed'} EntityUISignalType
  * 
- * @typedef {OtherUISignalType|RoomUISignalType|GroupUISignalType|EntityUISignalType} UISignalType
+ * @typedef {'open_entity_panel'|'close_entity_panel'} MainMenuUISignalType
+ * 
+ * @typedef {OtherUISignalType|RoomUISignalType|GroupUISignalType|EntityUISignalType|MainMenuUISignalType} UISignalType
  */
 
 /**@type {import('../../utils/signal_bus.js').SignalBus<UISignalType>} */

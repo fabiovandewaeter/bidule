@@ -8,6 +8,9 @@ import * as SB from '../../utils/signal_bus.js'
 import * as Store from '../core/store.js'
 import * as Clock from '../../engine/core/clock.js'
 import * as Comp from './comp.js'
+/**
+ * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
+ */
 
 /**
  * @returns {string}
@@ -58,7 +61,7 @@ export function update(el) {
 
 /**
  * @param {HTMLElement} container 
- * @returns {{element: HTMLElement, destroy: () => void }}
+ * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
     return Comp.create_comp(container, (el, add_cleanup) => {

@@ -7,8 +7,15 @@ import * as Repo from '../../utils/repository.js'
 import * as Opt from '../../utils/option.js'
 import * as SB from '../../utils/signal_bus.js'
 
+export const ROOM_TYPES = Object.freeze({
+    CITY: 'city',
+    RIVER: 'river',
+    FOREST: 'forest',
+    MOUNTAIN: 'mountain',
+});
+/** @typedef {EnumValue<ROOM_TYPES>} RoomType */
+
 /**
- * @typedef {'city'|'river'|'forest'|'mountain'} RoomType
  * @typedef {number & {__brand:"RoomID"}} RoomID
  * 
  * @typedef {Object} Room

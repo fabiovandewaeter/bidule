@@ -6,6 +6,9 @@ import * as SB from '../../utils/signal_bus.js'
 import * as UISB from '../core/signals.js'
 import * as Store from '../core/store.js'
 import * as Comp from './comp.js'
+/**
+ * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
+ */
 
 const MAX_RENDERED_LOGS = 10;
 
@@ -23,7 +26,7 @@ export function render() {
 
 /**
  * @param {HTMLElement} container 
- * @returns {{element: HTMLElement, destroy: () => void }}
+ * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
     return Comp.create_comp(container, (el, add_cleanup) => {
