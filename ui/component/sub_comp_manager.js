@@ -1,9 +1,9 @@
-// ui/components/sub_comp_manager.js
+// ui/component/sub_comp_manager.js
 // @ts-check
 
-import '../../utils/types.js'
+import "../../utils/types.js"
 /**
- * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
+ * @typedef {import("./comp.js").DestroyFunction} DestroyFunction
  */
 
 /**

@@ -2,11 +2,11 @@
 // @ts-check
 
 /**
- * @typedef {import('../scenes/scene.js').Scene} Scene
+ * @typedef {import("../scene/scene.js").Scene} Scene
  */
-import * as UISBM from './signals.js'
-import * as SBM from '../../utils/signal_bus.js'
-import '../../utils/types.js'
+import * as UISBM from "./signals.js"
+import * as SBM from "../../utils/signal_bus.js"
+import "../../utils/types.js"
 
 /**
  * @typedef {Object} UIState
@@ -20,7 +20,7 @@ import '../../utils/types.js'
  */
 export function create() {
     return {
-        scene: 'main',
+        scene: "main",
         logs: [],
         tick_interval_id: null,
     };
@@ -30,7 +30,7 @@ export function create() {
  * @param {UIState} ui 
  * @param {string} log 
  */
-export function add_log(ui, log) { ui.logs.push(log); SBM.emit(UISBM.BUS, 'logs'); }
+export function add_log(ui, log) { ui.logs.push(log); SBM.emit(UISBM.BUS, "logs"); }
 
 /**
  * @param {UIState} ui

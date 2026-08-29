@@ -1,7 +1,7 @@
 // ui/core/signals.js
 // @ts-check
 
-import * as SBM from '../../utils/signal_bus.js'
+import * as SBM from "../../utils/signal_bus.js"
 
 /** 
  * @typedef {'tick'|'logs'|'scene_switched'|'toggle_tick'|'toggle_logs'} OtherUISignalType
@@ -14,5 +14,5 @@ import * as SBM from '../../utils/signal_bus.js'
  * @typedef {OtherUISignalType|RoomUISignalType|FactionUISignalType|EntityUISignalType|MainMenuUISignalType} UISignalType
  */
 
-/**@type {import('../../utils/signal_bus.js').SignalBus<UISignalType>} */
+/**@type {import("../../utils/signal_bus.js").SignalBus<UISignalType>} */
 export const BUS = SBM.create();

@@ -4,8 +4,13 @@
 // ========== utils ==========
 /**
  * Extrait l'union des valeurs d'un objet constant.
- * @template {Record<string, string>} T
+ * @template {Record<string, unknown>} T
  * @typedef {T[keyof T]} EnumValue
+ */
+/**
+ * Extrait les clés d'un objet constant
+ * @template {Record<string, unknown>} T
+ * @typedef {keyof T} EnumKey
  */
 
 // -- deep readonly --

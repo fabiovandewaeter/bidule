@@ -1,25 +1,25 @@
-// ui/components/room_comp.js
+// ui/component/room_comp.js
 // @ts-check
 
 /**
- * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
- * @typedef {import('../../engine/map/room.js').RoomID} RoomID
+ * @typedef {import("./comp.js").DestroyFunction} DestroyFunction
+ * @typedef {import("../../engine/map/room.js").RoomID} RoomID
  */
-import '../../utils/types.js'
-import * as SBM from '../../utils/signal_bus.js'
-import * as UISBM from '../core/signals.js'
-import * as StoreM from '../core/store.js'
-import * as WorldM from '../../engine/core/world.js'
-import * as PlayerM from '../../engine/entity/player.js'
-import * as RepoM from '../../utils/repository.js'
-import * as OptM from '../../utils/option.js'
-import * as CompM from './comp.js'
-import * as UtilsM from '../../utils/utils.js'
+import "../../utils/types.js"
+import * as SBM from "../../utils/signal_bus.js"
+import * as UISBM from "../core/signals.js"
+import * as StoreM from "../core/store.js"
+import * as WorldM from "../../engine/core/world.js"
+import * as PlayerM from "../../engine/entity/player.js"
+import * as RepoM from "../../utils/repository.js"
+import * as OptM from "../../utils/option.js"
+import * as CompM from "./comp.js"
+import * as UtilsM from "../../utils/utils.js"
 
-const ACTIONS = Object.freeze({
-    MOVE_ENTITY: 'move_entity',
-    SHOW_ENTITY_MENU: 'show_entity_menu',
-});
+const ACTIONS = Object.freeze(/**@type {const}*/({
+    MOVE_ENTITY: "move_entity",
+    SHOW_ENTITY_MENU: "show_entity_menu",
+}));
 /**@typedef {EnumValue<typeof ACTIONS>} Action*/
 
 /**
@@ -44,9 +44,9 @@ export function update(el) {
     const current_room_id = get_current_room_id();
     const current_room = OptM.unwrap(RepoM.get(s.world.tower.room_repo, current_room_id));
 
-    const id = el.querySelector('.room-id');
-    const type = el.querySelector('.room-type');
-    const name = el.querySelector('.room-name');
+    const id = el.querySelector(".room-id");
+    const type = el.querySelector(".room-type");
+    const name = el.querySelector(".room-name");
 
     if (!id || !type || !name) throw new Error();
 
@@ -55,17 +55,17 @@ export function update(el) {
     name.textContent = current_room.name;
 
     // exit list
-    const exit_list = el.querySelector('.connected-rooms');
+    const exit_list = el.querySelector(".connected-rooms");
     if (!exit_list) return;
     exit_list.innerHTML = Object.entries(current_room.exits).map(([name, exit]) => (
         `<button data-action="${ACTIONS.MOVE_ENTITY}" data-room-id="${exit.target_id}">
             ${name}
         </button>`
-    )).join('');
+    )).join("");
 
-    const entity_list = el.querySelector('.visible-entities');
+    const entity_list = el.querySelector(".visible-entities");
     if (!entity_list) return;
-    let entity_list_string = '';
+    let entity_list_string = "";
     for (const entity_id of current_room.entities) {
         const entity = OptM.unwrap(RepoM.get(s.world.entity_repo, entity_id));
         entity_list_string += `<button data-action="${ACTIONS.SHOW_ENTITY_MENU}" data-entity-id="${entity.id}">
@@ -80,7 +80,7 @@ export function update(el) {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return CompM.create_comp(container, 'room-comp', (el, add_cleanup) => {
+    return CompM.create_comp(container, "room-comp", (el, add_cleanup) => {
         el.innerHTML = render();
 
         add_cleanup(CompM.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {
@@ -93,14 +93,14 @@ export function mount(container) {
                 update(el);
             }
         };
-        add_cleanup(SBM.on(UISBM.BUS, 'entity_enter_room', on_entity_enter_room));
+        add_cleanup(SBM.on(UISBM.BUS, "entity_enter_room", on_entity_enter_room));
         const on_entity_leave_room = (/**@type {RoomID}*/previous_room_id) => {
             const current_room_id = get_current_room_id();
             if (previous_room_id == current_room_id) {
                 update(el);
             }
         };
-        add_cleanup(SBM.on(UISBM.BUS, 'entity_leave_room', on_entity_leave_room));
+        add_cleanup(SBM.on(UISBM.BUS, "entity_leave_room", on_entity_leave_room));
         update(el);
     });
 }
@@ -124,7 +124,7 @@ function handle_action(action, btn) {
             // const entity = Opt.unwrap(Repo.get(s.world.entity_repo, Utils.string_to_rtype(btn.dataset.entityId)));
             // console.log(entity);
             const entity_id = UtilsM.string_to_rtype(btn.dataset.entityId);
-            SBM.emit(UISBM.BUS, 'open_entity_panel', entity_id);
+            SBM.emit(UISBM.BUS, "open_entity_panel", entity_id);
             break;
         }
         default: throw new Error(action);

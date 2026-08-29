@@ -2,10 +2,10 @@
 // @ts-check
 
 /**
- * @typedef {import('./room.js').RoomID} RoomID
+ * @typedef {import("./room.js").RoomID} RoomID
  */
-import '../../utils/types.js'
-import * as RepoM from '../../utils/repository.js'
+import "../../utils/types.js"
+import * as RepoM from "../../utils/repository.js"
 
 /**
  * @typedef {Object} Area
@@ -14,7 +14,7 @@ import * as RepoM from '../../utils/repository.js'
  * @property {RoomID[]} rooms not Record<string, RoomID> because name can change
  * 
  * @typedef {number & {__brand:"AreaID"}} AreaID
- * @typedef {import('../../utils/repository.js').Repo<AreaID, Area>} AreaRepo
+ * @typedef {import("../../utils/repository.js").Repo<AreaID, Area>} AreaRepo
  */
 
 /**

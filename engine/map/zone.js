@@ -2,11 +2,11 @@
 // @ts-check
 
 /**
- * @typedef {import('./region.js').RegionID} RegionID
- * @typedef {import('./area.js').AreaID} AreaID
+ * @typedef {import("./region.js").RegionID} RegionID
+ * @typedef {import("./area.js").AreaID} AreaID
  */
-import '../../utils/types.js'
-import * as RepoM from '../../utils/repository.js'
+import "../../utils/types.js"
+import * as RepoM from "../../utils/repository.js"
 
 /**
  * @typedef {Object} Zone
@@ -15,7 +15,7 @@ import * as RepoM from '../../utils/repository.js'
  * @property {AreaID[]} areas
  * 
  * @typedef {number & {__brand:"ZoneID"}} ZoneID
- * @typedef {import('../../utils/repository.js').Repo<ZoneID, Zone>} ZoneRepo
+ * @typedef {import("../../utils/repository.js").Repo<ZoneID, Zone>} ZoneRepo
  */
 
 /**

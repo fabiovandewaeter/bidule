@@ -1,25 +1,25 @@
-// ui/components/entity_comp.js
+// ui/component/entity_comp.js
 // @ts-check
 
 /**
- * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
- * @typedef {import('../../engine/entity/entity.js').EntityID} EntityID
+ * @typedef {import("./comp.js").DestroyFunction} DestroyFunction
+ * @typedef {import("../../engine/entity/entity.js").EntityID} EntityID
  */
-import '../../utils/types.js'
-import * as SBM from '../../utils/signal_bus.js'
-import * as UISBM from '../core/signals.js'
-import * as StoreM from '../core/store.js'
-import * as WorldM from '../../engine/core/world.js'
-import * as PlayerM from '../../engine/entity/player.js'
-import * as RepoM from '../../utils/repository.js'
-import * as OptM from '../../utils/option.js'
-import * as CompM from './comp.js'
-import * as UtilsM from '../../utils/utils.js'
+import "../../utils/types.js"
+import * as SBM from "../../utils/signal_bus.js"
+import * as UISBM from "../core/signals.js"
+import * as StoreM from "../core/store.js"
+import * as WorldM from "../../engine/core/world.js"
+import * as PlayerM from "../../engine/entity/player.js"
+import * as RepoM from "../../utils/repository.js"
+import * as OptM from "../../utils/option.js"
+import * as CompM from "./comp.js"
+import * as UtilsM from "../../utils/utils.js"
 
-const ACTIONS = Object.freeze({
-    CLOSE_PANEL: 'close_panel',
-    ADD_TO_FACTION: 'add_to_faction',
-});
+const ACTIONS = Object.freeze(/**@type {const}*/({
+    CLOSE_PANEL: "close_panel",
+    ADD_TO_FACTION: "add_to_faction",
+}));
 /**@typedef {EnumValue<typeof ACTIONS>} Action*/
 
 /**
@@ -45,11 +45,11 @@ export function update(el, entity_id) {
     const s = StoreM.get();
     const entity = OptM.unwrap(RepoM.get(s.world.entity_repo, entity_id));
 
-    const span_id = el.querySelector('.entity-id');
-    const span_name = el.querySelector('.entity-name');
-    const span_room_id = el.querySelector('.entity-room-id');
+    const span_id = el.querySelector(".entity-id");
+    const span_name = el.querySelector(".entity-name");
+    const span_room_id = el.querySelector(".entity-room-id");
     // TODO: faire faction/party/guilds et pas faction_id
-    const span_faction_id = el.querySelector('.entity-faction-id');
+    const span_faction_id = el.querySelector(".entity-faction-id");
 
     if (!span_id || !span_name || !span_room_id || !span_faction_id) throw new Error();
 
@@ -58,7 +58,7 @@ export function update(el, entity_id) {
     span_room_id.textContent = entity.room_id.toString();
     span_faction_id.textContent = OptM.is_some(entity.faction_id)
         ? entity.faction_id.value.toString()
-        : 'none';
+        : "none";
 }
 
 /**
@@ -67,7 +67,7 @@ export function update(el, entity_id) {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container, entity_id) {
-    return CompM.create_comp(container, 'entity-comp', (el, add_cleanup) => {
+    return CompM.create_comp(container, "entity-comp", (el, add_cleanup) => {
         el.innerHTML = render();
 
         add_cleanup(CompM.delegate_click_with_enum(el, ACTIONS, (action, event, btn) => {
@@ -79,7 +79,7 @@ export function mount(container, entity_id) {
                 update(el, entity_id);
             }
         };
-        add_cleanup(SBM.on(UISBM.BUS, 'entity_changed', on_entity_changed));
+        add_cleanup(SBM.on(UISBM.BUS, "entity_changed", on_entity_changed));
         update(el, entity_id);
     });
 }
@@ -93,7 +93,7 @@ function handle_action(action, btn, entity_id) {
     const s = StoreM.get();
     switch (action) {
         case ACTIONS.CLOSE_PANEL: {
-            SBM.emit(UISBM.BUS, 'close_entity_panel');
+            SBM.emit(UISBM.BUS, "close_entity_panel");
             break;
         }
         case ACTIONS.ADD_TO_FACTION: {

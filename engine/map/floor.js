@@ -2,10 +2,10 @@
 // @ts-check
 
 /**
- * @typedef {import('./region.js').RegionID} RegionID 
+ * @typedef {import("./region.js").RegionID} RegionID 
  */
-import '../../utils/types.js'
-import * as RepoM from '../../utils/repository.js'
+import "../../utils/types.js"
+import * as RepoM from "../../utils/repository.js"
 
 /**
  * @typedef {Object} Floor
@@ -14,7 +14,7 @@ import * as RepoM from '../../utils/repository.js'
  * @property {RegionID[]} regions
  * 
  * @typedef {number & {__brand:"FloorID"}} FloorID
- * @typedef {import('../../utils/repository.js').Repo<FloorID, Floor>} FloorRepo
+ * @typedef {import("../../utils/repository.js").Repo<FloorID, Floor>} FloorRepo
  */
 
 /**

@@ -2,9 +2,9 @@
 //@ts-check
 
 /**
- * @typedef {import('./event.js').TimelineEventID} TimelineEventID
+ * @typedef {import("./event.js").TimelineEventID} TimelineEventID
  */
-import '../../../utils/types.js'
+import "../../../utils/types.js"
 
 /**
  * @typedef {Object} HeapEntry

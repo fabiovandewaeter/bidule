@@ -1,7 +1,7 @@
 // utils/repository.js
 // @ts-check
 
-import './types.js'
+import "./types.js"
 import { some, none } from "./option.js"
 import { ok, err } from "./result.js"
 

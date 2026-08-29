@@ -2,18 +2,18 @@
 // @ts-check
 
 /**
- * @typedef {import('../engine/core/world.js').World} World
- * @typedef {import('../ui/core/ui_state.js').UIState} UIState
+ * @typedef {import("../engine/core/world.js").World} World
+ * @typedef {import("../ui/core/ui_state.js").UIState} UIState
  */
-import './types.js'
-import * as OptM from './option.js'
-import * as SBM from './signal_bus.js'
-import * as WorldM from '../engine/core/world.js'
-import * as UISBM from '../ui/core/signals.js'
-import * as StoreM from '../ui/core/store.js'
-import * as UIStateM from '../ui/core/ui_state.js'
+import "./types.js"
+import * as OptM from "./option.js"
+import * as SBM from "./signal_bus.js"
+import * as WorldM from "../engine/core/world.js"
+import * as UISBM from "../ui/core/signals.js"
+import * as StoreM from "../ui/core/store.js"
+import * as UIStateM from "../ui/core/ui_state.js"
 
-const STORAGE_KEY = 'bidule_save';
+const STORAGE_KEY = "bidule_save";
 
 /**
  * @typedef {Object} SaveStruct
@@ -31,7 +31,7 @@ export function save(world, ui) {
         const json = JSON.stringify(save_struct);
         localStorage.setItem(STORAGE_KEY, json);
     } catch (e) {
-        console.error('Could not save:', e);
+        console.error("Could not save:", e);
     }
 }
 
@@ -49,7 +49,7 @@ export function load() {
         }
         return OptM.none;
     } catch (e) {
-        console.error('Could not load save:', e);
+        console.error("Could not load save:", e);
         localStorage.removeItem(STORAGE_KEY);
         return OptM.none;
     }
@@ -62,9 +62,9 @@ export function clear() {
     StoreM.set_world(new_world);
     StoreM.set_ui_state(UIStateM.create());
     StoreM.set_should_save(false);
-    SBM.emit(UISBM.BUS, 'scene_switched');
+    SBM.emit(UISBM.BUS, "scene_switched");
     // Runtime.clear();
-    // const app = /**@type {HTMLElement}*/(document.getElementById('app'));
+    // const app = /**@type {HTMLElement}*/(document.getElementById("app"));
     // // Scene.render_current_scene(app, Runtime.WORLD, Runtime.UI_STATE);
     // Runtime.set_should_save(false);
     // window.zone.reload();
@@ -77,11 +77,11 @@ export function clear() {
 export function download(world, ui) {
     const save_struct = { world, ui };
     const json = JSON.stringify(save_struct, null, 2);
-    const blob = new Blob([json], { type: 'application/json' });
+    const blob = new Blob([json], { type: "application/json" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
-    a.download = 'save.json';
+    a.download = "save.json";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -90,9 +90,9 @@ export function download(world, ui) {
 
 export function upload() {
     return new Promise((resolve) => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json';
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".json";
         input.onchange = (e) => {
             const target = e.target;
             if (!(target instanceof HTMLInputElement)) throw new Error();
@@ -108,7 +108,7 @@ export function upload() {
                     // TODO: valider que les champs sont bons
                     resolve(model);
                 } catch (err) {
-                    console.error('Fichier invalide');
+                    console.error("Fichier invalide");
                     resolve(null);
                 }
             };

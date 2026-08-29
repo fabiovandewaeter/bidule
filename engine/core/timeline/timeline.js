@@ -2,11 +2,11 @@
 //@ts-check
 
 /**
- * @typedef {import('../world.js').World} World
+ * @typedef {import("../world.js").World} World
  */
-import '../../../utils/types.js'
-import * as TimelineSchedulerM from './scheduler.js'
-import * as TimelineDispatcherM from './dispatcher.js'
+import "../../../utils/types.js"
+import * as TimelineSchedulerM from "./scheduler.js"
+import * as TimelineDispatcherM from "./dispatcher.js"
 
 /**
  * Fait avancer la simulation jusqu'à `target_time` en traitant, dans l'ordre,

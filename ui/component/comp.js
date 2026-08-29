@@ -1,12 +1,16 @@
-// ui/components/comp.js
+// ui/component/comp.js
 // @ts-check
 
 /**
- * @typedef {import('./sub_comp_manager.js').SubCompManager} SubCompManager
+ * @typedef {import("./sub_comp_manager.js").SubCompManager} SubCompManager
  */
-import * as SCMM from './sub_comp_manager.js'
-import * as UtilsM from '../../utils/utils.js'
-/** @typedef {() => void} DestroyFunction */
+import * as SCMM from "./sub_comp_manager.js"
+import * as EnumM from "../../utils/enum.js"
+// /** @typedef {() => void} DestroyFunction */
+/**
+ * @callback DestroyFunction
+ * @returns {void}
+ */
 
 /**
  * Crée un composant avec un cycle de vie standard.
@@ -18,7 +22,7 @@ import * as UtilsM from '../../utils/utils.js'
  * @returns {{ element: HTMLElement, destroy: DestroyFunction }}
  */
 export function create_comp(container, name, setup) {
-    const root = document.createElement('div');
+    const root = document.createElement("div");
     root.className = name;
     /**@type {Function[]} */
     const cleanups = [];
@@ -30,7 +34,7 @@ export function create_comp(container, name, setup) {
     const destroy = () => {
         // internal_destroy();
         // d'abord les nettoyages explicites (retour du setup)
-        if (typeof internal_destroy === 'function') {
+        if (typeof internal_destroy === "function") {
             internal_destroy();
         }
         // puis tous les nettoyages enregistrés (dans l'ordre inverse d'ajout, par sécurité)
@@ -71,17 +75,17 @@ export function delegate_click(root, handler) {
     /** @type {(event: Event) => void} */
     const on_click = (event) => {
         const target = (event.target instanceof Element)
-            ? event.target.closest('[data-action]')
+            ? event.target.closest("[data-action]")
             : null;
         if (!target) return; // clic hors bouton donc on ignore
 
-        const action = target.getAttribute('data-action');
+        const action = target.getAttribute("data-action");
         if (action) {
             handler(action, event, /** @type {HTMLElement} */(target));
         }
     };
-    root.addEventListener('click', on_click);
-    return () => root.removeEventListener('click', on_click);
+    root.addEventListener("click", on_click);
+    return () => root.removeEventListener("click", on_click);
 }
 
 /**
@@ -94,7 +98,7 @@ export function delegate_click(root, handler) {
  */
 export function delegate_click_with_enum(root, action_enum, handler) {
     return delegate_click(root, (action, event, target) => {
-        if (!UtilsM.is_enum_value(action_enum, action)) throw new Error(`Invalid action: ${action}`);
+        if (!EnumM.is_enum_value(action_enum, action)) throw new Error(`Invalid action: ${action}`);
         handler(action, event, target);
     });
 }

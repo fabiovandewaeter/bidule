@@ -2,12 +2,12 @@
 //@ts-check
 
 /**
- * @typedef {import('../world').World} World
+ * @typedef {import("../world").World} World
  */
 
 /**
- * @typedef {import('./event.js').TimelineEvent} TimelineEvent
- * @typedef {import('./event.js').TimelineEventType} TimelineEventType
+ * @typedef {import("./event.js").TimelineEvent} TimelineEvent
+ * @typedef {import("./event.js").TimelineEventType} TimelineEventType
  * 
  * @typedef {(world: World, event: TimelineEvent) => void} TimelineEventHandler
  */

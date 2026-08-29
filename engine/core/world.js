@@ -2,29 +2,29 @@
 //@ts-check
 
 /**
- * @typedef {import('../entity/entity.js').EntityID} EntityID
- * @typedef {import('../entity/entity.js').EntityRepo} EntityRepo
- * @typedef {import('../entity/faction.js').FactionID} FactionID
- * @typedef {import('../entity/faction.js').FactionRepo} FactionRepo
- * @typedef {import('../map/room.js').RoomID} RoomID
- * @typedef {import('../map/tower.js').Tower} Tower
- * @typedef {import('./clock.js').Clock} Clock
- * @typedef {import('./timeline/scheduler.js').TimelineScheduler} TimelineScheduler
+ * @typedef {import("../entity/entity.js").EntityID} EntityID
+ * @typedef {import("../entity/entity.js").EntityRepo} EntityRepo
+ * @typedef {import("../entity/faction.js").FactionID} FactionID
+ * @typedef {import("../entity/faction.js").FactionRepo} FactionRepo
+ * @typedef {import("../map/room.js").RoomID} RoomID
+ * @typedef {import("../map/tower.js").Tower} Tower
+ * @typedef {import("./clock.js").Clock} Clock
+ * @typedef {import("./timeline/scheduler.js").TimelineScheduler} TimelineScheduler
  */
-import '../../utils/types.js'
-import * as ClockM from './clock.js'
-import * as TimelineSchedulerM from './timeline/scheduler.js'
-import * as TimelineM from './timeline/timeline.js'
-import * as TowerM from '../map/tower.js'
-import * as EntityM from '../entity/entity.js'
-import * as PlayerM from '../entity/player.js'
-import * as RepoM from '../../utils/repository.js'
-import * as OptM from '../../utils/option.js'
-import * as SBM from '../../utils/signal_bus.js'
-import * as ESBM from './signals.js'
-import * as UISBM from '../../ui/core/signals.js'
-import * as RoomM from '../map/room.js'
-import * as FactionM from '../entity/faction.js'
+import "../../utils/types.js"
+import * as ClockM from "./clock.js"
+import * as TimelineSchedulerM from "./timeline/scheduler.js"
+import * as TimelineM from "./timeline/timeline.js"
+import * as TowerM from "../map/tower.js"
+import * as EntityM from "../entity/entity.js"
+import * as PlayerM from "../entity/player.js"
+import * as RepoM from "../../utils/repository.js"
+import * as OptM from "../../utils/option.js"
+import * as SBM from "../../utils/signal_bus.js"
+import * as ESBM from "./signals.js"
+import * as UISBM from "../../ui/core/signals.js"
+import * as RoomM from "../map/room.js"
+import * as FactionM from "../entity/faction.js"
 
 /**
  * @typedef {Object} World
@@ -54,13 +54,13 @@ export function create() {
 export function init(world) {
     const map = TowerM.init(world.tower);
     // TODO: système pour ajouter les entity directement dans leur room au spawn
-    const player = PlayerM.spawn(world.entity_repo, 'The player', TowerM.DEFAULT_ROOM_ID);
-    const second_entity = EntityM.spawn(world.entity_repo, 'entity 2', TowerM.DEFAULT_ROOM_ID);
+    const player = PlayerM.spawn(world.entity_repo, "The player", TowerM.DEFAULT_ROOM_ID);
+    const second_entity = EntityM.spawn(world.entity_repo, "entity 2", TowerM.DEFAULT_ROOM_ID);
 
-    const faction = FactionM.spawn(world.faction_repo, 'Faction !');
+    const faction = FactionM.spawn(world.faction_repo, "Faction !");
     change_entity_faction(world, player.id, faction.id);
 
-    const default_room = OptM.expect(RepoM.get(world.tower.room_repo, TowerM.DEFAULT_ROOM_ID), 'Room of id DEFAULT_ROOM_ID shoud exist');
+    const default_room = OptM.expect(RepoM.get(world.tower.room_repo, TowerM.DEFAULT_ROOM_ID), "Room of id DEFAULT_ROOM_ID shoud exist");
     RoomM.add_entity(world.tower.room_repo, default_room.id, player.id);
     RoomM.add_entity(world.tower.room_repo, default_room.id, second_entity.id);
 }
@@ -110,9 +110,9 @@ export function move_entity(world, entity_id, target_id) {
     RoomM.add_entity(world.tower.room_repo, target_id, entity_id);
 
     // TODO: voir si ça spam beaucoup
-    SBM.emit(ESBM.BUS, 'entity_moved', entity_id);
-    SBM.emit(UISBM.BUS, 'entity_leave_room', previous_room_id);
-    SBM.emit(UISBM.BUS, 'entity_enter_room', target_id);
+    SBM.emit(ESBM.BUS, "entity_moved", entity_id);
+    SBM.emit(UISBM.BUS, "entity_leave_room", previous_room_id);
+    SBM.emit(UISBM.BUS, "entity_enter_room", target_id);
 }
 
 /**
@@ -131,7 +131,7 @@ export function change_entity_faction(world, entity_id, faction_id) {
     FactionM.add_entity(world.faction_repo, faction_id, entity_id);
 
     // TODO: voir si ça spam beaucoup
-    SBM.emit(UISBM.BUS, 'entity_changed_faction', faction_id, entity_id);
+    SBM.emit(UISBM.BUS, "entity_changed_faction", faction_id, entity_id);
 }
 
 // /**

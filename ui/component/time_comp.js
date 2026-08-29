@@ -1,17 +1,17 @@
-// ui/components/time_comp.js
+// ui/component/time_comp.js
 // @ts-check
 
 /**
- * @typedef {import('./comp.js').DestroyFunction} DestroyFunction
- * @typedef {import('../core/store.js').GameStore} GameStore
+ * @typedef {import("./comp.js").DestroyFunction} DestroyFunction
+ * @typedef {import("../core/store.js").GameStore} GameStore
  */
-import '../../utils/types.js'
-import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from '../../utils/const.js'
-import * as UISBM from '../core/signals.js'
-import * as SBM from '../../utils/signal_bus.js'
-import * as StoreM from '../core/store.js'
-import * as ClockM from '../../engine/core/clock.js'
-import * as CompM from './comp.js'
+import "../../utils/types.js"
+import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from "../../utils/const.js"
+import * as UISBM from "../core/signals.js"
+import * as SBM from "../../utils/signal_bus.js"
+import * as StoreM from "../core/store.js"
+import * as ClockM from "../../engine/core/clock.js"
+import * as CompM from "./comp.js"
 
 /**
  * @returns {string}
@@ -41,12 +41,12 @@ export function update(el) {
     let s = StoreM.get();
     const accumulated_seconds = get_accumulated_seconds(s);
 
-    const s_counter = el.querySelector('.time-seconds');
-    const m_counter = el.querySelector('.time-minutes');
-    const h_counter = el.querySelector('.time-hours');
-    const d_counter = el.querySelector('.time-days');
-    const w_counter = el.querySelector('.time-weeks');
-    const y_counter = el.querySelector('.time-years');
+    const s_counter = el.querySelector(".time-seconds");
+    const m_counter = el.querySelector(".time-minutes");
+    const h_counter = el.querySelector(".time-hours");
+    const d_counter = el.querySelector(".time-days");
+    const w_counter = el.querySelector(".time-weeks");
+    const y_counter = el.querySelector(".time-years");
 
     if (!s_counter || !m_counter || !h_counter || !d_counter || !w_counter || !y_counter) throw new Error();
 
@@ -63,10 +63,10 @@ export function update(el) {
  * @returns {{element: HTMLElement, destroy: DestroyFunction }}
  */
 export function mount(container) {
-    return CompM.create_comp(container, 'time-comp', (el, add_cleanup) => {
+    return CompM.create_comp(container, "time-comp", (el, add_cleanup) => {
         el.innerHTML = render();
 
-        add_cleanup(SBM.on(UISBM.BUS, 'tick', () => update(el)));
+        add_cleanup(SBM.on(UISBM.BUS, "tick", () => update(el)));
         update(el);
     });
 }
@@ -74,14 +74,14 @@ export function mount(container) {
 // export function update_all() {
 //     let store = Store.get();
 //     const accumulated_seconds = get_accumulated_seconds(store);
-//     document.querySelectorAll('.time-comp').forEach(
+//     document.querySelectorAll(".time-comp").forEach(
 //         time => {
-//             const s_counter = time.querySelector('.time-seconds');
-//             const m_counter = time.querySelector('.time-minutes');
-//             const h_counter = time.querySelector('.time-hours');
-//             const d_counter = time.querySelector('.time-days');
-//             const w_counter = time.querySelector('.time-weeks');
-//             const y_counter = time.querySelector('.time-years');
+//             const s_counter = time.querySelector(".time-seconds");
+//             const m_counter = time.querySelector(".time-minutes");
+//             const h_counter = time.querySelector(".time-hours");
+//             const d_counter = time.querySelector(".time-days");
+//             const w_counter = time.querySelector(".time-weeks");
+//             const y_counter = time.querySelector(".time-years");
 
 //             if (!s_counter || !m_counter || !h_counter || !d_counter || !w_counter || !y_counter) throw new Error();
 

@@ -2,16 +2,16 @@
 //@ts-check
 
 /**
- * @typedef {import('./entity.js').Entity} Entity
- * @typedef {import('./entity.js').EntityID} EntityID
- * @typedef {import('./entity.js').EntityRepo} EntityRepo
- * @typedef {import('./faction.js').FactionID} FactionID
- * @typedef {import('../map/room.js').RoomID} RoomID
+ * @typedef {import("./entity.js").Entity} Entity
+ * @typedef {import("./entity.js").EntityID} EntityID
+ * @typedef {import("./entity.js").EntityRepo} EntityRepo
+ * @typedef {import("./faction.js").FactionID} FactionID
+ * @typedef {import("../map/room.js").RoomID} RoomID
  */
-import '../../utils/types.js'
-import * as OptM from '../../utils/option.js'
-import * as RepoM from '../../utils/repository.js'
-import * as EntityM from './entity.js'
+import "../../utils/types.js"
+import * as OptM from "../../utils/option.js"
+import * as RepoM from "../../utils/repository.js"
+import * as EntityM from "./entity.js"
 
 /** @type {EntityID} */
 export const ID = /**@type {EntityID}*/(0);

@@ -2,10 +2,10 @@
 //@ts-check
 
 /**
- * @typedef {import('./entity.js').EntityID} EntityID
- * @typedef {import('../map/room.js').RoomID} RoomID
+ * @typedef {import("./entity.js").EntityID} EntityID
+ * @typedef {import("../map/room.js").RoomID} RoomID
  */
-import '../../utils/types.js'
+import "../../utils/types.js"
 
 /**
  * @typedef {Object} Group

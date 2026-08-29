@@ -2,16 +2,16 @@
 //@ts-check
 
 /**
- * @typedef {import('./entity.js').EntityID} EntityID
- * @typedef {import('./group.js').Group} Group
- * @typedef {import('../map/room.js').RoomID} RoomID
+ * @typedef {import("./entity.js").EntityID} EntityID
+ * @typedef {import("./group.js").Group} Group
+ * @typedef {import("../map/room.js").RoomID} RoomID
  */
-import '../../utils/types.js'
-import * as RepoM from '../../utils/repository.js'
-import * as OptM from '../../utils/option.js'
-import * as SBM from '../../utils/signal_bus.js'
-import * as UISBM from '../../ui/core/signals.js'
-import * as GroupM from './group.js'
+import "../../utils/types.js"
+import * as RepoM from "../../utils/repository.js"
+import * as OptM from "../../utils/option.js"
+import * as SBM from "../../utils/signal_bus.js"
+import * as UISBM from "../../ui/core/signals.js"
+import * as GroupM from "./group.js"
 
 const MAX_SIZE = 500;
 
@@ -22,7 +22,7 @@ const MAX_SIZE = 500;
  * @property {Group} group
  * 
  * @typedef {number & {__brand:"FactionID"}} FactionID
- * @typedef {import('../../utils/repository.js').Repo<FactionID, Faction>} FactionRepo
+ * @typedef {import("../../utils/repository.js").Repo<FactionID, Faction>} FactionRepo
  */
 
 /**
@@ -47,7 +47,7 @@ export function spawn(repo, name, max_size = MAX_SIZE) {
 export function add_entity(faction_repo, faction_id, entity_id) {
     const faction = OptM.unwrap(RepoM.get(faction_repo, faction_id));
     GroupM.add_entity(faction.group, entity_id);
-    SBM.emit(UISBM.BUS, 'faction_modified', faction_id);
+    SBM.emit(UISBM.BUS, "faction_modified", faction_id);
 }
 /**
  * passer par méthodes du World à la place
@@ -58,5 +58,5 @@ export function add_entity(faction_repo, faction_id, entity_id) {
 export function remove_entity(faction_repo, faction_id, entity_id) {
     const faction = OptM.unwrap(RepoM.get(faction_repo, faction_id));
     GroupM.remove_entity(faction.group, entity_id);
-    SBM.emit(UISBM.BUS, 'faction_modified', faction_id);
+    SBM.emit(UISBM.BUS, "faction_modified", faction_id);
 }

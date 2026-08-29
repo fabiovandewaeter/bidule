@@ -2,15 +2,15 @@
 //@ts-check
 
 /**
- * @typedef {import('./heap.js').HeapEntry} HeapEntry
- * @typedef {import('./event.js').TimelineEventType} TimelineEventType
- * @typedef {import('./event.js').TimelineEvent} TimelineEvent
- * @typedef {import('./event.js').TimelineEventID} TimelineEventID
- * @typedef {import('./event.js').TimelineEventRepo} TimelineEventRepo
+ * @typedef {import("./heap.js").HeapEntry} HeapEntry
+ * @typedef {import("./event.js").TimelineEventType} TimelineEventType
+ * @typedef {import("./event.js").TimelineEvent} TimelineEvent
+ * @typedef {import("./event.js").TimelineEventID} TimelineEventID
+ * @typedef {import("./event.js").TimelineEventRepo} TimelineEventRepo
  */
-import '../../../utils/types.js'
-import * as HeapM from './heap.js'
-import * as RepoM from '../../../utils/repository.js'
+import "../../../utils/types.js"
+import * as HeapM from "./heap.js"
+import * as RepoM from "../../../utils/repository.js"
 
 /**
  * @typedef {Object} TimelineScheduler
@@ -94,13 +94,13 @@ function purge_stale(scheduler) {
 // const CRAFT_COMPLETE_HANDLERS = {
 // };
 // export function init_truc() {
-//     Event.register('craft_complete', (world, event, scheduler) => {
+//     Event.register("craft_complete", (world, event, scheduler) => {
 //         const machine = world.machines[event.payload.machineId];
 //         // // Ici on réagit différemment selon le type de machine
 //         // switch (machine.type) {
-//         //     case 'forge': handleForgeComplete(world, machine, scheduler); break;
-//         //     case 'alambic': handleAlambicComplete(world, machine, scheduler); break;
-//         //     case 'botanique': handleBotaniqueComplete(world, machine, scheduler); break;
+//         //     case "forge": handleForgeComplete(world, machine, scheduler); break;
+//         //     case "alambic": handleAlambicComplete(world, machine, scheduler); break;
+//         //     case "botanique": handleBotaniqueComplete(world, machine, scheduler); break;
 //         //     // etc.
 //         // }
 //         CRAFT_COMPLETE_HANDLERS[machine.type](world, machine, scheduler);
