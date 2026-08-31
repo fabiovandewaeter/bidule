@@ -1,12 +1,12 @@
 // ui/scene/scene.js
 // @ts-check
 
-import * as MainSceneM from "./main_scene.js"
-import * as MenuSceneM from "./menu_scene.js"
-import * as StoreM from "../core/store.js"
-import * as OptM from "../../utils/option.js"
-import * as UISBM from "../core/signals.js"
-import * as SBM from "../../utils/signal_bus.js"
+import * as MainSceneM from "./main_scene.js";
+import * as MenuSceneM from "./menu_scene.js";
+import * as StoreM from "../core/store.js";
+import * as OptM from "../../utils/option.js";
+import * as UISBM from "../core/signals.js";
+import * as SBM from "../../utils/signal_bus.js";
 /**
  * @typedef {import("../component/comp.js").DestroyFunction} DestroyFunction
  */

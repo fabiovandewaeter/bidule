@@ -1,5 +1,5 @@
 // engine/utils/gauge.js
-//@ts-check
+// @ts-check
 
 /**
  * @typedef {Object} Gauge

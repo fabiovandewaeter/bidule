@@ -1,5 +1,5 @@
 // engine/entity/group.js
-//@ts-check
+// @ts-check
 
 /**
  * @typedef {import("./entity.js").EntityID} EntityID
@@ -7,11 +7,11 @@
  * @typedef {import("../map/room.js").RoomID} RoomID
  */
 import "../../utils/types.js"
-import * as RepoM from "../../utils/repository.js"
-import * as OptM from "../../utils/option.js"
-import * as SBM from "../../utils/signal_bus.js"
-import * as UISBM from "../../ui/core/signals.js"
-import * as GroupM from "./group.js"
+import * as RepoM from "../../utils/repository.js";
+import * as OptM from "../../utils/option.js";
+import * as SBM from "../../utils/signal_bus.js";
+import * as UISBM from "../../ui/core/signals.js";
+import * as GroupM from "./group.js";
 
 const MAX_SIZE = 500;
 

@@ -7,16 +7,16 @@
  * @typedef {import("../../engine/entity/entity.js").EntityID} EntityID
  */
 import "../../utils/types.js"
-import * as TimeCM from "../component/time_comp.js"
-import * as ControlCM from "../component/controls_comp.js"
-import * as RoomCM from "../component/room_comp.js"
-import * as MenuCM from "../component/menu_comp.js"
-import * as LogCM from "../component/logs_comp.js"
-import * as CompM from "../component/comp.js"
-import * as EntityCM from "../component/entity_comp.js"
-import * as SCMM from "../component/sub_comp_manager.js"
-import * as UISBM from "../core/signals.js"
-import * as SBM from "../../utils/signal_bus.js"
+import * as TimeCM from "../component/time_comp.js";
+import * as ControlCM from "../component/controls_comp.js";
+import * as RoomCM from "../component/room_comp.js";
+import * as MenuCM from "../component/menu_comp.js";
+import * as LogCM from "../component/logs_comp.js";
+import * as CompM from "../component/comp.js";
+import * as EntityCM from "../component/entity_comp.js";
+import * as SCMM from "../component/sub_comp_manager.js";
+import * as UISBM from "../core/signals.js";
+import * as SBM from "../../utils/signal_bus.js";
 
 /**@type {SubCompKey} */
 const ENTITY_PANEL_KEY = "entity_panel";

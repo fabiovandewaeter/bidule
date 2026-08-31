@@ -5,13 +5,13 @@
  * @typedef {import("../component/comp.js").DestroyFunction} DestroyFunction
  */
 import "../../utils/types.js"
-import * as SceneM from "./scene.js"
-import * as UIStateM from "../core/ui_state.js"
-import * as StoreM from "../core/store.js"
-import * as UISBM from "../core/signals.js"
-import * as SBM from "../../utils/signal_bus.js"
-import * as EnumM from "../../utils/enum.js"
-import * as CompM from "../component/comp.js"
+import * as SceneM from "./scene.js";
+import * as UIStateM from "../core/ui_state.js";
+import * as StoreM from "../core/store.js";
+import * as UISBM from "../core/signals.js";
+import * as SBM from "../../utils/signal_bus.js";
+import * as EnumM from "../../utils/enum.js";
+import * as CompM from "../component/comp.js";
 
 const ACTIONS = Object.freeze(/**@type {const}*/({
     SWITCH_SCENE: "switch_scene",

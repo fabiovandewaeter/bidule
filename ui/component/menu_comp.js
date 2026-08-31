@@ -7,11 +7,11 @@
  * @typedef {import("./sub_comp_manager.js").SubCompManager} SubCompManager
  */
 import "../../utils/types.js"
-import * as StoreM from "../core/store.js"
-import * as UIStateM from "../core/ui_state.js"
-import * as TimeCM from "./time_comp.js"
-import * as CompM from "./comp.js"
-import * as SCMM from "./sub_comp_manager.js"
+import * as StoreM from "../core/store.js";
+import * as UIStateM from "../core/ui_state.js";
+import * as TimeCM from "./time_comp.js";
+import * as CompM from "./comp.js";
+import * as SCMM from "./sub_comp_manager.js";
 
 /**@type {SubCompKey} */
 const TIME_KEY = "time";

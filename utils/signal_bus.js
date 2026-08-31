@@ -13,10 +13,6 @@ import "./types.js"
  * @typedef {Object} SignalBus
  * @property {Partial<Record<SType, Function[]>>} listeners
  */
-//  * @property {(signal_type: signal_typeName, callback: Function) => () => void} on
-//  * @property {(signal_type: signal_typeName, callback: Function) => void} off
-//  * @property {(signal_type: signal_typeName, ...args: any[]) => void} emit
-//  * @property {Object.<signal_typeName, Function[]>} listeners
 
 /**
  * @template {SignalType} SType

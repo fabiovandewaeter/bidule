@@ -1,14 +1,14 @@
 // engine/entity/entity.js
-//@ts-check
+// @ts-check
 
 /**
  * @typedef {import("./faction.js").FactionID} FactionID
  * @typedef {import("../map/room.js").RoomID} RoomID
  */
-import * as UISBM from "../../ui/core/signals.js"
-import * as RepoM from "../../utils/repository.js"
-import * as OptM from "../../utils/option.js"
-import * as SBM from "../../utils/signal_bus.js"
+import * as UISBM from "../../ui/core/signals.js";
+import * as RepoM from "../../utils/repository.js";
+import * as OptM from "../../utils/option.js";
+import * as SBM from "../../utils/signal_bus.js";
 
 /**
  * @typedef {Object} Entity

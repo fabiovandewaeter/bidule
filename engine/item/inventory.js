@@ -1,5 +1,5 @@
 // engine/item/inventory.js
-//@ts-check
+// @ts-check
 
 /**
  * @typedef {Object} Inventory

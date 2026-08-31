@@ -1,18 +1,18 @@
 // ui/core/signals.js
 // @ts-check
 
-import * as SBM from "../../utils/signal_bus.js"
+import * as SBM from "../../utils/signal_bus.js";
 
 /** 
- * @typedef {'tick'|'logs'|'scene_switched'|'toggle_tick'|'toggle_logs'} OtherUISignalType
- * @typedef {'entity_enter_room'|'entity_leave_room'|'room_modified'} RoomUISignalType
- * @typedef {'faction_modified'|'entity_changed_faction'} FactionUISignalType
- * @typedef {'entity_changed'} EntityUISignalType
+ * @typedef {"tick"|"logs"|"scene_switched"|"toggle_tick"|"toggle_logs"} OtherUISignal
+ * @typedef {"entity_enter_room"|"entity_leave_room"|"room_modified"} RoomUISignal
+ * @typedef {"faction_modified"|"entity_changed_faction"} FactionUISignal
+ * @typedef {"entity_changed"} EntityUISignal
  * 
- * @typedef {'open_entity_panel'|'close_entity_panel'} MainMenuUISignalType
+ * @typedef {"open_entity_panel"|"close_entity_panel"} MainMenuUISignal
  * 
- * @typedef {OtherUISignalType|RoomUISignalType|FactionUISignalType|EntityUISignalType|MainMenuUISignalType} UISignalType
+ * @typedef {OtherUISignal|RoomUISignal|FactionUISignal|EntityUISignal|MainMenuUISignal} UISignal
  */
 
-/**@type {import("../../utils/signal_bus.js").SignalBus<UISignalType>} */
+/**@type {import("../../utils/signal_bus.js").SignalBus<UISignal>} */
 export const BUS = SBM.create();

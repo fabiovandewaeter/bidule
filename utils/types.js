@@ -10,7 +10,7 @@
 /**
  * Extrait les clés d'un objet constant
  * @template {Record<string, unknown>} T
- * @typedef {keyof T} EnumKey
+ * @typedef {keyof T & string} EnumKey
  */
 
 // -- deep readonly --

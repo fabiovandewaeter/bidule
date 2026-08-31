@@ -1,5 +1,5 @@
 // engine/item/quality.js
-//@ts-check
+// @ts-check
 
 export const QUALITIES = Object.freeze(/**@type {const}*/({
     POOR: { name: "poor", multiplier: 0.8 },

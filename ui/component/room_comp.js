@@ -6,15 +6,15 @@
  * @typedef {import("../../engine/map/room.js").RoomID} RoomID
  */
 import "../../utils/types.js"
-import * as SBM from "../../utils/signal_bus.js"
-import * as UISBM from "../core/signals.js"
-import * as StoreM from "../core/store.js"
-import * as WorldM from "../../engine/core/world.js"
-import * as PlayerM from "../../engine/entity/player.js"
-import * as RepoM from "../../utils/repository.js"
-import * as OptM from "../../utils/option.js"
-import * as CompM from "./comp.js"
-import * as UtilsM from "../../utils/utils.js"
+import * as SBM from "../../utils/signal_bus.js";
+import * as UISBM from "../core/signals.js";
+import * as StoreM from "../core/store.js";
+import * as WorldM from "../../engine/core/world.js";
+import * as PlayerM from "../../engine/entity/player.js";
+import * as RepoM from "../../utils/repository.js";
+import * as OptM from "../../utils/option.js";
+import * as CompM from "./comp.js";
+import * as UtilsM from "../../utils/utils.js";
 
 const ACTIONS = Object.freeze(/**@type {const}*/({
     MOVE_ENTITY: "move_entity",

@@ -1,5 +1,5 @@
 // engine/core/timeline/types.js
-//@ts-check
+// @ts-check
 
 // craft_complete, building_complete, potion_effect ...
 

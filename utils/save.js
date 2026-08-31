@@ -6,12 +6,12 @@
  * @typedef {import("../ui/core/ui_state.js").UIState} UIState
  */
 import "./types.js"
-import * as OptM from "./option.js"
-import * as SBM from "./signal_bus.js"
-import * as WorldM from "../engine/core/world.js"
-import * as UISBM from "../ui/core/signals.js"
-import * as StoreM from "../ui/core/store.js"
-import * as UIStateM from "../ui/core/ui_state.js"
+import * as OptM from "./option.js";
+import * as SBM from "./signal_bus.js";
+import * as WorldM from "../engine/core/world.js";
+import * as UISBM from "../ui/core/signals.js";
+import * as StoreM from "../ui/core/store.js";
+import * as UIStateM from "../ui/core/ui_state.js";
 
 const STORAGE_KEY = "bidule_save";
 

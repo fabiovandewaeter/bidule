@@ -1,5 +1,5 @@
 // engine/core/timeline/scheduler.js
-//@ts-check
+// @ts-check
 
 /**
  * @typedef {import("./heap.js").HeapEntry} HeapEntry
@@ -9,8 +9,8 @@
  * @typedef {import("./event.js").TimelineEventRepo} TimelineEventRepo
  */
 import "../../../utils/types.js"
-import * as HeapM from "./heap.js"
-import * as RepoM from "../../../utils/repository.js"
+import * as HeapM from "./heap.js";
+import * as RepoM from "../../../utils/repository.js";
 
 /**
  * @typedef {Object} TimelineScheduler

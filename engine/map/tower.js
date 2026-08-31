@@ -11,8 +11,8 @@
  * @typedef {import("./room.js").RoomRepo} RoomRepo
  */
 import "../../utils/types.js"
-import * as RoomM from "./room.js"
-import * as RepoM from "../../utils/repository.js"
+import * as RoomM from "./room.js";
+import * as RepoM from "../../utils/repository.js";
 
 // Tower > Floor> Region > Zone > Area > Room
 

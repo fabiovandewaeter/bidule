@@ -4,8 +4,8 @@
 /**
  * @typedef {import("./sub_comp_manager.js").SubCompManager} SubCompManager
  */
-import * as SCMM from "./sub_comp_manager.js"
-import * as EnumM from "../../utils/enum.js"
+import * as SCMM from "./sub_comp_manager.js";
+import * as EnumM from "../../utils/enum.js";
 // /** @typedef {() => void} DestroyFunction */
 /**
  * @callback DestroyFunction

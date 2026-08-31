@@ -1,5 +1,5 @@
 // engine/entity/player.js
-//@ts-check
+// @ts-check
 
 /**
  * @typedef {import("./entity.js").Entity} Entity
@@ -9,9 +9,9 @@
  * @typedef {import("../map/room.js").RoomID} RoomID
  */
 import "../../utils/types.js"
-import * as OptM from "../../utils/option.js"
-import * as RepoM from "../../utils/repository.js"
-import * as EntityM from "./entity.js"
+import * as OptM from "../../utils/option.js";
+import * as RepoM from "../../utils/repository.js";
+import * as EntityM from "./entity.js";
 
 /** @type {EntityID} */
 export const ID = /**@type {EntityID}*/(0);

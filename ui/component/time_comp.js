@@ -6,12 +6,12 @@
  * @typedef {import("../core/store.js").GameStore} GameStore
  */
 import "../../utils/types.js"
-import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from "../../utils/const.js"
-import * as UISBM from "../core/signals.js"
-import * as SBM from "../../utils/signal_bus.js"
-import * as StoreM from "../core/store.js"
-import * as ClockM from "../../engine/core/clock.js"
-import * as CompM from "./comp.js"
+import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from "../../utils/const.js";
+import * as UISBM from "../core/signals.js";
+import * as SBM from "../../utils/signal_bus.js";
+import * as StoreM from "../core/store.js";
+import * as ClockM from "../../engine/core/clock.js";
+import * as CompM from "./comp.js";
 
 /**
  * @returns {string}

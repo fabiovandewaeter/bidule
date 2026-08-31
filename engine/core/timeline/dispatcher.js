@@ -1,5 +1,5 @@
 // engine/core/timeline/dispatcher.js
-//@ts-check
+// @ts-check
 
 /**
  * @typedef {import("../world").World} World

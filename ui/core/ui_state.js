@@ -4,8 +4,8 @@
 /**
  * @typedef {import("../scene/scene.js").Scene} Scene
  */
-import * as UISBM from "./signals.js"
-import * as SBM from "../../utils/signal_bus.js"
+import * as UISBM from "./signals.js";
+import * as SBM from "../../utils/signal_bus.js";
 import "../../utils/types.js"
 
 /**

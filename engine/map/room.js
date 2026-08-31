@@ -5,10 +5,10 @@
  * @typedef {import("../entity/entity.js").EntityID} EntityID
  */
 import "../../utils/types.js"
-import * as UISBM from "../../ui/core/signals.js"
-import * as RepoM from "../../utils/repository.js"
-import * as OptM from "../../utils/option.js"
-import * as SBM from "../../utils/signal_bus.js"
+import * as UISBM from "../../ui/core/signals.js";
+import * as RepoM from "../../utils/repository.js";
+import * as OptM from "../../utils/option.js";
+import * as SBM from "../../utils/signal_bus.js";
 
 export const ROOM_TYPES = Object.freeze(/**@type {const}*/({
     CITY: "city",

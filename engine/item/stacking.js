@@ -1,7 +1,7 @@
 // engine/item/stacking.js
-//@ts-check
+// @ts-check
 
-import * as UtilsM from "../../utils/utils.js"
+import * as UtilsM from "../../utils/utils.js";
 
 /**
  * @typedef {Object} ItemStack

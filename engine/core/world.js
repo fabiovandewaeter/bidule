@@ -1,5 +1,5 @@
 // engine/core/world.js
-//@ts-check
+// @ts-check
 
 /**
  * @typedef {import("../entity/entity.js").EntityID} EntityID
@@ -12,19 +12,19 @@
  * @typedef {import("./timeline/scheduler.js").TimelineScheduler} TimelineScheduler
  */
 import "../../utils/types.js"
-import * as ClockM from "./clock.js"
-import * as TimelineSchedulerM from "./timeline/scheduler.js"
-import * as TimelineM from "./timeline/timeline.js"
-import * as TowerM from "../map/tower.js"
-import * as EntityM from "../entity/entity.js"
-import * as PlayerM from "../entity/player.js"
-import * as RepoM from "../../utils/repository.js"
-import * as OptM from "../../utils/option.js"
-import * as SBM from "../../utils/signal_bus.js"
-import * as ESBM from "./signals.js"
-import * as UISBM from "../../ui/core/signals.js"
-import * as RoomM from "../map/room.js"
-import * as FactionM from "../entity/faction.js"
+import * as ClockM from "./clock.js";
+import * as TimelineSchedulerM from "./timeline/scheduler.js";
+import * as TimelineM from "./timeline/timeline.js";
+import * as TowerM from "../map/tower.js";
+import * as EntityM from "../entity/entity.js";
+import * as PlayerM from "../entity/player.js";
+import * as RepoM from "../../utils/repository.js";
+import * as OptM from "../../utils/option.js";
+import * as SBM from "../../utils/signal_bus.js";
+import * as ESBM from "./signals.js";
+import * as UISBM from "../../ui/core/signals.js";
+import * as RoomM from "../map/room.js";
+import * as FactionM from "../entity/faction.js";
 
 /**
  * @typedef {Object} World

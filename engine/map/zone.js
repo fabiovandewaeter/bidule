@@ -6,7 +6,7 @@
  * @typedef {import("./area.js").AreaID} AreaID
  */
 import "../../utils/types.js"
-import * as RepoM from "../../utils/repository.js"
+import * as RepoM from "../../utils/repository.js";
 
 /**
  * @typedef {Object} Zone

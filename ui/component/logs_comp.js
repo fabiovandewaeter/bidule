@@ -5,10 +5,10 @@
  * @typedef {import("./comp.js").DestroyFunction} DestroyFunction
  */
 import "../../utils/types.js"
-import * as SBM from "../../utils/signal_bus.js"
-import * as UISBM from "../core/signals.js"
-import * as StoreM from "../core/store.js"
-import * as CompM from "./comp.js"
+import * as SBM from "../../utils/signal_bus.js";
+import * as UISBM from "../core/signals.js";
+import * as StoreM from "../core/store.js";
+import * as CompM from "./comp.js";
 
 const MAX_RENDERED_LOGS = 10;
 

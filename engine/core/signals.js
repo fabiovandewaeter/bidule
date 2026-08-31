@@ -1,14 +1,15 @@
 // engine/core/signals.js
-//@ts-check
+// @ts-check
 
-import * as SBM from "../../utils/signal_bus.js"
+import * as SBM from "../../utils/signal_bus.js";
 
-/** @typedef {'entity_killed'|'entity_moved'} EngineSignalType*/
-
-/**@type {import("../../utils/signal_bus.js").SignalBus<EngineSignalType>} */
-export const BUS = SBM.create();
+// TODO: voir comment faire pour serialiser/save/sauvegarder ceux qu'on enregistre dynamiquement par exemple quand on démarre une quete au milieu de la parte, pour que ça se relance au meme état (stoquer dans une structure l'avancement et autres) et r'ajouter le hook et autres (par exemple parcourir les trucs sauvegardés et avec un dispatch dans truc quete ou autres)
 
 // transmet une informations pour: progression dans une quests (pour guilde des aventuriers ou bosses globaux notamment), honor/factions, passage secret etc.
+/** @typedef {'entity_killed'|'entity_moved'} EngineSignal*/
+
+/**@type {import("../../utils/signal_bus.js").SignalBus<EngineSignal>} */
+export const BUS = SBM.create();
 
 // TODO
 export function init() {
@@ -20,18 +21,3 @@ export function init() {
 export function clear_handlers() {
 
 }
-
-// éviter de faire un signal par quete par exemple
-// OU ALORS justement ajouter au runtime un listener pour la quete en question car là il faut faire une fonction comme ça pour chaque signal ET faire des boucles pour rien car les conditions de résolution de la quete on peut-être rien à voir
-
-// // systems/quests.js — un seul listener, quel que soit le nombre de quêtes actives
-// Signal.register("entity_killed", (world, { victim }) => {
-//     for (const quest of world.active_quests) {       // seulement les actives, pas toutes
-//         for (const objective of quest.objectives) {
-//             if (objective.type === "kill" && matches(objective, victim)) {
-//                 objective.progress++;
-//                 if (objective.progress >= objective.count) complete_objective(world, quest, objective);
-//             }
-//         }
-//     }
-// });

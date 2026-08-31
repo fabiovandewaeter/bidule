@@ -4,14 +4,14 @@
 /**
  * @typedef {import("../../engine/core/world.js").World} World
  */
-import * as WorldM from "../../engine/core/world.js"
-import * as SaveM from "../../utils/save.js"
-import * as UIStateM from "./ui_state.js"
-import * as OptM from "../../utils/option.js"
-import * as SceneM from "../scene/scene.js"
-import * as StoreM from "./store.js"
-import * as TimelineM from "../../engine/core/timeline/timeline.js"
-import * as SignalM from "../../engine/core/signals.js"
+import * as WorldM from "../../engine/core/world.js";
+import * as SaveM from "../../utils/save.js";
+import * as UIStateM from "./ui_state.js";
+import * as OptM from "../../utils/option.js";
+import * as SceneM from "../scene/scene.js";
+import * as StoreM from "./store.js";
+import * as TimelineM from "../../engine/core/timeline/timeline.js";
+import * as SignalM from "../../engine/core/signals.js";
 
 init();
 

@@ -5,18 +5,18 @@
  * @typedef {import("./comp.js").DestroyFunction} DestroyFunction
  */
 import "../../utils/types.js"
-import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from "../../utils/const.js"
-import * as SBM from "../../utils/signal_bus.js"
-import * as UISBM from "../core/signals.js"
-import * as StoreM from "../core/store.js"
-import * as WorldM from "../../engine/core/world.js"
-import * as UIStateM from "../core/ui_state.js"
-import * as SceneM from "../scene/scene.js"
-import * as SaveM from "../../utils/save.js"
-import * as CompM from "./comp.js"
-import * as RuntimeM from "../core/runtime.js"
-import * as UtilsM from "../../utils/utils.js"
-import * as EnumM from "../../utils/enum.js"
+import { SECONDS_PER_DAY, SECONDS_PER_HOUR, SECONDS_PER_MINUTE, SECONDS_PER_WEEK, SECONDS_PER_YEAR } from "../../utils/const.js";
+import * as SBM from "../../utils/signal_bus.js";
+import * as UISBM from "../core/signals.js";
+import * as StoreM from "../core/store.js";
+import * as WorldM from "../../engine/core/world.js";
+import * as UIStateM from "../core/ui_state.js";
+import * as SceneM from "../scene/scene.js";
+import * as SaveM from "../../utils/save.js";
+import * as CompM from "./comp.js";
+import * as RuntimeM from "../core/runtime.js";
+import * as UtilsM from "../../utils/utils.js";
+import * as EnumM from "../../utils/enum.js";
 
 const TICK_DELAY_MS = 1000;
 

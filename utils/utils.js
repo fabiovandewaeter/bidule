@@ -1,5 +1,5 @@
 // utils/utils.js
-//@ts-check
+// @ts-check
 
 /**
  * pour convertir un string en number ou TID par exemple
